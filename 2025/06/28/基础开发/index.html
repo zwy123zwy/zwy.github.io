@@ -4,18 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>Hello World | Hexo</title>
+  <title>基础开发 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="HTMLCanvas和SVG   特性 Canvas SVG    类型 位图（像素操作） 矢量图（XML 描述）   渲染方式 即时模式（绘制后不保留对象） 保留模式（DOM 树存储对象）   分辨率依赖 依赖分辨率（放大失真） 独立分辨率（无限缩放不失真）   事件处理 需手动计算坐标（无内置事件） 支持 DOM 事件（如 click&#x2F;hover）   性能 适合高频重绘（如游戏&amp;#">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2025/06/27/hello-world/index.html">
+<meta property="og:title" content="基础开发">
+<meta property="og:url" content="http://example.com/2025/06/28/%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="HTMLCanvas和SVG   特性 Canvas SVG    类型 位图（像素操作） 矢量图（XML 描述）   渲染方式 即时模式（绘制后不保留对象） 保留模式（DOM 树存储对象）   分辨率依赖 依赖分辨率（放大失真） 独立分辨率（无限缩放不失真）   事件处理 需手动计算坐标（无内置事件） 支持 DOM 事件（如 click&#x2F;hover）   性能 适合高频重绘（如游戏&amp;#">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-06-27T13:20:55.209Z">
-<meta property="article:modified_time" content="2025-06-27T13:20:55.209Z">
+<meta property="article:published_time" content="2025-06-28T13:03:52.000Z">
+<meta property="article:modified_time" content="2025-06-28T13:41:17.460Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="html css javascript">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -73,10 +74,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-基础开发" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/06/27/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2025-06-27T13:20:55.209Z" itemprop="datePublished">2025-06-27</time>
+    <a href="/2025/06/28/%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/" class="article-date">
+  <time class="dt-published" datetime="2025-06-28T13:03:52.000Z" itemprop="datePublished">2025-06-28</time>
 </a>
     
   </div>
@@ -87,7 +88,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Hello World
+      基础开发
     </h1>
   
 
@@ -95,42 +96,76 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h1 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h1><h2 id="Canvas和SVG"><a href="#Canvas和SVG" class="headerlink" title="Canvas和SVG"></a>Canvas和SVG</h2><table>
+<thead>
+<tr>
+<th align="left"><strong>特性</strong></th>
+<th align="left"><strong>Canvas</strong></th>
+<th align="center"><strong>SVG</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>类型</strong></td>
+<td align="left">位图（像素操作）</td>
+<td align="center">矢量图（XML 描述）</td>
+</tr>
+<tr>
+<td align="left"><strong>渲染方式</strong></td>
+<td align="left">即时模式（绘制后不保留对象）</td>
+<td align="center">保留模式（DOM 树存储对象）</td>
+</tr>
+<tr>
+<td align="left"><strong>分辨率依赖</strong></td>
+<td align="left">依赖分辨率（放大失真）</td>
+<td align="center">独立分辨率（无限缩放不失真）</td>
+</tr>
+<tr>
+<td align="left"><strong>事件处理</strong></td>
+<td align="left">需手动计算坐标（无内置事件）</td>
+<td align="center">支持 DOM 事件（如 click&#x2F;hover）</td>
+</tr>
+<tr>
+<td align="left"><strong>性能</strong></td>
+<td align="left">适合高频重绘（如游戏&#x2F;动画）</td>
+<td align="center">元素过多时性能下降</td>
+</tr>
+<tr>
+<td align="left"><strong>输出格式</strong></td>
+<td align="left">生成 PNG&#x2F;JPG</td>
+<td align="center">XML 文本（可被 CSS&#x2F;JS 操作）</td>
+</tr>
+<tr>
+<td align="left"><strong>文本渲染</strong></td>
+<td align="left">支持基础文本（无富文本）</td>
+<td align="center">支持完整文本操作（含 CSS 样式）</td>
+</tr>
+<tr>
+<td align="left"><strong>内存占用</strong></td>
+<td align="left">低（无对象存储）</td>
+<td align="center">高（每个元素占用 DOM 节点）</td>
+</tr>
+</tbody></table>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/06/27/hello-world/" data-id="cmceuehus0000acurdhcsc30h" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/06/28/%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/" data-id="cmcgaht3600004sur1w0e7uo4" data-title="基础开发" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2025/06/27/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          前端基础
-        
-      </div>
-    </a>
   
+    <a href="/2025/06/27/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">前端基础</div>
+    </a>
   
 </nav>
 
