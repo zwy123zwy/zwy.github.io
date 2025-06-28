@@ -19,7 +19,7 @@
 <meta property="og:image" content="c:\Users\Zhangwenye\Desktop\%E5%8D%9A%E5%AE%A2\source\img\4611.jpg">
 <meta property="og:image" content="http://example.com/img/132257ri1tw184gtv3vu8t.png">
 <meta property="article:published_time" content="2025-06-28T13:03:52.000Z">
-<meta property="article:modified_time" content="2025-06-28T16:58:38.332Z">
+<meta property="article:modified_time" content="2025-06-28T17:22:53.033Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="html css javascript">
 <meta name="twitter:card" content="summary">
@@ -721,7 +721,260 @@
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.left</span>&#123;</span><br><span class="line">     <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">     <span class="attribute">background</span>: red;</span><br><span class="line">     <span class="attribute">float</span>: left;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.right</span>&#123;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">     <span class="attribute">background</span>: blue;</span><br><span class="line">     <span class="attribute">overflow</span>: hidden;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line">&lt;<span class="selector-tag">div</span> class=&quot;<span class="attribute">left</span>&quot;&gt;&lt;/<span class="selector-tag">div</span>&gt;</span><br><span class="line">&lt;<span class="selector-tag">div</span> class=&quot;<span class="attribute">right</span>&quot;&gt;&lt;/<span class="selector-tag">div</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <p>左侧设置<code>float:left</code>，右侧设置<code>overflow: hidden</code>。这样右边就触发了BFC，BFC的区域不会与浮动元素发生重叠，所以两侧就不会发生重叠，实现了自适应两栏布局。</p>
+<h2 id="Transform"><a href="#Transform" class="headerlink" title="Transform"></a>Transform</h2><ol>
+<li><strong>GPU 加速</strong>：<ul>
+<li>Transform 操作由 GPU 处理，不占用主线程资源</li>
+<li>特别适合动画和复杂视觉效果</li>
+<li>使用 <code>translate3d()</code> 或 <code>will-change</code> 可以强制启用 GPU 加速</li>
+</ul>
+</li>
+<li><strong>不触发重排（Reflow）</strong>：<ul>
+<li>应用 transform 时，浏览器跳过布局（Layout）阶段</li>
+<li>元素在文档流中的位置保持不变</li>
+<li>只影响元素的视觉效果，不影响布局</li>
+</ul>
+</li>
+<li><strong>高性能动画</strong>：<ul>
+<li>与 CSS transitions&#x2F;animations 结合性能极佳</li>
+<li>60fps 流畅动画的理想选择</li>
+<li>特别适合移动端性能优化</li>
+</ul>
+</li>
+</ol>
+<h3 id="与其他位移属性的性能对比"><a href="#与其他位移属性的性能对比" class="headerlink" title="与其他位移属性的性能对比"></a>与其他位移属性的性能对比</h3><table>
+<thead>
+<tr>
+<th align="left">属性类型</th>
+<th align="left">触发重排</th>
+<th align="left">触发重绘</th>
+<th align="left">性能影响</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Transform</strong></td>
+<td align="left">❌</td>
+<td align="left">❌</td>
+<td align="left">最小</td>
+<td align="left">动画、交互效果、视觉变换</td>
+</tr>
+<tr>
+<td align="left"><strong>Position</strong></td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">中等</td>
+<td align="left">静态定位、布局元素</td>
+</tr>
+<tr>
+<td align="left"><strong>Margin</strong></td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">最大</td>
+<td align="left">元素间距调整</td>
+</tr>
+<tr>
+<td align="left"><strong>Padding</strong></td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">大</td>
+<td align="left">内容内边距</td>
+</tr>
+<tr>
+<td align="left"><strong>Left&#x2F;Top</strong></td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">中等</td>
+<td align="left">绝对定位元素移动</td>
+</tr>
+</tbody></table>
+<h3 id="浏览器渲染流程与性能"><a href="#浏览器渲染流程与性能" class="headerlink" title="浏览器渲染流程与性能"></a>浏览器渲染流程与性能</h3><ol>
+<li><strong>渲染流水线</strong>：<ul>
+<li>JavaScript → 样式计算 → 布局 → 绘制 → 合成</li>
+<li>Transform 操作只在合成阶段处理</li>
+<li>其他位移属性会触发布局和绘制阶段</li>
+</ul>
+</li>
+<li><strong>优化建议</strong>：<ul>
+<li>使用 <code>transform</code> 和 <code>opacity</code> 制作动画</li>
+<li>避免在循环中修改布局属性</li>
+<li>使用 <code>will-change</code> 提示浏览器优化</li>
+<li>优先使用 CSS 动画而非 JavaScript 动画</li>
+</ul>
+</li>
+</ol>
+<h3 id="实际性能差异"><a href="#实际性能差异" class="headerlink" title="实际性能差异"></a>实际性能差异</h3><p>在动画演示中，可以看到：</p>
+<ul>
+<li><strong>Transform</strong>：性能最优，CPU 使用率最低</li>
+<li><strong>Position</strong>：性能中等，会触发重排</li>
+<li><strong>Margin</strong>：性能最差，导致完整文档重排</li>
+</ul>
+<h2 id="Flex-布局"><a href="#Flex-布局" class="headerlink" title="Flex 布局"></a>Flex 布局</h2><p>Flex 布局（弹性盒子布局）是 CSS3 中一种强大的<strong>一维布局模型</strong>，专门设计用于在<strong>单行或单列</strong>中高效分配容器空间。它解决了传统布局（如浮动和定位）的诸多痛点，特别适合构建<strong>响应式界面</strong>和<strong>复杂组件</strong>。</p>
+<ul>
+<li><strong>Flex 容器</strong>：应用 <code>display: flex</code> 的元素</li>
+<li><strong>Flex 项目</strong>：容器内的直接子元素</li>
+<li><strong>主轴 (Main Axis)</strong>：项目排列的主要方向（由 <code>flex-direction</code> 定义）</li>
+<li><strong>交叉轴 (Cross Axis)</strong>：与主轴垂直的方向</li>
+</ul>
+<p><strong>二、Flex 容器属性详解</strong></p>
+<ol>
+<li><code>display</code> - 定义容器类型</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex; <span class="comment">/* 块级 flex 容器 */</span></span><br><span class="line">  <span class="attribute">display</span>: inline-flex; <span class="comment">/* 行内 flex 容器 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ol start="2">
+<li><code>flex-direction</code> - 主轴方向</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row; <span class="comment">/* 默认值，水平从左到右 */</span></span><br><span class="line">  <span class="attribute">flex-direction</span>: row-reverse; <span class="comment">/* 水平从右到左 */</span></span><br><span class="line">  <span class="attribute">flex-direction</span>: column; <span class="comment">/* 垂直从上到下 */</span></span><br><span class="line">  <span class="attribute">flex-direction</span>: column-reverse; <span class="comment">/* 垂直从下到上 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>flex-wrap</code> - 换行控制</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  flex-wrap: nowrap; /* 默认不换行 */</span><br><span class="line">  flex-wrap: wrap; /* 正常换行 */</span><br><span class="line">  flex-wrap: wrap-reverse; /* 反向换行 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>flex-flow</code> - 方向与换行的简写</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: row wrap; <span class="comment">/* 方向 + 换行 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><code>justify-content</code> - 主轴对齐</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start; <span class="comment">/* 默认，起点对齐 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: flex-end; <span class="comment">/* 终点对齐 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: center; <span class="comment">/* 居中对齐 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: space-between; <span class="comment">/* 两端对齐 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: space-around; <span class="comment">/* 均匀分布 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: space-evenly; <span class="comment">/* 完全均匀 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><code>align-items</code> - 交叉轴对齐（单行）</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: stretch; <span class="comment">/* 默认，拉伸填满 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: flex-start; <span class="comment">/* 起点对齐 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: flex-end; <span class="comment">/* 终点对齐 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: center; <span class="comment">/* 居中对齐 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: baseline; <span class="comment">/* 基线对齐 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><code>align-content</code> - 交叉轴对齐（多行）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  align-content: stretch; /* 默认，拉伸填满 */</span><br><span class="line">  align-content: flex-start; /* 起点对齐 */</span><br><span class="line">  align-content: flex-end; /* 终点对齐 */</span><br><span class="line">  align-content: center; /* 居中对齐 */</span><br><span class="line">  align-content: space-between; /* 两端对齐 */</span><br><span class="line">  align-content: space-around; /* 均匀分布 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、Flex 项目属性详解</strong></p>
+<ol>
+<li><code>order</code> - 项目顺序</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: <span class="number">0</span>; <span class="comment">/* 默认值 */</span></span><br><span class="line">  <span class="attribute">order</span>: <span class="number">1</span>; <span class="comment">/* 值越大越靠后 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>flex-grow</code> - 扩展比例</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">0</span>; <span class="comment">/* 默认不扩展 */</span></span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">1</span>; <span class="comment">/* 按比例分配剩余空间 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>flex-shrink</code> - 收缩比例</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: <span class="number">1</span>; <span class="comment">/* 默认可收缩 */</span></span><br><span class="line">  <span class="attribute">flex-shrink</span>: <span class="number">0</span>; <span class="comment">/* 禁止收缩 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>flex-basis</code> - 初始尺寸</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-basis</span>: auto; <span class="comment">/* 默认，基于内容 */</span></span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">200px</span>; <span class="comment">/* 固定尺寸 */</span></span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">30%</span>; <span class="comment">/* 百分比尺寸 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><code>flex</code> - 复合属性</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex</span>: none; <span class="comment">/* 0 0 auto */</span></span><br><span class="line">  <span class="attribute">flex</span>: auto; <span class="comment">/* 1 1 auto */</span></span><br><span class="line">  <span class="attribute">flex</span>: <span class="number">1</span>; <span class="comment">/* 1 1 0% */</span></span><br><span class="line">  <span class="attribute">flex</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">200px</span>; <span class="comment">/* 不扩展不收缩，固定200px */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><code>align-self</code> - 单独对齐</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto; <span class="comment">/* 继承容器 */</span></span><br><span class="line">  <span class="attribute">align-self</span>: stretch; <span class="comment">/* 拉伸填满 */</span></span><br><span class="line">  <span class="attribute">align-self</span>: flex-start; <span class="comment">/* 顶部对齐 */</span></span><br><span class="line">  <span class="attribute">align-self</span>: flex-end; <span class="comment">/* 底部对齐 */</span></span><br><span class="line">  <span class="attribute">align-self</span>: center; <span class="comment">/* 垂直居中 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="requestAnimationframe"><a href="#requestAnimationframe" class="headerlink" title="requestAnimationframe"></a>requestAnimationframe</h2><p>实现动画效果的方法比较多，Javascript 中可以通过定时器 setTimeout 来实现，CSS3 中可以使用 transition 和 animation 来实现，HTML5 中的 canvas 也可以实现。除此之外，HTML5 提供一个专门用于请求动画的API，那就是 requestAnimationFrame，顾名思义就是<strong>请求动画帧</strong>。</p>
+<p>MDN对该方法的描述：</p>
+<p>window.requestAnimationFrame() 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行。</p>
+<p><strong>语法：</strong> <code>window.requestAnimationFrame(callback);</code>  其中，callback是<strong>下一次重绘之前更新动画帧所调用的函数</strong>(即上面所说的回调函数)。该回调函数会被传入DOMHighResTimeStamp参数，它表示requestAnimationFrame() 开始去执行回调函数的时刻。该方法属于<strong>宏任务</strong>，所以会在执行完微任务之后再去执行。</p>
+<p>**取消动画：**使用cancelAnimationFrame()来取消执行动画，该方法接收一个参数——requestAnimationFrame默认返回的id，只需要传入这个id就可以取消动画了。</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li><strong>CPU节能</strong>：使用SetTinterval 实现的动画，当页面被隐藏或最小化时，SetTinterval 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而RequestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统走的RequestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。</li>
+<li><strong>函数节流</strong>：在高频率事件( resize, scroll 等)中，为了防止在一个刷新间隔内发生多次函数执行，RequestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销，一个刷新间隔内函数执行多次时没有意义的，因为多数显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。</li>
+<li><strong>减少DOM操作</strong>：requestAnimationFrame 会把每一帧中的所有DOM操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。</li>
+</ul>
+<p><strong>setTimeout执行动画的缺点</strong>：它通过设定间隔时间来不断改变图像位置，达到动画效果。但是容易出现卡顿、抖动的现象；原因是：</p>
+<ul>
+<li>settimeout任务被放入异步队列，只有当主线程任务执行完后才会执行队列中的任务，因此实际执行时间总是比设定时间要晚；</li>
+<li>settimeout的固定时间间隔不一定与屏幕刷新间隔时间相同，会引起丢帧。</li>
+</ul>
+<h2 id="CSS图片格式对比，应用场景"><a href="#CSS图片格式对比，应用场景" class="headerlink" title="CSS图片格式对比，应用场景"></a>CSS图片格式对比，应用场景</h2><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">JPEG&#x2F;JPG</th>
+<th align="left">PNG</th>
+<th align="left">GIF</th>
+<th align="left">WebP</th>
+<th align="left">SVG</th>
+<th align="left">AVIF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>压缩类型</strong></td>
+<td align="left">有损</td>
+<td align="left">无损</td>
+<td align="left">无损</td>
+<td align="left">有损&#x2F;无损</td>
+<td align="left">无损</td>
+<td align="left">有损&#x2F;无损</td>
+</tr>
+<tr>
+<td align="left"><strong>透明度支持</strong></td>
+<td align="left">❌</td>
+<td align="left">✅ (8&#x2F;24位)</td>
+<td align="left">✅ (1位)</td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+</tr>
+<tr>
+<td align="left"><strong>动画支持</strong></td>
+<td align="left">❌</td>
+<td align="left">❌</td>
+<td align="left">✅</td>
+<td align="left">✅</td>
+<td align="left">✅ (SMIL)</td>
+<td align="left">❌</td>
+</tr>
+<tr>
+<td align="left"><strong>颜色深度</strong></td>
+<td align="left">24位</td>
+<td align="left">8&#x2F;24&#x2F;48位</td>
+<td align="left">8位(256色)</td>
+<td align="left">24&#x2F;32位</td>
+<td align="left">无限</td>
+<td align="left">10&#x2F;12位</td>
+</tr>
+<tr>
+<td align="left"><strong>文件大小</strong></td>
+<td align="left">小</td>
+<td align="left">中-大</td>
+<td align="left">小(简单)</td>
+<td align="left">很小</td>
+<td align="left">极小(简单)</td>
+<td align="left">非常小</td>
+</tr>
+<tr>
+<td align="left"><strong>浏览器兼容性</strong></td>
+<td align="left">100%</td>
+<td align="left">100%</td>
+<td align="left">100%</td>
+<td align="left">95%+</td>
+<td align="left">100%</td>
+<td align="left">75%+</td>
+</tr>
+<tr>
+<td align="left"><strong>最佳适用场景</strong></td>
+<td align="left">照片</td>
+<td align="left">透明图像</td>
+<td align="left">简单动画</td>
+<td align="left">通用</td>
+<td align="left">图标&#x2F;矢量</td>
+<td align="left">高清照片</td>
+</tr>
+</tbody></table>
+<h1 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h1>
       
     </div>
     <footer class="article-footer">
