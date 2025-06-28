@@ -37,8 +37,11 @@
 <meta property="og:image" content="http://example.com/img/lost-in-fourth-wave.80200bab.png">
 <meta property="og:image" content="http://example.com/img/20200802172257514.png">
 <meta property="og:image" content="http://example.com/img/2020080217284188.png">
+<meta property="og:image" content="http://example.com/img/21994.jpg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/1500604/1603803289922-6462f252-aa33-4cf6-b541-d8bc2e285125.png?x-oss-process=image/watermark,type_d3F5LW1pY3JvaGVp,size_24,text_5b6u5L-h5YWs5LyX5Y-377ya5YmN56uv5YWF55S15a6d,color_FFFFFF,shadow_50,t_80,g_se,x_10,y_10">
+<meta property="og:image" content="http://example.com/img/26826.jpg">
 <meta property="article:published_time" content="2025-06-27T13:36:28.000Z">
-<meta property="article:modified_time" content="2025-06-28T09:21:33.271Z">
+<meta property="article:modified_time" content="2025-06-28T09:37:47.752Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络，浏览器原理">
 <meta name="twitter:card" content="summary">
@@ -1317,6 +1320,71 @@
 <li><p><strong>套接字操作</strong>：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码：网络进程调用系统API</span></span><br><span class="line"><span class="type">int</span> sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>); </span><br><span class="line">connect(sockfd, (<span class="keyword">struct</span> sockaddr*)&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">write(sockfd, http_request, <span class="built_in">strlen</span>(http_request));</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h1><h2 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h2><p>从本质上说，进程和线程都是 CPU 工作时间片的一个描述：</p>
+<ul>
+<li>进程描述了 CPU 在运行指令及加载和保存上下文所需的时间，放在应用上来说就代表了一个程序。</li>
+<li>线程是进程中的更小单位，描述了执行一段指令所需的时间。</li>
+</ul>
+<p><strong>进程是资源分配的最小单位，线程是CPU调度的最小单位。</strong></p>
+<p><strong>进程和线程的区别</strong></p>
+<ul>
+<li>进程可以看做独立应用，线程不能</li>
+<li>资源：进程是cpu资源分配的最小单位（是能拥有资源和独立运行的最小单位）；线程是cpu调度的最小单位（线程是建立在进程的基础上的一次程序运行单位，一个进程中可以有多个线程）。</li>
+<li>通信方面：线程间可以通过直接共享同一进程中的资源，而进程通信需要借助 进程间通信。</li>
+<li>调度：进程切换比线程切换的开销要大。线程是CPU调度的基本单位，线程的切换不会引起进程切换，但某个进程中的线程切换到另一个进程中的线程时，会引起进程切换。</li>
+<li>系统开销：由于创建或撤销进程时，系统都要为之分配或回收资源，如内存、I&#x2F;O 等，其开销远大于创建或撤销线程时的开销。同理，在进行进程切换时，涉及当前执行进程 CPU 环境还有各种各样状态的保存及新调度进程状态的设置，而线程切换时只需保存和设置少量寄存器内容，开销较小</li>
+</ul>
+<p>一个进程就是一个程序的运行实例。详细解释就是，启动一个程序的时候，操作系统会为该程序创建一块内存，用来存放代码、运行中的数据和一个执行任务的主线程，我们把这样的一个运行环境叫<strong>进程</strong>。</p>
+<p><strong>进程是运行在虚拟内存上的</strong>，虚拟内存是用来解决用户对硬件资源的无限需求和有限的硬件资源之间的矛盾的。从操作系统角度来看，虚拟内存即交换文件；从处理器角度看，虚拟内存即虚拟地址空间。</p>
+<p><strong>如果程序很多时，内存可能会不够，操作系统为每个进程提供一套独立的虚拟地址空间，从而使得同一块物理内存在不同的进程中可以对应到不同或相同的虚拟地址，变相的增加了程序可以使用的内存</strong>。</p>
+<p>进程和线程之间的关系有以下四个特点：</p>
+<p><strong>（1）进程中的任意一线程执行出错，都会导致整个进程的崩溃。</strong></p>
+<p><strong>（2）线程之间共享进程中的数据。</strong></p>
+<p>**（3）当一个进程关闭之后，操作系统会回收进程所占用的内存，**当一个进程退出时，操作系统会回收该进程所申请的所有资源；即使其中任意线程因为操作不当导致内存泄漏，当进程退出时，这些内存也会被正确回收。</p>
+<p>**（4）进程之间的内容相互隔离。**进程隔离就是为了使操作系统中的进程互不干扰，每一个进程只能访问自己占有的数据，也就避免出现进程 A 写入数据到进程 B 的情况。正是因为进程之间的数据是严格隔离的，所以一个进程如果崩溃了，或者挂起了，是不会影响到其他进程的。如果进程之间需要进行数据的通信，这时候，就需要使用用于进程间通信的机制了。</p>
+<h3 id="Chrome浏览器的架构图："><a href="#Chrome浏览器的架构图：" class="headerlink" title="Chrome浏览器的架构图："></a><strong>Chrome浏览器的架构图</strong>：</h3><p><img src="/../img/21994.jpg" alt="img"></p>
+<p>从图中可以看出，最新的 Chrome 浏览器包括：</p>
+<ul>
+<li>1 个浏览器主进程</li>
+<li>1 个 GPU 进程</li>
+<li>1 个网络进程</li>
+<li>多个渲染进程</li>
+<li>多个插件进程</li>
+</ul>
+<p>这些进程的功能：</p>
+<ul>
+<li><strong>浏览器进程</strong>：主要负责界面显示、用户交互、子进程管理，同时提供存储等功能。</li>
+<li><strong>渲染进程</strong>：核心任务是将 HTML、CSS 和 JavaScript 转换为用户可以与之交互的网页，排版引擎 Blink 和 JavaScript 引擎 V8 都是运行在该进程中，默认情况下，Chrome 会为每个 Tab 标签创建一个渲染进程。出于安全考虑，渲染进程都是运行在沙箱模式下。</li>
+<li><strong>GPU 进程</strong>：其实， GPU 的使用初衷是为了实现 3D CSS 的效果，只是随后网页、Chrome 的 UI 界面都选择采用 GPU 来绘制，这使得 GPU 成为浏览器普遍的需求。最后，Chrome 在其多进程架构上也引入了 GPU 进程。</li>
+<li><strong>网络进程</strong>：主要负责页面的网络资源加载，之前是作为一个模块运行在浏览器进程里面的，直至最近才独立出来，成为一个单独的进程。</li>
+<li><strong>插件进程</strong>：主要是负责插件的运行，因插件易崩溃，所以需要通过插件进程来隔离，以保证插件进程崩溃不会对浏览器和页面造成影响。</li>
+</ul>
+<p>所以，<strong>打开一个网页，最少需要四个进程</strong>：1 个网络进程、1 个浏览器进程、1 个 GPU 进程以及 1 个渲染进程。如果打开的页面有运行插件的话，还需要再加上 1 个插件进程。</p>
+<p>虽然多进程模型提升了浏览器的稳定性、流畅性和安全性，但同样不可避免地带来了一些问题：</p>
+<ul>
+<li><strong>更高的资源占用</strong>：因为每个进程都会包含公共基础结构的副本（如 JavaScript 运行环境），这就意味着浏览器会消耗更多的内存资源。</li>
+<li><strong>更复杂的体系架构</strong>：浏览器各模块之间耦合性高、扩展性差等问题，会导致现在的架构已经很难适应新的需求了。</li>
+</ul>
+<h3 id="浏览器渲染进程的线程有哪些"><a href="#浏览器渲染进程的线程有哪些" class="headerlink" title="浏览器渲染进程的线程有哪些"></a>浏览器渲染进程的线程有哪些</h3><p>浏览器的渲染进程的线程总共有五种：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1500604/1603803289922-6462f252-aa33-4cf6-b541-d8bc2e285125.png?x-oss-process=image/watermark,type_d3F5LW1pY3JvaGVp,size_24,text_5b6u5L-h5YWs5LyX5Y-377ya5YmN56uv5YWF55S15a6d,color_FFFFFF,shadow_50,t_80,g_se,x_10,y_10" alt="img"></p>
+<p><strong>（1）GUI渲染线程</strong></p>
+<p>负责渲染浏览器页面，解析HTML、CSS，构建DOM树、构建CSSOM树、构建渲染树和绘制页面；当界面需要<strong>重绘</strong>或由于某种操作引发<strong>回流</strong>时，该线程就会执行。</p>
+<p>注意：GUI渲染线程和JS引擎线程是互斥的，当JS引擎执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行。</p>
+<p><strong>（2）JS引擎线程</strong></p>
+<p>JS引擎线程也称为JS内核，负责处理Javascript脚本程序，解析Javascript脚本，运行代码；JS引擎线程一直等待着任务队列中任务的到来，然后加以处理，一个Tab页中无论什么时候都只有一个JS引擎线程在运行JS程序；</p>
+<p>注意：GUI渲染线程与JS引擎线程的互斥关系，所以如果JS执行的时间过长，会造成页面的渲染不连贯，导致页面渲染加载阻塞。</p>
+<p>**（3）<strong><strong>时间</strong></strong>触发线程**</p>
+<p><strong>时间****触发线程</strong>属于浏览器而不是JS引擎，用来控制事件循环；当JS引擎执行代码块如setTimeOut时（也可是来自浏览器内核的其他线程,如鼠标点击、AJAX异步请求等），会将对应任务添加到事件触发线程中；当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待JS引擎的处理；</p>
+<p>注意：由于JS的单线程关系，所以这些待处理队列中的事件都得排队等待JS引擎处理（当JS引擎空闲时才会去执行）；</p>
+<p><strong>（4）定时器触发****进程</strong></p>
+<p><strong>定时器触发进程</strong>即setInterval与setTimeout所在线程；浏览器定时计数器并不是由JS引擎计数的，因为JS引擎是单线程的，如果处于阻塞线程状态就会影响记计时的准确性；因此使用单独线程来计时并触发定时器，计时完毕后，添加到事件队列中，等待JS引擎空闲后执行，所以定时器中的任务在设定的时间点不一定能够准时执行，定时器只是在指定时间点将任务添加到事件队列中；</p>
+<p>注意：W3C在HTML标准中规定，定时器的定时时间不能小于4ms，如果是小于4ms，则默认为4ms。</p>
+<p><strong>（5）异步http请求线程</strong></p>
+<ul>
+<li>XMLHttpRequest连接后通过浏览器新开一个线程请求；</li>
+<li>检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将回调函数放入事件队列中，等待JS引擎空闲后执行；</li>
+</ul>
+<p><strong>浏览器输入url后的时序图</strong><br><img src="/../img/26826.jpg"></p>
 
       
     </div>
