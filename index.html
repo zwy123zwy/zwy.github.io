@@ -1387,7 +1387,7 @@
 <li><strong>更复杂的体系架构</strong>：浏览器各模块之间耦合性高、扩展性差等问题，会导致现在的架构已经很难适应新的需求了。</li>
 </ul>
 <h3 id="浏览器渲染进程的线程有哪些"><a href="#浏览器渲染进程的线程有哪些" class="headerlink" title="浏览器渲染进程的线程有哪些"></a>浏览器渲染进程的线程有哪些</h3><p>浏览器的渲染进程的线程总共有五种：</p>
-<p><img src="C:\Users\Zhangwenye\Desktop\博客\source\img\19964.jpg" alt="img"></p>
+<p><img src="/../img/19964.jpg" alt="img"></p>
 <p><strong>（1）GUI渲染线程</strong></p>
 <p>负责渲染浏览器页面，解析HTML、CSS，构建DOM树、构建CSSOM树、构建渲染树和绘制页面；当界面需要<strong>重绘</strong>或由于某种操作引发<strong>回流</strong>时，该线程就会执行。</p>
 <p>浏览器渲染主要有以下步骤：</p>
@@ -1399,7 +1399,7 @@
 <li>布局阶段结束后是绘制阶段，遍历渲染树并调用渲染对象的 paint 方法将它们的内容显示在屏幕上，绘制使用 UI 基础组件。</li>
 </ul>
 <p>大致过程如图所示：</p>
-<p><img src="C:\Users\Zhangwenye\Desktop\博客\source\img\1810.jpg" alt="img"></p>
+<p><img src="/../img/1810.jpg" alt="img"></p>
 <p>**注意：**这个过程是逐步完成的，为了更好的用户体验，渲染引擎将会尽可能早的将内容呈现到屏幕上，并不会等到所有的html 都解析完成之后再去构建和布局 render 树。它是解析完一部分内容就显示一部分内容，同时，可能还在通过网络下载其余内容。</p>
 <p>注意：GUI渲染线程和JS引擎线程是互斥的，当JS引擎执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行。</p>
 <h4 id="浏览器渲染优化"><a href="#浏览器渲染优化" class="headerlink" title="浏览器渲染优化"></a>浏览器渲染优化</h4><p>  （1）针对JavaScript：JavaScript既会阻塞HTML的解析，也会阻塞CSS的解析。因此我们可以对JavaScript的加载方式进行改变，来进行优化：</p>
