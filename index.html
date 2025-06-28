@@ -764,12 +764,300 @@
 <li><p>请求体 ：post put等请求携带的数据</p>
 </li>
 </ul>
-<h3 id="HTTP响应报文的是什么样的？"><a href="#HTTP响应报文的是什么样的？" class="headerlink" title="HTTP响应报文的是什么样的？"></a>HTTP响应报文的是什么样的？</h3><p>请求报⽂有4部分组成: </p>
+<p><strong>请求方法：</strong></p>
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>get</th>
+<th>post</th>
+<th>put</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>幂等</strong></td>
+<td>Get 请求用于对服务器资源不会产生影响</td>
+<td>更新服务器资源</td>
+<td>创建服务器资源</td>
+</tr>
+<tr>
+<td><strong>缓存</strong></td>
+<td>请求缓存</td>
+<td>默认不缓存</td>
+<td>默认不缓存</td>
+</tr>
+<tr>
+<td><strong>数据位置</strong></td>
+<td>URL</td>
+<td>请求体body</td>
+<td>请求体body</td>
+</tr>
+<tr>
+<td><strong>浏览器刷新</strong></td>
+<td>回车&#x2F;刷新无害</td>
+<td>重复提交会触发警告（需确认是否重新发送）</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>options方法</strong></p>
+<p>OPTIONS是除了GET和POST之外的其中一种 HTTP请求方法。</p>
+<p>OPTIONS方法是用于请求获得由<code>Request-URI</code>标识的资源在请求&#x2F;响应的通信过程中可以使用的功能选项。通过这个方法，客户端可以<strong>在采取具体资源请求之前，决定对该资源采取何种必要措施，或者了解服务器的性能</strong>。该请求方法的响应不能缓存。</p>
+<p>OPTIONS请求方法的<strong>主要用途</strong>有两个：</p>
+<ul>
+<li>获取服务器支持的所有HTTP请求方法；</li>
+<li>用来检查访问权限。例如：在进行 CORS 跨域资源共享时，对于复杂请求，就是使用 OPTIONS 方法发送嗅探请求，以判断是否有对指定资源的访问权限</li>
+</ul>
+<p><strong>简单请求 (Simple Request)</strong></p>
+<p>一个请求必须<strong>同时满足以下所有条件</strong>，才是简单请求：</p>
+<ol>
+<li><strong>HTTP 方法限制为以下三种之一：</strong><ul>
+<li><code>GET</code></li>
+<li><code>HEAD</code></li>
+<li><code>POST</code></li>
+</ul>
+</li>
+<li><strong>HTTP 头部限制 (由浏览器自动设置的头除外)：</strong> 只能包含以下<strong>安全列表</strong>中的请求头字段：<ul>
+<li><code>Accept</code></li>
+<li><code>Accept-Language</code></li>
+<li><code>Content-Language</code></li>
+<li><code>Content-Type</code> (但值有额外限制，见下一点)</li>
+<li><code>DPR</code></li>
+<li><code>Downlink</code></li>
+<li><code>Save-Data</code></li>
+<li><code>Viewport-Width</code></li>
+<li><code>Width</code></li>
+<li>… (这个列表相对固定，主要是浏览器自动设置或非常基础的头部)</li>
+</ul>
+</li>
+<li><strong><code>Content-Type</code> 头的值限制为以下三种之一：</strong><ul>
+<li><code>application/x-www-form-urlencoded</code></li>
+<li><code>multipart/form-data</code></li>
+<li><code>text/plain</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>🌟 简单请求的特点：</strong></p>
+<ul>
+<li>浏览器会<strong>直接发送</strong>实际请求（GET&#x2F;POST等）。</li>
+<li>在请求中自动添加 <code>Origin</code> 头，表明来源。</li>
+<li>服务器需要在响应中包含至少 <code>Access-Control-Allow-Origin</code> 头（值可以是 <code>*</code> 或具体的请求来源域）来允许跨域。如果涉及凭据（如 Cookies），还需要 <code>Access-Control-Allow-Credentials: true</code>。</li>
+<li><strong>常见例子：</strong><ul>
+<li>使用原生 HTML <code>&lt;form&gt;</code> 提交的 POST 请求（<code>enctype</code> 为上述三种之一）。</li>
+<li>使用原生 <code>XMLHttpRequest</code> 或 <code>fetch</code> 发起的 GET 请求（不带自定义头，<code>Content-Type</code> 为上述三种之一）。</li>
+<li>使用 <code>fetch</code> 发起的 POST 请求，请求体是 <code>FormData</code> 或 URL 编码字符串，且没有设置自定义头。</li>
+</ul>
+</li>
+</ul>
+<p>🚧 <strong>非简单请求 (Preflighted Request &#x2F; 预检请求)</strong></p>
+<p>如果一个请求<strong>不满足</strong>上述简单请求的<strong>任何一个条件</strong>，它就是非简单请求（预检请求）。</p>
+<p><strong>触发非简单请求的常见情况：</strong></p>
+<ol>
+<li><strong>使用了 <code>GET</code>, <code>HEAD</code>, <code>POST</code> 之外的 HTTP 方法：</strong><ul>
+<li><code>PUT</code></li>
+<li><code>DELETE</code></li>
+<li><code>PATCH</code></li>
+<li><code>CONNECT</code></li>
+<li><code>OPTIONS</code> (虽然 OPTIONS 本身用于预检，但其他方法触发预检时用 OPTIONS)</li>
+<li><code>TRACE</code></li>
+<li><strong>或者任何自定义方法（如 <code>PURGE</code>）</strong></li>
+</ul>
+</li>
+<li><strong>设置了不在“安全列表”中的请求头：</strong><ul>
+<li>任何<strong>自定义请求头</strong>（如 <code>X-Auth-Token</code>, <code>X-Requested-With</code>）。</li>
+<li>一些不在安全列表中的标准头（如 <code>Authorization</code>, <code>Content-Type</code> 的值超出简单请求范围）。</li>
+</ul>
+</li>
+<li><strong><code>Content-Type</code> 的值不是简单请求允许的三种：</strong><ul>
+<li>最常见的就是 <code>application/json</code>。</li>
+<li><code>application/xml</code> 或 <code>text/xml</code> 等。</li>
+<li>任何其他非 <code>text/plain</code>, <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code> 的值。</li>
+</ul>
+</li>
+</ol>
+<p><strong>非简单请求的特点：</strong></p>
+<ul>
+<li><strong>浏览器会先自动发送一个 <code>OPTIONS</code> 方法的“预检请求”</strong> 到目标服务器。</li>
+<li>预检请求携带关键头信息询问服务器：<ul>
+<li><code>Origin</code>: 请求来源。</li>
+<li><code>Access-Control-Request-Method</code>: 后续实际请求想要使用的 HTTP 方法（如 PUT, DELETE）。</li>
+<li><code>Access-Control-Request-Headers</code>: 后续实际请求想要携带的自定义请求头列表（如 <code>Content-Type</code>, <code>Authorization</code>）。</li>
+</ul>
+</li>
+<li><strong>服务器必须响应预检请求 (<code>OPTIONS</code>)：</strong><ul>
+<li>返回状态码通常是 <code>204 No Content</code> 或 <code>200 OK</code>。</li>
+<li><strong>必须包含关键的 CORS 响应头：</strong><ul>
+<li><code>Access-Control-Allow-Origin</code>: 允许的来源（<code>*</code> 或具体域）。</li>
+<li><code>Access-Control-Allow-Methods</code>: 允许的实际请求方法（如 <code>PUT, DELETE</code>）。</li>
+<li><code>Access-Control-Allow-Headers</code>: 允许的实际请求头（如 <code>Content-Type, Authorization</code>）。</li>
+<li>(可选) <code>Access-Control-Allow-Credentials: true</code>（如需凭据）。</li>
+<li>(可选) <code>Access-Control-Max-Age</code>: 预检结果缓存时间（秒）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>浏览器决策：</strong><ul>
+<li>如果预检响应头<strong>符合</strong>后续实际请求的要求（方法、头、来源都被允许），浏览器才会<strong>接着发送真正的实际请求</strong>（PUT, DELETE, 带 JSON 的 POST 等）。</li>
+<li>如果预检响应头<strong>拒绝</strong>了实际请求（比如没包含某个方法或头），浏览器会<strong>阻止</strong>后续实际请求的发送，并在控制台报 CORS 错误。</li>
+</ul>
+</li>
+<li><strong>常见例子：</strong><ul>
+<li>发送 <code>application/json</code> 数据的 POST&#x2F;PUT 请求。</li>
+<li>发送 DELETE 请求。</li>
+<li>在请求头中添加 <code>Authorization: Bearer &lt;token&gt;</code> 进行认证。</li>
+<li>发送任何自定义 HTTP 方法的请求。</li>
+<li>使用自定义头如 <code>X-Custom-Header</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="响应报文"><a href="#响应报文" class="headerlink" title="响应报文"></a>响应报文</h2><p>请求报⽂有4部分组成: </p>
 <ul>
 <li>响应⾏：由网络协议版本，状态码和状态码的原因短语组成，例如 HTTP&#x2F;1.1 200 OK 。 </li>
 <li>响应头：响应部⾸组成 </li>
 <li>空行</li>
 <li>响应体：服务器响应的数据</li>
+</ul>
+<h2 id="HTTP-版本演进对比"><a href="#HTTP-版本演进对比" class="headerlink" title="HTTP 版本演进对比"></a>HTTP 版本演进对比</h2><table>
+<thead>
+<tr>
+<th align="left"><strong>特性</strong></th>
+<th align="left"><strong>HTTP&#x2F;0.9 (1991)</strong></th>
+<th align="left"><strong>HTTP&#x2F;1.0 (1996)</strong></th>
+<th align="left"><strong>HTTP&#x2F;1.1 (1997&#x2F;1999)</strong></th>
+<th align="left"><strong>HTTP&#x2F;2 (2015)</strong></th>
+<th align="left"><strong>HTTP&#x2F;3 (2022)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>协议基础</strong></td>
+<td align="left">单行文本协议</td>
+<td align="left">文本协议 + 头部</td>
+<td align="left">文本协议（增强版）</td>
+<td align="left">二进制分帧协议</td>
+<td align="left"><strong>基于 QUIC 的 UDP 协议</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>连接方式</strong></td>
+<td align="left">⚡ 单请求后立即关闭</td>
+<td align="left">⚡ 默认短连接（可手动设 <code>Connection: keep-alive</code>）</td>
+<td align="left">✅ <strong>默认长连接</strong>（持久化）</td>
+<td align="left">✅ 多路复用单连接</td>
+<td align="left">✅ 多路复用 + <strong>连接迁移</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>并行请求</strong></td>
+<td align="left">❌ 不支持</td>
+<td align="left">❌ 不支持（串行）</td>
+<td align="left">🟡 有限并行（6-8个&#x2F;域名，需域名分片）</td>
+<td align="left">✅ <strong>真并行</strong>（单连接多流）</td>
+<td align="left">✅ <strong>零队头阻塞</strong>（流独立）</td>
+</tr>
+<tr>
+<td align="left"><strong>头部传输</strong></td>
+<td align="left">❌ 无头部</td>
+<td align="left">✅ 文本头部（未压缩）</td>
+<td align="left">✅ 文本头部（未压缩）</td>
+<td align="left">✅ <strong>HPACK 压缩</strong>（二进制）</td>
+<td align="left">✅ <strong>QPACK 压缩</strong>（动态表）</td>
+</tr>
+<tr>
+<td align="left"><strong>数据传输</strong></td>
+<td align="left">❌ 仅文本（无类型&#x2F;长度）</td>
+<td align="left">✅ 支持二进制（<code>Content-Type</code>）</td>
+<td align="left">✅ 支持分块传输（<code>Transfer-Encoding: chunked</code>）</td>
+<td align="left">✅ 二进制帧（<code>DATA</code>帧）</td>
+<td align="left">✅ 二进制帧（<code>STREAM</code>帧）</td>
+</tr>
+<tr>
+<td align="left"><strong>关键性能优化</strong></td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">🔹 管道化（易队头阻塞） 🔹 缓存控制（<code>Cache-Control</code>）</td>
+<td align="left">🔹 <strong>多路复用</strong> 🔹 服务器推送（<code>PUSH_PROMISE</code>）</td>
+<td align="left">🔹 <strong>0-RTT 快速握手</strong> 🔹 改进的丢包恢复</td>
+</tr>
+<tr>
+<td align="left"><strong>队头阻塞问题</strong></td>
+<td align="left">❌ 无（单请求）</td>
+<td align="left">❌ 无（串行）</td>
+<td align="left">🔴 <strong>存在</strong>（响应必须顺序返回）</td>
+<td align="left">🔴 <strong>TCP 层队头阻塞</strong></td>
+<td align="left">✅ <strong>彻底解决</strong>（QUIC 流隔离）</td>
+</tr>
+<tr>
+<td align="left"><strong>安全性</strong></td>
+<td align="left">❌ 无加密</td>
+<td align="left">❌ 无强制加密</td>
+<td align="left">❌ 无强制加密</td>
+<td align="left">⚠️ 事实需 HTTPS（浏览器强制）</td>
+<td align="left">✅ <strong>内置 TLS 1.3</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>握手延迟</strong></td>
+<td align="left">1× RTT（TCP）</td>
+<td align="left">1× RTT（TCP）</td>
+<td align="left">1× RTT（TCP）</td>
+<td align="left">1~3× RTT（TCP+TLS）</td>
+<td align="left">✅ <strong>0~1× RTT</strong>（QUIC 0-RTT）</td>
+</tr>
+<tr>
+<td align="left"><strong>典型请求示例</strong></td>
+<td align="left"><code>GET /page</code></td>
+<td align="left"><code>&lt;br&gt;GET /page HTTP/1.0&lt;br&gt;Host: example.com&lt;br&gt;</code></td>
+<td align="left"><code>&lt;br&gt;GET /page HTTP/1.1&lt;br&gt;Host: example.com&lt;br&gt;Connection: keep-alive&lt;br&gt;</code></td>
+<td align="left">二进制帧（含流ID、头部块等）</td>
+<td align="left">QUIC 数据包（含连接ID、流ID）</td>
+</tr>
+<tr>
+<td align="left"><strong>核心缺陷</strong></td>
+<td align="left">功能极简</td>
+<td align="left">连接开销大</td>
+<td align="left">队头阻塞 + 头部冗余</td>
+<td align="left">TCP 队头阻塞</td>
+<td align="left">部署复杂度高</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="关键特性详解"><a href="#关键特性详解" class="headerlink" title="关键特性详解"></a>关键特性详解</h3><h4 id="1-HTTP-1-1-核心改进"><a href="#1-HTTP-1-1-核心改进" class="headerlink" title="1. HTTP&#x2F;1.1 核心改进"></a>1. <strong>HTTP&#x2F;1.1 核心改进</strong></h4><ul>
+<li><strong>持久连接</strong>：复用 TCP 连接（省去重复握手开销）。</li>
+<li><strong>管道化（Pipelining）</strong>：允许连续发送多个请求（但响应必须按序返回 → <strong>队头阻塞</strong>）。</li>
+<li><strong>分块传输</strong>：支持流式大数据传输（<code>Transfer-Encoding: chunked</code>）。</li>
+<li><strong>缓存控制</strong>：<code>Cache-Control</code>、<code>ETag</code> 等精细化缓存策略。</li>
+</ul>
+<h4 id="2-HTTP-2-革命性突破"><a href="#2-HTTP-2-革命性突破" class="headerlink" title="2. HTTP&#x2F;2 革命性突破"></a>2. <strong>HTTP&#x2F;2 革命性突破</strong></h4><ul>
+<li><strong>二进制分帧层</strong>：<ul>
+<li>将消息拆分为 <strong>HEADERS 帧</strong>和 <strong>DATA 帧</strong>，通过<strong>流标识符（Stream ID）</strong> 重组。</li>
+</ul>
+</li>
+<li><strong>多路复用（Multiplexing）</strong>：<ul>
+<li>单 TCP 连接上并行传输多个流，解决 HTTP&#x2F;1.1 并发限制。</li>
+</ul>
+</li>
+<li><strong>头部压缩（HPACK）</strong>：<ul>
+<li>静态霍夫曼编码 + 动态表减少头部冗余（尤其 Cookie）。</li>
+</ul>
+</li>
+<li><strong>服务器推送（Server Push）</strong>：<ul>
+<li>主动推送关联资源（如 CSS&#x2F;JS）减少客户端请求。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-HTTP-3-的底层革新"><a href="#3-HTTP-3-的底层革新" class="headerlink" title="3. HTTP&#x2F;3 的底层革新"></a>3. <strong>HTTP&#x2F;3 的底层革新</strong></h4><ul>
+<li><strong>QUIC 协议取代 TCP</strong>：<ul>
+<li>基于 UDP 实现可靠传输，内置加密（TLS 1.3）和拥塞控制。</li>
+</ul>
+</li>
+<li><strong>连接迁移</strong>：<ul>
+<li>切换网络时（WiFi→4G）<strong>连接 ID 不变</strong>，无需重新握手。</li>
+</ul>
+</li>
+<li><strong>零 RTT 建连</strong>：<ul>
+<li>首次访问 1-RTT，后续访问 0-RTT（类似 TLS 会话恢复）。</li>
+</ul>
+</li>
+<li><strong>彻底解决队头阻塞</strong>：<ul>
+<li>QUIC 的流（Stream）独立传输，丢包只影响当前</li>
+</ul>
+</li>
 </ul>
 <h2 id="与浏览器相关"><a href="#与浏览器相关" class="headerlink" title="与浏览器相关"></a>与浏览器相关</h2><h3 id="1-渲染进程（Renderer-Process）-请求发起"><a href="#1-渲染进程（Renderer-Process）-请求发起" class="headerlink" title="1. 渲染进程（Renderer Process） - 请求发起"></a><strong>1. 渲染进程（Renderer Process） - 请求发起</strong></h3><ul>
 <li><p><strong>触发位置</strong>：Blink渲染引擎（如V8执行JavaScript）</p>
