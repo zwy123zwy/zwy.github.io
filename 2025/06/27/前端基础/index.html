@@ -35,10 +35,10 @@
 <meta property="og:image" content="http://example.com/img/fin_wait_2-by-shutdown.f485c6fb.png">
 <meta property="og:image" content="http://example.com/img/lost-in-third-wave.b8f03061.png">
 <meta property="og:image" content="http://example.com/img/lost-in-fourth-wave.80200bab.png">
-<meta property="og:image" content="http://example.com/..%5Cimg%5C20200802172257514.png">
-<meta property="og:image" content="http://example.com/..%5Cimg%5C2020080217284188.png">
+<meta property="og:image" content="http://example.com/img/20200802172257514.png">
+<meta property="og:image" content="http://example.com/img/2020080217284188.png">
 <meta property="article:published_time" content="2025-06-27T13:36:28.000Z">
-<meta property="article:modified_time" content="2025-06-28T07:16:52.490Z">
+<meta property="article:modified_time" content="2025-06-28T08:35:27.264Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络，浏览器原理">
 <meta name="twitter:card" content="summary">
@@ -732,7 +732,7 @@
 <ul>
 <li>拥塞避免未必能够完全避免拥塞，是说在拥塞避免阶段将拥塞窗口控制为按线性增长，使网络不容易出现阻塞。</li>
 <li>思路： 让拥塞窗口cwnd缓慢的增大，即每经过一个返回时间RTT就把发送方的拥塞控制窗口加一</li>
-<li>无论是在慢开始阶段还是在拥塞避免阶段，只要发送方判断网络出现拥塞，就把慢开始门限设置为出现拥塞时的发送窗口大小的一半。然后把拥塞窗口设置为1，执行慢开始算法。如图所示:<br><img src="/..%5Cimg%5C20200802172257514.png" alt="img"><br>其中，判断网络出现拥塞的根据就是没有收到确认，虽然没有收到确认可能是其他原因的分组丢失，但是因为无法判定，所以都当做拥塞来处理。</li>
+<li>无论是在慢开始阶段还是在拥塞避免阶段，只要发送方判断网络出现拥塞，就把慢开始门限设置为出现拥塞时的发送窗口大小的一半。然后把拥塞窗口设置为1，执行慢开始算法。如图所示:<br><img src="/../img/20200802172257514.png" alt="img"><br>其中，判断网络出现拥塞的根据就是没有收到确认，虽然没有收到确认可能是其他原因的分组丢失，但是因为无法判定，所以都当做拥塞来处理。</li>
 </ul>
 <p><strong>（3）快速重传</strong></p>
 <ul>
@@ -742,14 +742,109 @@
 <p><strong>（4）快速恢复</strong></p>
 <ul>
 <li>当发送方连续收到三个重复确认时，就执行“乘法减小”算法，把ssthresh门限减半。但是接下去并不执行慢开始算法。</li>
-<li>考虑到如果网络出现拥塞的话就不会收到好几个重复的确认，所以发送方现在认为网络可能没有出现拥塞。所以此时不执行慢开始算法，而是将cwnd设置为ssthresh的大小，然后执行拥塞避免算法。<br><img src="/..%5Cimg%5C2020080217284188.png" alt="img"></li>
+<li>考虑到如果网络出现拥塞的话就不会收到好几个重复的确认，所以发送方现在认为网络可能没有出现拥塞。所以此时不执行慢开始算法，而是将cwnd设置为ssthresh的大小，然后执行拥塞避免算法。<br><img src="/../img/2020080217284188.png" alt="img"></li>
 </ul>
 <h3 id="TCP的流量控制机制"><a href="#TCP的流量控制机制" class="headerlink" title="TCP的流量控制机制"></a>TCP的流量控制机制</h3><p>一般来说，流量控制就是为了让发送方发送数据的速度不要太快，要让接收方来得及接收。TCP采用大小可变的<strong>滑动窗口</strong>进行流量控制，窗口大小的单位是字节。这里说的窗口大小其实就是每次传输的数据大小。</p>
 <ul>
-<li>当一个连接建立时，连接的每一端分配一个缓冲区来保存输入的数据，并将缓冲区的大小发送给另一端。</li>
-<li>当数据到达时，接收方发送确认，其中包含了自己剩余的缓冲区大小。（剩余的缓冲区空间的大小被称为窗口，指出窗口大小的通知称为窗口通告 。接收方在发送的每一确认中都含有一个窗口通告。）</li>
-<li>如果接收方应用程序读数据的速度能够与数据到达的速度一样快，接收方将在每一确认中发送一个正的窗口通告。</li>
-<li>如果发送方操作的速度快于接收方，接收到的数据最终将充满接收方的缓冲区，导致接收方通告一个零窗口 。发送方收到一个零窗口通告时，必须停止发送，直到接收方重新通告一个正的窗口。</li>
+<li><p>当一个连接建立时，连接的每一端分配一个缓冲区来保存输入的数据，并将缓冲区的大小发送给另一端。</p>
+</li>
+<li><p>当数据到达时，接收方发送确认，其中包含了自己剩余的缓冲区大小。（剩余的缓冲区空间的大小被称为窗口，指出窗口大小的通知称为窗口通告 。接收方在发送的每一确认中都含有一个窗口通告。）</p>
+</li>
+<li><p>如果接收方应用程序读数据的速度能够与数据到达的速度一样快，接收方将在每一确认中发送一个正的窗口通告。</p>
+</li>
+<li><p>如果发送方操作的速度快于接收方，接收到的数据最终将充满接收方的缓冲区，导致接收方通告一个零窗口 。发送方收到一个零窗口通告时，必须停止发送，直到接收方重新通告一个正的窗口。</p>
+</li>
+</ul>
+<h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p>HTTP 是超文本传输协议，它定义了客户端和服务器之间交换报文的格式和方式，默认使用 80 端口。它使用 TCP 作为传输层协议，保证了数据传输的可靠性。</p>
+<p>HTTP协议具有以下<strong>优点</strong>：</p>
+<ul>
+<li>支持客户端&#x2F;服务器模式</li>
+<li><strong>简单快速</strong>：客户向服务器请求服务时，只需传送请求方法和路径。由于 HTTP 协议简单，使得 HTTP 服务器的程序规模小，因而通信速度很快。</li>
+<li><strong>无连接</strong>：无连接就是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接，采用这种方式可以节省传输时间。</li>
+<li><strong>无状态</strong>：HTTP 协议是无状态协议，这里的状态是指通信过程的上下文信息。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能会导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就比较快。</li>
+<li><strong>灵活</strong>：HTTP 允许传输任意类型的数据对象。正在传输的类型由 Content-Type 加以标记。</li>
+</ul>
+<p>HTTP协议具有以下<strong>缺点</strong>：</p>
+<ul>
+<li>**无状态：**HTTP 是一个无状态的协议，HTTP 服务器不会保存关于客户的任何信息。</li>
+<li>**明文传输：**协议中的报文使用的是文本形式，这就直接暴露给外界，不安全。</li>
+<li><strong>不安全</strong></li>
+</ul>
+<p>（1）通信使用明文（不加密），内容可能会被窃听；</p>
+<p>（2）不验证通信方的身份，因此有可能遭遇伪装；</p>
+<p>（3）无法证明报文的完整性，所以有可能已遭篡改；</p>
+<h2 id="请求报文"><a href="#请求报文" class="headerlink" title="请求报文"></a>请求报文</h2><p>请求报⽂有4部分组成: </p>
+<ul>
+<li><p>请求⾏ ：请求⽅法字段、URL字段、HTTP协议版本字段。它们⽤空格分隔。例如，GET &#x2F;index.html HTTP&#x2F;1.1。 </p>
+</li>
+<li><p>请求头部 </p>
+</li>
+<li><p>请求头部：</p>
+<p>由关键字&#x2F;值对组成，每⾏⼀对，关键字和值⽤英⽂冒号“:”分隔  </p>
+<ul>
+<li>User-Agent：产⽣请求的浏览器类型。 </li>
+<li>Accept：客户端可识别的内容类型列表。 </li>
+<li>Host：请求的主机名，允许多个域名同处⼀个IP地址，即虚拟主机</li>
+</ul>
+</li>
+<li><p>空⾏</p>
+</li>
+<li><p>请求体 ：post put等请求携带的数据</p>
+</li>
+</ul>
+<h3 id="HTTP响应报文的是什么样的？"><a href="#HTTP响应报文的是什么样的？" class="headerlink" title="HTTP响应报文的是什么样的？"></a>HTTP响应报文的是什么样的？</h3><p>请求报⽂有4部分组成: </p>
+<ul>
+<li>响应⾏：由网络协议版本，状态码和状态码的原因短语组成，例如 HTTP&#x2F;1.1 200 OK 。 </li>
+<li>响应头：响应部⾸组成 </li>
+<li>空行</li>
+<li>响应体：服务器响应的数据</li>
+</ul>
+<h2 id="与浏览器相关"><a href="#与浏览器相关" class="headerlink" title="与浏览器相关"></a>与浏览器相关</h2><h3 id="1-渲染进程（Renderer-Process）-请求发起"><a href="#1-渲染进程（Renderer-Process）-请求发起" class="headerlink" title="1. 渲染进程（Renderer Process） - 请求发起"></a><strong>1. 渲染进程（Renderer Process） - 请求发起</strong></h3><ul>
+<li><p><strong>触发位置</strong>：Blink渲染引擎（如V8执行JavaScript）</p>
+</li>
+<li><p><strong>关键操作</strong>：</p>
+<ul>
+<li>解析HTML中的<code>&lt;a&gt;</code>、<code>&lt;img&gt;</code>等资源标签</li>
+<li>执行JavaScript中的<code>fetch()</code>或<code>XMLHttpRequest</code></li>
+<li>生成<strong>HTTP请求头</strong>（包含URL、Method、Cookie等）</li>
+</ul>
+</li>
+<li><p><strong>协议栈入口</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：JS发起请求</span></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;https://api.example.com/data&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;<span class="attr">key</span>: <span class="string">&#x27;value&#x27;</span>&#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>跨进程通信</strong>：通过<strong>Mojo IPC</strong>将请求发送给网络进程</p>
+</li>
+</ul>
+<h3 id="2-网络进程（Network-Service）-协议栈核心"><a href="#2-网络进程（Network-Service）-协议栈核心" class="headerlink" title="2. 网络进程（Network Service） - 协议栈核心"></a><strong>2. 网络进程（Network Service） - 协议栈核心</strong></h3><ul>
+<li><p><strong>核心组件</strong>：</p>
+<ul>
+<li><strong>HTTP&#x2F;HTTP2栈</strong>：处理应用层协议</li>
+<li><strong>QUIC实现</strong>：基于UDP的HTTP&#x2F;3</li>
+<li><strong>TLS&#x2F;SSL引擎</strong>：加密解密</li>
+<li><strong>TCP&#x2F;UDP套接字管理</strong></li>
+</ul>
+</li>
+<li><p><strong>协议处理流程</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────┐</span><br><span class="line">│ 接收渲染进程请求     │</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 1. 检查缓存         │ → MemoryCache/DiskCache</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 2. 解析URL          │ → 提取协议/主机/端口</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 3. 处理HTTP语义     │ → 添加Cookie/UA/Referer</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 4. TLS握手协商      │ → RSA/ECDHE密钥交换</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 5. TCP连接管理      │ → 复用连接或三次握手</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 6. 数据分帧发送      │ → HTTP/2二进制分帧</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 7. 接收响应         │ → 处理重定向/压缩</span><br><span class="line">├─────────────────────┤</span><br><span class="line">│ 8. 流式传输给渲染进程│ ← 通过IPC管道</span><br><span class="line">└─────────────────────┘</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-浏览器进程（Browser-Process）-全局管控"><a href="#3-浏览器进程（Browser-Process）-全局管控" class="headerlink" title="3. 浏览器进程（Browser Process） - 全局管控"></a><strong>3. 浏览器进程（Browser Process） - 全局管控</strong></h3><ul>
+<li><p><strong>关键职责</strong>：</p>
+<ul>
+<li><strong>Cookie管理</strong>：通过CookieStore访问存储</li>
+<li><strong>证书验证</strong>：调用系统证书库</li>
+<li><strong>代理配置</strong>：应用PAC脚本或系统代理</li>
+<li><strong>安全策略</strong>：CORS预检、HSTS强制HTTPS</li>
+<li><strong>网络隔离</strong>：实施Site Isolation策略</li>
+</ul>
+</li>
+<li><p><strong>跨域处理示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">渲染进程 → 请求api.other.com</span><br><span class="line">网络进程 → 触发CORS预检OPTIONS请求</span><br><span class="line">浏览器进程 → 验证跨域策略</span><br><span class="line">网络进程 → 转发实际请求</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-操作系统内核-底层协议执行"><a href="#4-操作系统内核-底层协议执行" class="headerlink" title="4. 操作系统内核 - 底层协议执行"></a><strong>4. 操作系统内核 - 底层协议执行</strong></h3><ul>
+<li><p><strong>TCP&#x2F;IP栈</strong>：内核处理三次握手、拥塞控制</p>
+</li>
+<li><p><strong>套接字操作</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码：网络进程调用系统API</span></span><br><span class="line"><span class="type">int</span> sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>); </span><br><span class="line">connect(sockfd, (<span class="keyword">struct</span> sockaddr*)&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">write(sockfd, http_request, <span class="built_in">strlen</span>(http_request));</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       
