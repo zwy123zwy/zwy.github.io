@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>前端工程化 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="npm、yarn 和 pnpm  一、技术原理与核心区别  依赖管理机制   npm 嵌套结构（v2）：依赖树深层嵌套，相同依赖重复安装，路径过长易超 Windows 限制。 扁平化（v3+）：依赖提升至顶层，减少重复。但多个版本时仅提升一个，其余版本仍嵌套安装，导致 依赖分身（同一包多版本重复存储）。   yarn 扁平化 + 缓存：依赖提升至顶层，通过 yarn.lock 锁定版本；并行下载加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程化">
+<meta property="og:url" content="http://example.com/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="npm、yarn 和 pnpm  一、技术原理与核心区别  依赖管理机制   npm 嵌套结构（v2）：依赖树深层嵌套，相同依赖重复安装，路径过长易超 Windows 限制。 扁平化（v3+）：依赖提升至顶层，减少重复。但多个版本时仅提升一个，其余版本仍嵌套安装，导致 依赖分身（同一包多版本重复存储）。   yarn 扁平化 + 缓存：依赖提升至顶层，通过 yarn.lock 锁定版本；并行下载加">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-29T09:09:27.000Z">
+<meta property="article:modified_time" content="2025-06-29T10:36:09.796Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="前端工程、包管理器">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-前端工程化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2025-06-29T09:09:27.000Z" itemprop="datePublished">2025-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      前端工程化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="npm、yarn-和-pnpm"><a href="#npm、yarn-和-pnpm" class="headerlink" title="npm、yarn 和 pnpm"></a><code>npm</code>、<code>yarn</code> 和 <code>pnpm</code></h1><hr>
+<p> <strong>一、技术原理与核心区别</strong></p>
+<ol>
+<li><strong>依赖管理机制</strong></li>
+</ol>
+<ul>
+<li><strong>npm</strong><ul>
+<li><strong>嵌套结构（v2）</strong>：依赖树深层嵌套，相同依赖重复安装，路径过长易超 Windows 限制。</li>
+<li><strong>扁平化（v3+）</strong>：依赖提升至顶层，减少重复。但多个版本时仅提升一个，其余版本仍嵌套安装，导致 <strong>依赖分身</strong>（同一包多版本重复存储）。</li>
+</ul>
+</li>
+<li><strong>yarn</strong><ul>
+<li><strong>扁平化 + 缓存</strong>：依赖提升至顶层，通过 <code>yarn.lock</code> 锁定版本；并行下载加速安装，缓存机制减少重复下载26。</li>
+<li><strong>问题未根治</strong>：仍存在 <strong>幽灵依赖</strong>（未声明的依赖因提升被访问）和 <strong>依赖分身</strong>。</li>
+</ul>
+</li>
+<li><strong>pnpm</strong><ul>
+<li><strong>硬链接 + 符号链接</strong>：<ul>
+<li><strong>全局存储</strong>（<code>~/.pnpm-store</code>）：每个依赖版本仅存一份。</li>
+<li><strong>硬链接</strong>：项目中的依赖通过硬链接指向全局存储，避免磁盘冗余。</li>
+<li><strong>符号链接</strong>：<code>node_modules</code> 中只包含直接依赖的符号链接，子依赖通过 <code>.pnpm</code> 目录的软链接组织，严格隔离依赖。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><strong>性能与磁盘效率</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="left">工具</th>
+<th align="left">安装速度</th>
+<th align="left">磁盘占用</th>
+<th align="left">原理优化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">npm</td>
+<td align="left">⚠️ 慢（串行）</td>
+<td align="left">❌ 高（重复存储）</td>
+<td align="left">扁平化减少嵌套问题</td>
+</tr>
+<tr>
+<td align="left">yarn</td>
+<td align="left">✅ 快（并行）</td>
+<td align="left">⚠️ 中（缓存共享）</td>
+<td align="left">并行下载 + 缓存复用</td>
+</tr>
+<tr>
+<td align="left">pnpm</td>
+<td align="left">✅ 极快（链接）</td>
+<td align="left">✅ 低（全局单份存储）</td>
+<td align="left">硬链接 + 符号链接</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li><strong>安全性 &amp; 一致性</strong></li>
+</ol>
+<ul>
+<li><strong>锁定文件</strong>：<ul>
+<li><code>npm</code>：<code>package-lock.json</code>（锁定版本，但早期版本存在安全漏洞）。</li>
+<li><code>yarn/pnpm</code>：<code>yarn.lock</code>&#x2F;<code>pnpm-lock.yaml</code>（严格锁定版本及哈希值，防篡改）。</li>
+</ul>
+</li>
+<li><strong>依赖隔离</strong>：<ul>
+<li><code>pnpm</code> 仅允许访问显式声明的依赖，彻底杜绝幽灵依赖；<code>npm/yarn</code> 因扁平化无法解决。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p> <strong>二、依然存在的问题</strong></p>
+<ol>
+<li><strong>npm</strong></li>
+</ol>
+<ul>
+<li><strong>依赖不确定性</strong>：扁平化导致依赖结构因安装顺序差异可能不同，需依赖 <code>package-lock.json</code> 补救36。</li>
+<li><strong>磁盘冗余</strong>：相同依赖在不同项目中重复存储。</li>
+</ul>
+<ol start="2">
+<li><strong>yarn</strong></li>
+</ol>
+<ul>
+<li><strong>幽灵依赖</strong>：未声明的依赖仍可访问，移除父依赖后可能引发运行时错误58。</li>
+<li><strong>依赖分身</strong>：多版本包的非提升版本仍重复安装。</li>
+</ul>
+<ol start="3">
+<li><strong>pnpm</strong></li>
+</ol>
+<ul>
+<li><strong>软链接兼容性</strong>：<ul>
+<li>不支持软链接的环境（如部分 Electron 应用、Windows 受限模式）无法使用。</li>
+</ul>
+</li>
+<li><strong>调试与补丁困难</strong>：<ul>
+<li>依赖源文件在全局存储，修改需通过 <code>pnpm patch</code> 命令，不如直接修改 <code>node_modules</code> 直观。</li>
+</ul>
+</li>
+<li><strong>生态兼容性</strong>：<ul>
+<li>少数依赖路径硬编码的包（如某些 Webpack 插件）可能运行失败</li>
+</ul>
+</li>
+</ul>
+<h1 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h1><p><strong>Webpack是基于模块化打包的⼯具:</strong> ⾃动化处理模块，webpack把⼀切当成模块，当 webpack 处理应⽤程序时，它会递归地构建⼀个依赖关系图 (dependency graph)，其中包含应⽤程序需要的每个模块，然后将所有这些模块打包成⼀个或多个 bundle。 </p>
+<h3 id="webpack的构建流程"><a href="#webpack的构建流程" class="headerlink" title="webpack的构建流程**?**"></a><strong>webpack</strong>的构建流程**?**</h3><p>Webpack 的运⾏流程是⼀个串⾏的过程，从启动到结束会依次执⾏以下流程： </p>
+<ol>
+<li><strong>初始化参数</strong>：从配置⽂件和 Shell 语句中读取与合并参数，得出最终的参数； </li>
+<li><strong>开始编译</strong>：⽤上⼀步得到的参数初始化 Compiler 对象，加载所有配置的插件，执⾏对象的 run ⽅法开始执⾏编译； </li>
+<li><strong>确定⼊⼝</strong>：根据配置中的 entry 找出所有的⼊⼝⽂件； </li>
+<li><strong>编译模块</strong>：从⼊⼝⽂件出发，调⽤所有配置的 Loader 对模块进⾏翻译，再找出该模块依赖的模块，再递归本步骤直到所有⼊⼝依赖的⽂件都经过了本步骤的处理； </li>
+<li><strong>完成模块编译</strong>：在经过第4步使⽤ Loader 翻译完所有模块后，得到了每个模块被翻译后的最终内容以及它们之间的依赖关系； </li>
+<li><strong>输出资源</strong>：根据⼊⼝和模块之间的依赖关系，组装成⼀个个包含多个模块的 Chunk，再把每个 Chunk 转换成⼀个单独的⽂件加⼊到输出列表，这步是可以修改输出内容的最后机会； </li>
+<li><strong>输出完成</strong>：在确定好输出内容后，根据配置确定输出的路径和⽂件名，把⽂件内容写⼊到⽂件系统。</li>
+</ol>
+<p>在以上过程中，Webpack 会在特定的时间点⼴播出特定的事件，插件在监听到感兴趣的事件后会执⾏特定的逻辑，并且插件可以调⽤ Webpack 提供的 API 改变 Webpack 的运⾏结果。</p>
+<h3 id="常⻅的Loader"><a href="#常⻅的Loader" class="headerlink" title="常⻅的Loader"></a>常⻅的<strong>Loader</strong></h3><ul>
+<li>file-loader：把⽂件输出到⼀个⽂件夹中，在代码中通过相对 URL 去引⽤输出的⽂件 </li>
+<li>url-loader：和 file-loader 类似，但是能在⽂件很⼩的情况下以 base64 的⽅式把⽂件内容注⼊到代码中去 </li>
+<li>source-map-loader：加载额外的 Source Map ⽂件，以⽅便断点调试 </li>
+<li>image-loader：加载并且压缩图⽚⽂件 </li>
+<li>babel-loader：把 ES6 转换成 ES5 </li>
+<li>css-loader：加载 CSS，⽀持模块化、压缩、⽂件导⼊等特性 </li>
+<li>style-loader：把 CSS 代码注⼊到 JavaScript 中，通过 DOM 操作去加载 CSS。 </li>
+<li>eslint-loader：通过 ESLint 检查 JavaScript 代码</li>
+</ul>
+<p><strong>注意：<strong>在Webpack中，loader的执行顺序是</strong>从右向左</strong>执行的。因为webpack选择了<strong>compose这样的函数式编程方式</strong>，这种方式的表达式执行是从右向左的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      <span class="comment">// 处理 JavaScript/TypeScript 文件</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.(js|jsx|ts|tsx)$/</span>,</span><br><span class="line">        <span class="attr">exclude</span>: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        <span class="attr">use</span>: &#123;</span><br><span class="line">          <span class="attr">loader</span>: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">          <span class="attr">options</span>: &#123;</span><br><span class="line">            <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>, <span class="string">&#x27;@babel/preset-react&#x27;</span>]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 处理 CSS 文件</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&#x27;style-loader&#x27;</span>, <span class="string">&#x27;css-loader&#x27;</span>] <span class="comment">// 从右到左执行</span></span><br><span class="line">      &#125;,</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 处理 SCSS 文件</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&#x27;style-loader&#x27;</span>, <span class="string">&#x27;css-loader&#x27;</span>, <span class="string">&#x27;sass-loader&#x27;</span>]</span><br><span class="line">      &#125;,</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 处理图片文件</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.(png|jpe?g|gif|svg)$/</span>,</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;asset/resource&#x27;</span>,</span><br><span class="line">        <span class="attr">generator</span>: &#123;</span><br><span class="line">          <span class="attr">filename</span>: <span class="string">&#x27;images/[hash][ext][query]&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 处理字体文件</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.(woff|woff2|eot|ttf|otf)$/</span>,</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;asset/resource&#x27;</span>,</span><br><span class="line">        <span class="attr">generator</span>: &#123;</span><br><span class="line">          <span class="attr">filename</span>: <span class="string">&#x27;fonts/[hash][ext][query]&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常⻅的Plugin"><a href="#常⻅的Plugin" class="headerlink" title="常⻅的Plugin"></a>常⻅的<strong>Plugin</strong></h3><ul>
+<li>define-plugin：定义环境变量 </li>
+<li>html-webpack-plugin：简化html⽂件创建 </li>
+<li>uglifyjs-webpack-plugin：通过 UglifyES 压缩 ES6 代码 </li>
+<li>webpack-parallel-uglify-plugin: 多核压缩，提⾼压缩速度 </li>
+<li>webpack-bundle-analyzer: 可视化webpack输出⽂件的体积 </li>
+<li>mini-css-extract-plugin: CSS提取到单独的⽂件中，⽀持按需加载</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">HtmlWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">CleanWebpackPlugin</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;clean-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">MiniCssExtractPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;mini-css-extract-plugin&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">BundleAnalyzerPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;webpack-bundle-analyzer&#x27;</span>).<span class="property">BundleAnalyzerPlugin</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="comment">// 自动清理输出目录</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">CleanWebpackPlugin</span>(),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 自动生成 HTML 文件并注入打包后的资源</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HtmlWebpackPlugin</span>(&#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;My App&#x27;</span>,</span><br><span class="line">      <span class="attr">template</span>: <span class="string">&#x27;./src/index.html&#x27;</span></span><br><span class="line">    &#125;),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 提取 CSS 到单独文件</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">MiniCssExtractPlugin</span>(&#123;</span><br><span class="line">      <span class="attr">filename</span>: <span class="string">&#x27;css/[name].[contenthash:8].css&#x27;</span></span><br><span class="line">    &#125;),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 打包分析工具</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">BundleAnalyzerPlugin</span>(&#123;</span><br><span class="line">      <span class="attr">analyzerMode</span>: <span class="string">&#x27;disabled&#x27;</span>, <span class="comment">// 不自动打开</span></span><br><span class="line">      <span class="attr">generateStatsFile</span>: <span class="literal">true</span> <span class="comment">// 生成 stats.json 文件</span></span><br><span class="line">    &#125;),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义环境变量</span></span><br><span class="line">    <span class="keyword">new</span> webpack.<span class="title class_">DefinePlugin</span>(&#123;</span><br><span class="line">      <span class="string">&#x27;process.env.NODE_ENV&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(process.<span class="property">env</span>.<span class="property">NODE_ENV</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Tree-shaking-基本原理"><a href="#Tree-shaking-基本原理" class="headerlink" title="Tree shaking 基本原理"></a>Tree shaking 基本原理</h3><ol>
+<li><strong>静态分析</strong>：<ul>
+<li>在编译阶段（而非运行时）分析代码的导入导出关系</li>
+<li>通过 ES6 模块的静态结构特性（<code>import/export</code> 必须在顶层作用域）实现</li>
+</ul>
+</li>
+<li><strong>标记-清除</strong>过程：<ul>
+<li><strong>标记阶段</strong>：从入口文件开始，标记所有被使用的导出</li>
+<li><strong>清除阶段</strong>：删除所有未被标记的导出代码</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span>, <span class="comment">// 生产模式自动开启 Tree Shaking</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">optimization</span>: &#123;</span><br><span class="line">    <span class="attr">usedExports</span>: <span class="literal">true</span>, <span class="comment">// 标记未使用的导出</span></span><br><span class="line">    <span class="attr">minimize</span>: <span class="literal">true</span>,    <span class="comment">// 启用代码压缩</span></span><br><span class="line">    <span class="attr">minimizer</span>: [</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">TerserPlugin</span>(), <span class="comment">// 使用 Terser 进行压缩</span></span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">CssMinimizerPlugin</span>() <span class="comment">// 压缩 CSS</span></span><br><span class="line">    ],</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代码分割配置</span></span><br><span class="line">    <span class="attr">splitChunks</span>: &#123;</span><br><span class="line">      <span class="attr">chunks</span>: <span class="string">&#x27;all&#x27;</span>,</span><br><span class="line">      <span class="attr">cacheGroups</span>: &#123;</span><br><span class="line">        <span class="attr">vendors</span>: &#123;</span><br><span class="line">          <span class="attr">test</span>: <span class="regexp">/[\\/]node_modules[\\/]/</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;vendors&#x27;</span>,</span><br><span class="line">          <span class="attr">chunks</span>: <span class="string">&#x27;all&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Babel的原理"><a href="#Babel的原理" class="headerlink" title="Babel的原理"></a><strong>Babel</strong>的原理</h1><p>babel 的转译过程也分为三个阶段，这三步具体是： </p>
+<ul>
+<li><strong>解析 Parse</strong>: 将代码解析⽣成抽象语法树（AST），即词法分析与语法分析的过程；</li>
+<li><strong>转换 Transform</strong>: 对于 AST 进⾏变换⼀系列的操作，babel 接受得到 AST 并通过 babel-traverse 对其进⾏遍历，在此过程中进⾏添加、更新及移除等操作；</li>
+<li><strong>⽣成 Generate</strong>: 将变换后的 AST 再转换为 JS 代码, 使⽤到的模块是 babel-generator。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" data-id="cmchjc7x2000194ur94qkgnxq" data-title="前端工程化" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/06/29/Node/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Node
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">前端性能[C</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/06/29/Node/">Node</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/">前端性能[C</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/28/%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/">基础开发</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/27/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/">前端基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
