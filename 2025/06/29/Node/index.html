@@ -6,15 +6,21 @@
   
   <title>Node | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
+  <meta name="description" content="Node.jsNode.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境，它让开发者能够使用 JavaScript 编写服务器端代码。与传统的服务器端技术不同，Node.js 采用了事件驱动和非阻塞 I&#x2F;O模型，这使得它特别适合处理高并发的网络应用。 核心特点  单线程：Node.js 使用单线程处理请求 事件循环：通过事件驱动机制处理并发 非阻塞 I&amp;#x">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Node">
 <meta property="og:url" content="http://example.com/2025/06/29/Node/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Node.jsNode.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境，它让开发者能够使用 JavaScript 编写服务器端代码。与传统的服务器端技术不同，Node.js 采用了事件驱动和非阻塞 I&#x2F;O模型，这使得它特别适合处理高并发的网络应用。 核心特点  单线程：Node.js 使用单线程处理请求 事件循环：通过事件驱动机制处理并发 非阻塞 I&amp;#x">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/1_SvTxMIEudVv8YRW_ELRamw.png">
+<meta property="og:image" content="http://example.com/img/event_loop.jpg">
 <meta property="article:published_time" content="2025-06-29T10:36:35.000Z">
-<meta property="article:modified_time" content="2025-06-29T10:36:35.716Z">
+<meta property="article:modified_time" content="2025-06-29T11:36:13.787Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Node.js">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/1_SvTxMIEudVv8YRW_ELRamw.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -93,7 +99,523 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><p>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境，它让开发者能够使用 JavaScript 编写服务器端代码。与传统的服务器端技术不同，Node.js 采用了<strong>事件驱动</strong>和<strong>非阻塞 I&#x2F;O</strong>模型，这使得它特别适合处理高并发的网络应用。</p>
+<p><strong>核心特点</strong></p>
+<ol>
+<li><strong>单线程</strong>：Node.js 使用单线程处理请求</li>
+<li><strong>事件循环</strong>：通过事件驱动机制处理并发</li>
+<li><strong>非阻塞 I&#x2F;O</strong>：I&#x2F;O 操作不会阻塞主线程</li>
+<li><strong>跨平台</strong>：可以在 Windows、Linux、macOS 等系统上运行</li>
+</ol>
+<p>Node.js 通过 V8 引擎执行 JavaScript 代码，使用 Node.js API 与操作系统交互，并通过 Libuv 处理异步 I&#x2F;O 操作。事件循环和工作线程确保了 Node.js 的高效和非阻塞特性。</p>
+<h2 id="通讯方法"><a href="#通讯方法" class="headerlink" title="通讯方法"></a>通讯方法</h2><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">XHR</th>
+<th align="left">Fetch</th>
+<th align="center">Axios</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>基本架构</strong></td>
+<td align="left">事件回调机制</td>
+<td align="left">Promise API</td>
+<td align="center">Promise API</td>
+</tr>
+<tr>
+<td align="left"><strong>浏览器支持</strong></td>
+<td align="left">所有浏览器</td>
+<td align="left">现代浏览器(不兼容IE)</td>
+<td align="center">所有浏览器(通过polyfill)</td>
+</tr>
+<tr>
+<td align="left"><strong>请求取消</strong></td>
+<td align="left">支持</td>
+<td align="left">需要AbortController</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="left"><strong>超时设置</strong></td>
+<td align="left">支持</td>
+<td align="left">不支持(需手动实现)</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="left"><strong>进度监控</strong></td>
+<td align="left">支持(upload&#x2F;download)</td>
+<td align="left">仅支持下载进度</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="left"><strong>拦截器</strong></td>
+<td align="left">不支持</td>
+<td align="left">不支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="left"><strong>自动JSON转换</strong></td>
+<td align="left">需要手动处理</td>
+<td align="left">需要手动调用.json()</td>
+<td align="center">自动转换</td>
+</tr>
+<tr>
+<td align="left"><strong>CSRF防护</strong></td>
+<td align="left">需要手动设置</td>
+<td align="left">需要手动设置</td>
+<td align="center">内置支持</td>
+</tr>
+<tr>
+<td align="left"><strong>HTTP方法</strong></td>
+<td align="left">需要.open()设置</td>
+<td align="left">通过options.method设置</td>
+<td align="center">提供对应方法别名</td>
+</tr>
+<tr>
+<td align="left"><strong>请求&#x2F;响应拦截</strong></td>
+<td align="left">不支持</td>
+<td align="left">不支持</td>
+<td align="center">支持</td>
+</tr>
+</tbody></table>
+<h1 id="Node-js-事件循环"><a href="#Node-js-事件循环" class="headerlink" title="Node.js 事件循环"></a>Node.js 事件循环</h1><p>事件循环是 Node.js 处理非阻塞 I&#x2F;O 操作的核心机制，使得单线程能够高效处理多个并发请求。</p>
+<p>Node.js 是基于单线程的 JavaScript 运行时，利用事件循环来处理异步操作，如文件读取、网络请求和数据库查询。</p>
+<p>事件循环使得 Node.js 能够非阻塞地运行代码、处理多个连接、以及执行异步 I&#x2F;O 操作。</p>
+<p>事件循环使得 Node.js 能够处理大量并发的 I&#x2F;O 操作而不会导致线程阻塞，这是 Node.js 高效处理并发请求的关键。</p>
+<p><img src="/../img/1_SvTxMIEudVv8YRW_ELRamw.png" alt="img"></p>
+<h3 id="事件循环的阶段"><a href="#事件循环的阶段" class="headerlink" title="事件循环的阶段"></a>事件循环的阶段</h3><p>事件循环分为多个阶段，每个阶段处理特定的任务。关键阶段如下：</p>
+<ul>
+<li><strong>Timers</strong>：执行 <code>setTimeout()</code> 和 <code>setInterval()</code> 的回调。</li>
+<li><strong>I&#x2F;O Callbacks</strong>：处理一些延迟的 I&#x2F;O 回调。</li>
+<li><strong>Idle, prepare</strong>：内部使用，不常见。</li>
+<li><strong>Poll</strong>：检索新的 I&#x2F;O 事件，执行与 I&#x2F;O 相关的回调。</li>
+<li><strong>Check</strong>：执行 <code>setImmediate()</code> 回调。</li>
+<li><strong>Close Callbacks</strong>：处理关闭的回调，如 <code>socket.on(&#39;close&#39;, ...)</code>。</li>
+</ul>
+<h3 id="事件循环的流程"><a href="#事件循环的流程" class="headerlink" title="事件循环的流程"></a>事件循环的流程</h3><ul>
+<li><strong>任务进入事件循环队列</strong>。</li>
+<li>事件循环按照阶段顺序进行处理，每个阶段有自己的回调队列。</li>
+<li>事件循环会在 <code>poll</code> 阶段等待新的事件到达，如果没有事件，会检查其他阶段的回调。</li>
+<li>如果 <code>setImmediate()</code> 和 <code>setTimeout()</code> 都存在，<code>setImmediate()</code> 在 <code>check</code> 阶段先执行，而 <code>setTimeout()</code> 在 <code>timers</code> 阶段执行。</li>
+</ul>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line"> console.log(&#x27;Timeout callback&#x27;);</span><br><span class="line">&#125;, 0);</span><br><span class="line"></span><br><span class="line">setImmediate(() =&gt; &#123;</span><br><span class="line"> console.log(&#x27;Immediate callback&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">console.log(&#x27;Main thread execution&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>输出顺序：</p>
+<ul>
+<li><code>Main thread execution</code> 先打印。</li>
+<li><code>setImmediate()</code> 和 <code>setTimeout()</code> 的执行顺序取决于当前事件循环的状态，一般 <code>setImmediate()</code> 会先执行。</li>
+</ul>
+<h3 id="宏任务与微任务"><a href="#宏任务与微任务" class="headerlink" title="宏任务与微任务"></a>宏任务与微任务</h3><ul>
+<li><strong>宏任务</strong>：<code>setTimeout</code>、<code>setInterval</code>、<code>setImmediate</code>、I&#x2F;O 操作等。</li>
+<li><strong>微任务</strong>：<code>process.nextTick</code>、<code>Promise.then</code>。</li>
+</ul>
+<p>**执行顺序：**微任务优先级高于宏任务，会在当前阶段的回调结束后立即执行。</p>
+<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line"> console.log(&#x27;Timeout callback&#x27;);</span><br><span class="line">&#125;, 0);</span><br><span class="line"></span><br><span class="line">Promise.resolve().then(() =&gt; &#123;</span><br><span class="line"> console.log(&#x27;Promise callback&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">console.log(&#x27;Main thread execution&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>执行输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main thread execution</span><br><span class="line">Promise callback</span><br><span class="line">Timeout callback</span><br></pre></td></tr></table></figure>
+
+<h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a>process.nextTick()</h3><p>process.nextTick() 会在当前操作结束后、下一个阶段开始前执行微任务，优先级高于 Promise。</p>
+<h2 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">process.nextTick(() =&gt; &#123;</span><br><span class="line"> console.log(&#x27;Next tick callback&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">console.log(&#x27;Main thread execution&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Main thread execution</span><br><span class="line">Next tick callback</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="事件驱动程序"><a href="#事件驱动程序" class="headerlink" title="事件驱动程序"></a>事件驱动程序</h2><p>在 Node.js 中，事件驱动编程主要通过 EventEmitter 类来实现。</p>
+<p>EventEmitter 是一个内置类，位于 events 模块中，通过继承 EventEmitter，你可以创建自己的事件发射器，并注册和触发事件。</p>
+<p>通过这种机制，Node.js 可以高效地处理异步任务，即使在单线程的环境下也能实现并发处理。</p>
+<p><img src="/../img/event_loop.jpg" alt="img"></p>
+<p>整个事件驱动的流程就是这么实现的，非常简洁。有点类似于观察者模式，事件相当于一个主题(Subject)，而所有注册到这个事件上的处理函数相当于观察者(Observer)。</p>
+<p><strong>基本概念：</strong></p>
+<ul>
+<li><strong>事件</strong>：在程序中发生的动作或状态改变，例如一个文件读取完成或一个 HTTP 请求到达。</li>
+<li><strong>事件触发器</strong>：<code>EventEmitter</code> 是 Node.js 的内置模块，用来发出和监听事件。</li>
+<li><strong>事件处理器</strong>：与事件关联的回调函数，事件发生时被调用。</li>
+</ul>
+<p><strong>事件驱动的流程：</strong></p>
+<ul>
+<li><strong>注册事件</strong>：在程序中通过 <code>EventEmitter</code> 实例注册事件和对应的处理器。</li>
+<li><strong>触发事件</strong>：当指定的事件发生时，<code>EventEmitter</code> 会触发该事件。</li>
+<li><strong>处理事件</strong>：事件循环会调度相应的回调函数来执行任务。</li>
+</ul>
+<p>Node.js 有多个内置的事件，我们可以通过引入 events 模块，并通过实例化 EventEmitter 类来绑定和监听事件，如下实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 引入 events 模块</span><br><span class="line">var events = require(&#x27;events&#x27;);</span><br><span class="line">// 创建 eventEmitter 对象</span><br><span class="line">var eventEmitter = new events.EventEmitter();</span><br></pre></td></tr></table></figure>
+
+<p>以下程序绑定事件处理程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 绑定事件及事件的处理程序</span><br><span class="line">eventEmitter.on(&#x27;eventName&#x27;, eventHandler);</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过程序触发事件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 触发事件</span><br><span class="line">eventEmitter.emit(&#x27;eventName&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><p>创建 hello.js 文件，代码如下所示：</p>
+<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例 1"></a>实例 1</h2><p><strong>const</strong> EventEmitter &#x3D; require(‘events’);<br><strong>const</strong> myEmitter &#x3D; <strong>new</strong> EventEmitter();</p>
+<p><em>&#x2F;&#x2F; 注册事件处理器</em><br>myEmitter.on(‘greet’, () &#x3D;&gt; {<br> console.log(‘Hello, world!’);<br>});</p>
+<p><em>&#x2F;&#x2F; 触发事件</em><br>myEmitter.emit(‘greet’);</p>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+
+<p>创建 main.js 文件，代码如下所示：</p>
+<h2 id="实例-2"><a href="#实例-2" class="headerlink" title="实例 2"></a>实例 2</h2><p>&#x2F;&#x2F; 引入 events 模块 var events &#x3D; require(‘events’); &#x2F;&#x2F; 创建 eventEmitter 对象 var eventEmitter &#x3D; new events.EventEmitter();  &#x2F;&#x2F; 创建事件处理程序 var connectHandler &#x3D; function connected() {   console.log(‘连接成功。’);     &#x2F;&#x2F; 触发 data_received 事件    eventEmitter.emit(‘data_received’); }  &#x2F;&#x2F; 绑定 connection 事件处理程序 eventEmitter.on(‘connection’, connectHandler);  &#x2F;&#x2F; 使用匿名函数绑定 data_received 事件 eventEmitter.on(‘data_received’, function(){   console.log(‘数据接收成功。’); });  &#x2F;&#x2F; 触发 connection 事件  eventEmitter.emit(‘connection’);  console.log(“程序执行完毕。”);</p>
+<p>接下来让我们执行以上代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ node main.js</span><br><span class="line">连接成功。</span><br><span class="line">数据接收成功。</span><br><span class="line">程序执行完毕。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Node-应用程序是如何工作的？"><a href="#Node-应用程序是如何工作的？" class="headerlink" title="Node 应用程序是如何工作的？"></a>Node 应用程序是如何工作的？</h2><p>在 Node 应用程序中，执行异步操作的函数将回调函数作为最后一个参数， 回调函数接收错误对象作为第一个参数。</p>
+<p>接下来让我们来重新看下前面的实例，创建一个 input.txt ,文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">菜鸟教程官网地址：www.runoob.com</span><br></pre></td></tr></table></figure>
+
+<p>创建 main.js 文件，代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&quot;fs&quot;);</span><br><span class="line"></span><br><span class="line">fs.readFile(&#x27;input.txt&#x27;, function (err, data) &#123;</span><br><span class="line">   if (err)&#123;</span><br><span class="line">      console.log(err.stack);</span><br><span class="line">      return;</span><br><span class="line">   &#125;</span><br><span class="line">   console.log(data.toString());</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&quot;程序执行完毕&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>以上程序中 fs.readFile() 是异步函数用于读取文件。 如果在读取文件过程中发生错误，错误 err 对象就会输出错误信息。</p>
+<p>如果没发生错误，readFile 跳过 err 对象的输出，文件内容就通过回调函数输出。</p>
+<p>执行以上代码，执行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">程序执行完毕</span><br><span class="line">菜鸟教程官网地址：www.runoob.com</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们删除 input.txt 文件，执行结果如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">程序执行完毕</span><br><span class="line">Error: ENOENT, open &#x27;input.txt&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>因为文件 input.txt 不存在，所以输出了错误信息。</p>
+<h1 id="Node-js-中的流-Stream-、缓冲区-Buffer-与浏览器中的Blob对比"><a href="#Node-js-中的流-Stream-、缓冲区-Buffer-与浏览器中的Blob对比" class="headerlink" title="Node.js 中的流(Stream)、缓冲区(Buffer)与浏览器中的Blob对比"></a>Node.js 中的流(Stream)、缓冲区(Buffer)与浏览器中的Blob对比</h1><h2 id="一、核心概念对比"><a href="#一、核心概念对比" class="headerlink" title="一、核心概念对比"></a>一、核心概念对比</h2><table>
+<thead>
+<tr>
+<th align="left">概念</th>
+<th align="left">环境</th>
+<th align="left">本质</th>
+<th align="left">主要用途</th>
+<th align="left">特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Stream</strong></td>
+<td align="left">Node.js</td>
+<td align="left">数据处理的抽象接口</td>
+<td align="left">处理大量数据或I&#x2F;O操作</td>
+<td align="left">分块处理、内存高效</td>
+</tr>
+<tr>
+<td align="left"><strong>Buffer</strong></td>
+<td align="left">Node.js</td>
+<td align="left">固定大小的二进制数据块</td>
+<td align="left">临时存储原始二进制数据</td>
+<td align="left">内存操作、快速访问</td>
+</tr>
+<tr>
+<td align="left"><strong>Blob</strong></td>
+<td align="left">浏览器</td>
+<td align="left">不可变的类文件对象</td>
+<td align="left">表示二进制数据(如图片、文件)</td>
+<td align="left">浏览器环境专用、支持切片操作</td>
+</tr>
+</tbody></table>
+<h2 id="二、Node-js-中的流-Stream-详解"><a href="#二、Node-js-中的流-Stream-详解" class="headerlink" title="二、Node.js 中的流(Stream)详解"></a>二、Node.js 中的流(Stream)详解</h2><h3 id="1-四种流类型"><a href="#1-四种流类型" class="headerlink" title="1. 四种流类型"></a>1. 四种流类型</h3><table>
+<thead>
+<tr>
+<th align="left">流类型</th>
+<th align="left">描述</th>
+<th align="left">示例场景</th>
+<th align="left">关键方法&#x2F;事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Readable</strong></td>
+<td align="left">可读数据源</td>
+<td align="left">文件读取、HTTP请求</td>
+<td align="left"><code>read()</code>, <code>data</code>, <code>end</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Writable</strong></td>
+<td align="left">可写数据目标</td>
+<td align="left">文件写入、HTTP响应</td>
+<td align="left"><code>write()</code>, <code>end</code>, <code>drain</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Duplex</strong></td>
+<td align="left">双向流(可读可写)</td>
+<td align="left">TCP套接字、WebSocket</td>
+<td align="left">兼具读写方法</td>
+</tr>
+<tr>
+<td align="left"><strong>Transform</strong></td>
+<td align="left">转换流(读写+数据处理)</td>
+<td align="left">压缩&#x2F;加密流</td>
+<td align="left"><code>_transform()</code>, <code>_flush</code></td>
+</tr>
+</tbody></table>
+<h3 id="2-流的工作模式"><a href="#2-流的工作模式" class="headerlink" title="2. 流的工作模式"></a>2. 流的工作模式</h3><p>javascript</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">const fs = require(&#x27;fs&#x27;);</span><br><span class="line"></span><br><span class="line">// 创建可读流</span><br><span class="line">const readable = fs.createReadStream(&#x27;input.txt&#x27;);</span><br><span class="line"></span><br><span class="line">// 创建可写流</span><br><span class="line">const writable = fs.createWriteStream(&#x27;output.txt&#x27;);</span><br><span class="line"></span><br><span class="line">// 管道连接（自动处理背压）</span><br><span class="line">readable.pipe(writable);</span><br><span class="line"></span><br><span class="line">// 手动处理数据块</span><br><span class="line">readable.on(&#x27;data&#x27;, (chunk) =&gt; &#123;</span><br><span class="line">  console.log(`Received $&#123;chunk.length&#125; bytes`);</span><br><span class="line">  writable.write(chunk);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">readable.on(&#x27;end&#x27;, () =&gt; &#123;</span><br><span class="line">  writable.end();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、Node-js-中的缓冲区-Buffer"><a href="#三、Node-js-中的缓冲区-Buffer" class="headerlink" title="三、Node.js 中的缓冲区(Buffer)"></a>三、Node.js 中的缓冲区(Buffer)</h2><h3 id="1-Buffer-核心特性"><a href="#1-Buffer-核心特性" class="headerlink" title="1. Buffer 核心特性"></a>1. Buffer 核心特性</h3><ul>
+<li><strong>二进制容器</strong>：存储原始二进制数据</li>
+<li><strong>固定大小</strong>：创建时分配固定内存</li>
+<li><strong>高效操作</strong>：提供多种数据操作API</li>
+</ul>
+<h3 id="2-常见使用场景"><a href="#2-常见使用场景" class="headerlink" title="2. 常见使用场景"></a>2. 常见使用场景</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 创建Buffer</span><br><span class="line">const buf1 = Buffer.alloc(10); // 10字节缓冲区</span><br><span class="line">const buf2 = Buffer.from(&#x27;Hello&#x27;); // 从字符串创建</span><br><span class="line"></span><br><span class="line">// 写入数据</span><br><span class="line">buf1.write(&#x27;Node.js&#x27;);</span><br><span class="line"></span><br><span class="line">// 读取数据</span><br><span class="line">console.log(buf1.toString(&#x27;utf8&#x27;, 0, 6)); // &quot;Node.j&quot;</span><br><span class="line"></span><br><span class="line">// 与流交互</span><br><span class="line">readable.on(&#x27;data&#x27;, (chunk) =&gt; &#123;</span><br><span class="line">  // chunk是Buffer实例</span><br><span class="line">  console.log(chunk.toString());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Buffer-与-Stream-的关系"><a href="#3-Buffer-与-Stream-的关系" class="headerlink" title="3. Buffer 与 Stream 的关系"></a>3. Buffer 与 Stream 的关系</h3><ul>
+<li><p>流处理的数据块默认是Buffer类型</p>
+</li>
+<li><p>可设置流编码直接处理字符串：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">readable.setEncoding(&#x27;utf8&#x27;);</span><br><span class="line">readable.on(&#x27;data&#x27;, (str) =&gt; &#123;</span><br><span class="line">  // 现在chunk是字符串</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="四、浏览器中的-Blob"><a href="#四、浏览器中的-Blob" class="headerlink" title="四、浏览器中的 Blob"></a>四、浏览器中的 Blob</h2><h3 id="1-Blob-核心特性"><a href="#1-Blob-核心特性" class="headerlink" title="1. Blob 核心特性"></a>1. Blob 核心特性</h3><ul>
+<li><strong>类文件对象</strong>：表示原始数据</li>
+<li><strong>不可变性</strong>：创建后内容不可更改</li>
+<li><strong>浏览器专用</strong>：Node.js 中不可用</li>
+</ul>
+<h3 id="2-常见使用场景-1"><a href="#2-常见使用场景-1" class="headerlink" title="2. 常见使用场景"></a>2. 常见使用场景</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 创建Blob</span><br><span class="line">const blob = new Blob([&#x27;Hello, world!&#x27;], &#123; type: &#x27;text/plain&#x27; &#125;);</span><br><span class="line"></span><br><span class="line">// 读取Blob内容</span><br><span class="line">const reader = new FileReader();</span><br><span class="line">reader.onload = () =&gt; &#123;</span><br><span class="line">  console.log(reader.result); // &quot;Hello, world!&quot;</span><br><span class="line">&#125;;</span><br><span class="line">reader.readAsText(blob);</span><br><span class="line"></span><br><span class="line">// 创建URL</span><br><span class="line">const url = URL.createObjectURL(blob);</span><br><span class="line">const a = document.createElement(&#x27;a&#x27;);</span><br><span class="line">a.href = url;</span><br><span class="line">a.download = &#x27;example.txt&#x27;;</span><br><span class="line">a.click();</span><br><span class="line"></span><br><span class="line">// 切片处理大文件</span><br><span class="line">const slice = blob.slice(0, 1024); // 前1KB</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、三者对比与转换"><a href="#五、三者对比与转换" class="headerlink" title="五、三者对比与转换"></a>五、三者对比与转换</h2><h3 id="1-Node-js-环境中的转换"><a href="#1-Node-js-环境中的转换" class="headerlink" title="1. Node.js 环境中的转换"></a>1. Node.js 环境中的转换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// Buffer 转 Blob (Node.js v15+)</span><br><span class="line">const &#123; Blob &#125; = require(&#x27;buffer&#x27;);</span><br><span class="line">const buffer = Buffer.from(&#x27;Hello&#x27;);</span><br><span class="line">const blob = new Blob([buffer]);</span><br><span class="line"></span><br><span class="line">// Stream 转 Buffer</span><br><span class="line">async function streamToBuffer(stream) &#123;</span><br><span class="line">  const chunks = [];</span><br><span class="line">  for await (const chunk of stream) &#123;</span><br><span class="line">    chunks.push(chunk);</span><br><span class="line">  &#125;</span><br><span class="line">  return Buffer.concat(chunks);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-浏览器环境中的转换"><a href="#2-浏览器环境中的转换" class="headerlink" title="2. 浏览器环境中的转换"></a>2. 浏览器环境中的转换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// Blob 转 ReadableStream</span><br><span class="line">const readableStream = blob.stream();</span><br><span class="line"></span><br><span class="line">// Fetch 响应转 Blob</span><br><span class="line">fetch(&#x27;image.png&#x27;)</span><br><span class="line">  .then(response =&gt; response.blob())</span><br><span class="line">  .then(blob =&gt; &#123;</span><br><span class="line">    // 使用Blob</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Express、Koa-和-Egg-js"><a href="#Express、Koa-和-Egg-js" class="headerlink" title="Express、Koa 和 Egg.js"></a>Express、Koa 和 Egg.js</h1><p>是 Node.js 生态中三个重要的 Web 框架，它们在设计理念、底层原理和适用场景上有显著差异。以下从核心原理、异步处理、中间件机制、架构设计和适用场景等维度进行综合对比：</p>
+<hr>
+<h3 id="⚙️-一、核心原理与异步处理"><a href="#⚙️-一、核心原理与异步处理" class="headerlink" title="⚙️ 一、核心原理与异步处理"></a>⚙️ 一、<strong>核心原理与异步处理</strong></h3><ol>
+<li><strong>Express</strong><ul>
+<li><strong>回调驱动</strong>：基于回调函数处理异步，易导致“回调地狱”（Callback Hell）17。</li>
+<li><strong>线性模型</strong>：中间件顺序执行，<code>next()</code> 仅触发下一个中间件，但无法等待后续中间件完成再回溯78。</li>
+<li><strong>响应时机</strong>：调用 <code>res.send()</code> 立即结束响应，后续中间件无法修改响应38。</li>
+</ul>
+</li>
+<li><strong>Koa（Koa2）</strong><ul>
+<li><strong>Async&#x2F;Await 驱动</strong>：基于 Promise 和 Async&#x2F;Await，支持同步化书写异步代码16。</li>
+<li><strong>洋葱模型</strong>：通过 <code>await next()</code> 控制流程，中间件执行两次（请求 → 响应），支持后置处理（如日志记录）18。</li>
+<li><strong>延迟响应</strong>：<code>ctx.body</code> 设置响应数据，但实际响应在所有中间件完成后由 Koa 触发38。</li>
+</ul>
+</li>
+<li><strong>Egg.js</strong><ul>
+<li><strong>基于 Koa 封装</strong>：继承 Koa 的洋葱模型，但扩展了企业级特性（如插件化、约定式配置）4。</li>
+<li><strong>异步处理</strong>：沿用 Async&#x2F;Await，但通过 <code>app/extend</code> 扩展上下文（Context），提供更多工具方法4。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🔄-二、中间件机制"><a href="#🔄-二、中间件机制" class="headerlink" title="🔄 二、中间件机制"></a>🔄 二、<strong>中间件机制</strong></h3><table>
+<thead>
+<tr>
+<th align="left"><strong>框架</strong></th>
+<th align="left"><strong>执行模型</strong></th>
+<th align="left"><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Express</strong></td>
+<td align="left">线性模型</td>
+<td align="left">中间件顺序执行，无回溯机制；依赖 <code>next()</code> 手动传递控制权78。</td>
+</tr>
+<tr>
+<td align="left"><strong>Koa</strong></td>
+<td align="left">洋葱模型</td>
+<td align="left">中间件双向执行（请求向下 → 响应向上），支持异步等待回溯18。</td>
+</tr>
+<tr>
+<td align="left"><strong>Egg</strong></td>
+<td align="left">洋葱模型（增强版）</td>
+<td align="left">继承 Koa 模型，但通过中间件加载顺序和插件机制提供更精细控制4。</td>
+</tr>
+</tbody></table>
+<p><strong>示例对比</strong>：</p>
+<p>javascript</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// Express：next() 后无法再次操作响应</span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&quot;Start&quot;);</span><br><span class="line">  next();  // 移交控制权</span><br><span class="line">  console.log(&quot;End&quot;);  // 在响应发送后执行</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// Koa：await next() 可等待后续中间件完成</span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&quot;Start&quot;);</span><br><span class="line">  await next();  // 等待下游中间件执行完毕</span><br><span class="line">  console.log(&quot;End&quot;);  // 响应前可再次修改 ctx</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="🏗️-三、架构设计与扩展性"><a href="#🏗️-三、架构设计与扩展性" class="headerlink" title="🏗️ 三、架构设计与扩展性"></a>🏗️ 三、<strong>架构设计与扩展性</strong></h3><ol>
+<li><strong>Express</strong><ul>
+<li><strong>大而全</strong>：内置路由、模板引擎、静态文件服务等，开箱即用26。</li>
+<li><strong>弱扩展性</strong>：缺少统一的扩展机制，依赖第三方中间件组合6。</li>
+</ul>
+</li>
+<li><strong>Koa</strong><ul>
+<li><strong>极简内核</strong>：仅封装 HTTP 上下文（Context），不内置任何中间件（路由需通过 <code>koa-router</code> 添加）26。</li>
+<li><strong>高扩展性</strong>：通过 <code>app.context</code> 可灵活扩展全局属性6。</li>
+</ul>
+</li>
+<li><strong>Egg.js</strong><ul>
+<li><strong>企业级框架</strong>：基于 Koa 封装，提供插件化架构、约定式目录结构和配置管理4。</li>
+<li><strong>扩展点丰富</strong>：支持 <code>app/extend/&#123;application, context, request, response&#125;</code> 扩展原型4。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🛡️-四、错误处理"><a href="#🛡️-四、错误处理" class="headerlink" title="🛡️ 四、错误处理"></a>🛡️ 四、<strong>错误处理</strong></h3><ul>
+<li><p><strong>Express</strong>：需手动捕获异步错误，或在中间件末尾添加错误处理函数7。</p>
+</li>
+<li><p><strong>Koa</strong>：可通过顶层 <code>try/catch</code> 捕获整个洋葱模型的同步&#x2F;异步错误18：</p>
+<p>javascript</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  try &#123; await next(); &#125;</span><br><span class="line">  catch (err) &#123; ctx.status = 500; &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Egg.js</strong>：内置统一错误处理，支持配置错误页面和日志上报4。</p>
+</li>
+</ul>
+<hr>
+<h3 id="🎯-五、适用场景总结"><a href="#🎯-五、适用场景总结" class="headerlink" title="🎯 五、适用场景总结"></a>🎯 五、<strong>适用场景总结</strong></h3><table>
+<thead>
+<tr>
+<th align="left"><strong>框架</strong></th>
+<th align="left"><strong>场景</strong></th>
+<th align="left"><strong>代表用户</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Express</strong></td>
+<td align="left">中小项目快速开发；需兼容旧版 Node.js 或回调风格</td>
+<td align="left">传统企业、遗留系统</td>
+</tr>
+<tr>
+<td align="left"><strong>Koa</strong></td>
+<td align="left">追求现代异步编程；高自由度定制中间件栈</td>
+<td align="left">技术前沿团队、开源项目</td>
+</tr>
+<tr>
+<td align="left"><strong>Egg.js</strong></td>
+<td align="left">大型企业应用；需插件化管理、团队协作规范</td>
+<td align="left">阿里系产品（如蚂蚁金服）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="💎-三框架核心区别总结"><a href="#💎-三框架核心区别总结" class="headerlink" title="💎 三框架核心区别总结"></a>💎 <strong>三框架核心区别总结</strong></h3><table>
+<thead>
+<tr>
+<th align="left"><strong>特性</strong></th>
+<th align="left"><strong>Express</strong></th>
+<th align="left"><strong>Koa</strong></th>
+<th align="left"><strong>Egg.js</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>异步模型</strong></td>
+<td align="left">回调函数</td>
+<td align="left">Async&#x2F;Await</td>
+<td align="left">Async&#x2F;Await</td>
+</tr>
+<tr>
+<td align="left"><strong>中间件机制</strong></td>
+<td align="left">线性执行</td>
+<td align="left">洋葱模型</td>
+<td align="left">洋葱模型（增强）</td>
+</tr>
+<tr>
+<td align="left"><strong>路由&#x2F;视图</strong></td>
+<td align="left">内置支持</td>
+<td align="left">需插件</td>
+<td align="left">内置 + 插件扩展</td>
+</tr>
+<tr>
+<td align="left"><strong>扩展性</strong></td>
+<td align="left">低（依赖中间件）</td>
+<td align="left">高（自由组合）</td>
+<td align="left">极高（插件化）</td>
+</tr>
+<tr>
+<td align="left"><strong>适用规模</strong></td>
+<td align="left">中小项目</td>
+<td align="left">中小到大型</td>
+<td align="left">中大型企业级</td>
+</tr>
+<tr>
+<td align="left"><strong>学习曲线</strong></td>
+<td align="left">低</td>
+<td align="left">中</td>
+<td align="left">中高</td>
+</tr>
+</tbody></table>
+<h1 id="Node-js-全局对象与全局变量详解"><a href="#Node-js-全局对象与全局变量详解" class="headerlink" title="Node.js 全局对象与全局变量详解"></a>Node.js 全局对象与全局变量详解</h1><h2 id="一、Node-js-全局对象概览"><a href="#一、Node-js-全局对象概览" class="headerlink" title="一、Node.js 全局对象概览"></a>一、Node.js 全局对象概览</h2><p>Node.js 中的全局对象 <code>global</code> 类似于浏览器中的 <code>window</code> 对象，提供对全局变量和函数的访问。以下是核心全局对象和变量：</p>
+<h3 id="全局对象"><a href="#全局对象" class="headerlink" title="全局对象"></a>全局对象</h3><table>
+<thead>
+<tr>
+<th align="left">对象名称</th>
+<th align="left">描述</th>
+<th align="left">使用示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>global</code></td>
+<td align="left">顶层全局对象，所有全局变量都是它的属性</td>
+<td align="left"><code>global.console.log()</code></td>
+</tr>
+<tr>
+<td align="left"><code>process</code></td>
+<td align="left">提供当前 Node.js 进程的信息和控制</td>
+<td align="left"><code>process.env.NODE_ENV</code></td>
+</tr>
+<tr>
+<td align="left"><code>console</code></td>
+<td align="left">提供调试输出功能</td>
+<td align="left"><code>console.error(&#39;Error!&#39;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>Buffer</code></td>
+<td align="left">处理二进制数据的类</td>
+<td align="left"><code>Buffer.from(&#39;hello&#39;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>module</code></td>
+<td align="left">当前模块的引用</td>
+<td align="left"><code>module.exports = &#123;&#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>exports</code></td>
+<td align="left"><code>module.exports</code> 的引用</td>
+<td align="left"><code>exports.func = () =&gt; &#123;&#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>require()</code></td>
+<td align="left">引入模块的函数</td>
+<td align="left"><code>const fs = require(&#39;fs&#39;)</code></td>
+</tr>
+</tbody></table>
+<h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><table>
+<thead>
+<tr>
+<th align="left">变量名称</th>
+<th align="left">描述</th>
+<th align="left">使用示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>__filename</code></td>
+<td align="left">当前模块文件的绝对路径</td>
+<td align="left"><code>console.log(__filename)</code></td>
+</tr>
+<tr>
+<td align="left"><code>__dirname</code></td>
+<td align="left">当前模块所在目录的绝对路径</td>
+<td align="left"><code>console.log(__dirname)</code></td>
+</tr>
+<tr>
+<td align="left"><code>setTimeout</code></td>
+<td align="left">定时执行函数</td>
+<td align="left"><code>setTimeout(fn, 1000)</code></td>
+</tr>
+<tr>
+<td align="left"><code>setInterval</code></td>
+<td align="left">定时循环执行函数</td>
+<td align="left"><code>setInterval(fn, 1000)</code></td>
+</tr>
+<tr>
+<td align="left"><code>setImmediate</code></td>
+<td align="left">在当前事件循环结束时执行函数</td>
+<td align="left"><code>setImmediate(fn)</code></td>
+</tr>
+<tr>
+<td align="left"><code>clearTimeout</code></td>
+<td align="left">取消由 <code>setTimeout()</code> 创建的定时器</td>
+<td align="left"><code>clearTimeout(timer)</code></td>
+</tr>
+<tr>
+<td align="left"><code>clearInterval</code></td>
+<td align="left">取消由 <code>setInterval()</code> 创建的定时器</td>
+<td align="left"><code>clearInterval(timer)</code></td>
+</tr>
+<tr>
+<td align="left"><code>clearImmediate</code></td>
+<td align="left">取消由 <code>setImmediate()</code> 创建的定时器</td>
+<td align="left"><code>clearImmediate(timer)</code></td>
+</tr>
+</tbody></table>
+
       
     </div>
     <footer class="article-footer">
@@ -101,11 +623,22 @@
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2025/06/29/TS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          TS
+        
+      </div>
+    </a>
   
   
     <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
@@ -130,7 +663,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
     </div>
   </div>
 
@@ -140,7 +673,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
     </div>
   </div>
 
@@ -162,6 +695,14 @@
       <ul>
         
           <li>
+            <a href="/2025/06/29/React/">React</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/29/TS/">TS</a>
+          </li>
+        
+          <li>
             <a href="/2025/06/29/Node/">Node</a>
           </li>
         
@@ -171,14 +712,6 @@
         
           <li>
             <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/">前端性能[C</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/28/%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/">基础开发</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/27/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/">前端基础</a>
           </li>
         
       </ul>
