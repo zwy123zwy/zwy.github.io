@@ -3892,6 +3892,184 @@
 </ul>
 </li>
 </ul>
+<p>HTTP&#x2F;3 基于 UDP 实现可靠传输的核心技术是 <strong>QUIC 协议</strong>（Quick UDP Internet Connections）。QUIC 在 UDP 之上重建了可靠性机制，同时融合了 TCP 和 TLS 的优点。以下是其实现可靠传输的关键技术：</p>
+<hr>
+<h3 id="一、QUIC-的核心可靠性机制"><a href="#一、QUIC-的核心可靠性机制" class="headerlink" title="一、QUIC 的核心可靠性机制"></a>一、QUIC 的核心可靠性机制</h3><h4 id="1-数据包编号机制"><a href="#1-数据包编号机制" class="headerlink" title="1. 数据包编号机制"></a>1. <strong>数据包编号机制</strong></h4><ul>
+<li><p><strong>单调递增的 Packet Number</strong>：</p>
+<ul>
+<li>每个数据包都有唯一递增编号（不同于 TCP 序列号）</li>
+<li>解决 TCP 重传歧义问题（重传包使用新编号）</li>
+</ul>
+</li>
+<li><p><strong>示例</strong>：</p>
+<p>plaintext</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">初始发送：Packet #1, #2, #3</span><br><span class="line">丢包重传：重传的包变为 Packet #4（而非复用旧编号）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-改进的确认机制"><a href="#2-改进的确认机制" class="headerlink" title="2. 改进的确认机制"></a>2. <strong>改进的确认机制</strong></h4><ul>
+<li><strong>ACK 帧带延迟信息</strong>：<ul>
+<li>携带精确的接收时间戳（用于 RTT 计算）</li>
+<li>支持<strong>选择性确认（SACK）</strong>，明确告知丢失范围</li>
+</ul>
+</li>
+<li><strong>显式丢包通知</strong>：<ul>
+<li>通过 NACK（Negative ACK）快速报告丢包</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-前向纠错（FEC）"><a href="#3-前向纠错（FEC）" class="headerlink" title="3. 前向纠错（FEC）"></a>3. <strong>前向纠错（FEC）</strong></h4><p>图表</p>
+<p>代码</p>
+<ul>
+<li>发送冗余的 FEC 包（异或校验包）</li>
+<li>丢失单个包时可通过其他包+FEC包重建数据</li>
+<li>减少小规模丢包时的重传</li>
+</ul>
+<hr>
+<h3 id="二、连接管理机制"><a href="#二、连接管理机制" class="headerlink" title="二、连接管理机制"></a>二、连接管理机制</h3><h4 id="1-连接迁移"><a href="#1-连接迁移" class="headerlink" title="1. 连接迁移"></a>1. <strong>连接迁移</strong></h4><ul>
+<li><p><strong>Connection ID 标识连接</strong>：</p>
+<p>javascript</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 连接标识（IP变化时仍有效）</span><br><span class="line">connection_id = 0x8a4f3b2c</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当客户端 IP 改变（如 WiFi 切 4G），TCP 需重建连接，QUIC 保持连接</p>
+</li>
+</ul>
+<h4 id="2-0-RTT-快速重启"><a href="#2-0-RTT-快速重启" class="headerlink" title="2. 0-RTT 快速重启"></a>2. <strong>0-RTT 快速重启</strong></h4><ul>
+<li>基于 TLS 1.3 的会话恢复</li>
+<li>之前连接过的客户端可在首次包中携带数据</li>
+</ul>
+<hr>
+<h3 id="三、多路复用与流控制"><a href="#三、多路复用与流控制" class="headerlink" title="三、多路复用与流控制"></a>三、多路复用与流控制</h3><h4 id="1-流（Stream）隔离"><a href="#1-流（Stream）隔离" class="headerlink" title="1. 流（Stream）隔离"></a>1. <strong>流（Stream）隔离</strong></h4><p>图表</p>
+<p>代码</p>
+<ul>
+<li>单个 QUIC 连接支持多个独立 Stream</li>
+<li><strong>关键优势</strong>：一个 Stream 丢包不影响其他 Stream（解决 TCP 队头阻塞）</li>
+</ul>
+<h4 id="2-分级流量控制"><a href="#2-分级流量控制" class="headerlink" title="2. 分级流量控制"></a>2. <strong>分级流量控制</strong></h4><ul>
+<li><p>两层控制：</p>
+<ol>
+<li><strong>连接级控制</strong>（总带宽限制）</li>
+<li><strong>流级控制</strong>（每个流的独立窗口）</li>
+</ol>
+</li>
+<li><p>动态窗口调整算法：</p>
+<p>c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 伪代码：窗口增长逻辑</span><br><span class="line">if (no_loss_event) &#123;</span><br><span class="line">    window_size *= 1.5; // 指数增长</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    window_size *= 0.7; // 乘性减少</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="四、安全与拥塞控制"><a href="#四、安全与拥塞控制" class="headerlink" title="四、安全与拥塞控制"></a>四、安全与拥塞控制</h3><h4 id="1-深度集成加密"><a href="#1-深度集成加密" class="headerlink" title="1. 深度集成加密"></a>1. <strong>深度集成加密</strong></h4><ul>
+<li><strong>头部加密</strong>：连包类型都加密（防中间设备干扰）</li>
+<li><strong>认证加密</strong>：使用 AES-GCM&#x2F;ChaCha20-Poly1305</li>
+<li><strong>密钥轮换</strong>：每个包使用不同密钥</li>
+</ul>
+<h4 id="2-智能拥塞控制"><a href="#2-智能拥塞控制" class="headerlink" title="2. 智能拥塞控制"></a>2. <strong>智能拥塞控制</strong></h4><ul>
+<li><strong>可插拔算法</strong>：<ul>
+<li>默认使用 <strong>Cubic</strong>（类似 TCP）</li>
+<li>可选 <strong>BBR</strong>（Google 的 Bottleneck Bandwidth and RTT）</li>
+</ul>
+</li>
+<li><strong>带宽预测模型</strong>：<br>BDP&#x3D;Bmax×RTTmin<em>B<strong>D</strong>P</em>&#x3D;<em>B<strong>ma</strong>x</em>​×<em>RT<strong>T</strong>min</em>​<br>（BDP：带宽延迟积，决定最优窗口大小）</li>
+</ul>
+<hr>
+<h3 id="五、QUIC-vs-TCP-可靠性对比"><a href="#五、QUIC-vs-TCP-可靠性对比" class="headerlink" title="五、QUIC vs TCP 可靠性对比"></a>五、QUIC vs TCP 可靠性对比</h3><table>
+<thead>
+<tr>
+<th align="left"><strong>特性</strong></th>
+<th align="left"><strong>TCP</strong></th>
+<th align="left"><strong>QUIC over UDP</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">握手延迟</td>
+<td align="left">3-RTT（TCP+TLS）</td>
+<td align="left">1-RTT（0-RTT 可选）</td>
+</tr>
+<tr>
+<td align="left">队头阻塞</td>
+<td align="left">有（单流阻塞）</td>
+<td align="left">无（多流隔离）</td>
+</tr>
+<tr>
+<td align="left">重传歧义</td>
+<td align="left">有（相同序列号）</td>
+<td align="left">无（唯一递增包号）</td>
+</tr>
+<tr>
+<td align="left">连接迁移</td>
+<td align="left">不支持</td>
+<td align="left">原生支持</td>
+</tr>
+<tr>
+<td align="left">前向纠错</td>
+<td align="left">无</td>
+<td align="left">可选支持</td>
+</tr>
+<tr>
+<td align="left">加密范围</td>
+<td align="left">仅加密负载</td>
+<td align="left">加密头部+负载</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="六、典型数据传输流程"><a href="#六、典型数据传输流程" class="headerlink" title="六、典型数据传输流程"></a>六、典型数据传输流程</h3><p>以文件下载为例：</p>
+<ol>
+<li><p><strong>连接建立</strong>：</p>
+<p>plaintext</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Client → Server: Client Hello (携带 0-RTT 数据)</span><br><span class="line">Server → Client: Server Hello + ACK</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>数据传输</strong>：</p>
+<p>plaintext</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Client: 发送 Stream1 数据包#1-#10</span><br><span class="line">Server: 收到 #1,#3-#10 → 回复 ACK(范围) + NACK(#2)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>丢包恢复</strong>：</p>
+<ul>
+<li>选项1：快速重传（收到3个重复ACK后立即重传#2）</li>
+<li>选项2：FEC重建（若配置了前向纠错）</li>
+</ul>
+</li>
+<li><p><strong>拥塞响应</strong>：</p>
+<ul>
+<li>检测到丢包 → 窗口减半</li>
+<li>持续无丢包 → 窗口指数增长</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="七、技术挑战与解决方案"><a href="#七、技术挑战与解决方案" class="headerlink" title="七、技术挑战与解决方案"></a>七、技术挑战与解决方案</h3><table>
+<thead>
+<tr>
+<th align="left"><strong>挑战</strong></th>
+<th align="left"><strong>QUIC 解决方案</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">UDP 不可靠</td>
+<td align="left">自定义ACK&#x2F;NACK+重传</td>
+</tr>
+<tr>
+<td align="left">NAT 防火墙阻挡UDP</td>
+<td align="left">回落TCP（HTTP&#x2F;2备用）</td>
+</tr>
+<tr>
+<td align="left">中间设备干扰UDP</td>
+<td align="left">加密所有头部信息</td>
+</tr>
+<tr>
+<td align="left">操作系统内核限制</td>
+<td align="left">用户空间实现（无需内核升级）</td>
+</tr>
+<tr>
+<td align="left">移动网络切换断连</td>
+<td align="left">Connection ID 保持连接</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>HTTP&#x2F;3 通过 QUIC 在 UDP 上实现可靠传输的关键是：</p>
+<ol>
+<li><strong>重建可靠性基础</strong>：包编号、ACK&#x2F;NACK、重传</li>
+<li><strong>创新设计</strong>：流隔离、连接迁移、0-RTT</li>
+<li><strong>深度安全集成</strong>：全加密、密钥轮换</li>
+<li><strong>灵活拥塞控制</strong>：可插拔算法、带宽预测</li>
+</ol>
+<p>这使得 QUIC 在保留 UDP 高效性的同时，获得了比 TCP 更优的可靠性和性能，尤其在高丢包、移动网络环境下表现显著提升。</p>
 <h1 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h1><p>HTTPS &#x3D; HTTP + TLS&#x2F;SSL，通过<strong>加密传输</strong>和<strong>身份认证</strong>保障安全。以下是完整连接过程（以 TLS 1.3 简化流程为例）：</p>
 <hr>
 <h3 id="🔗-HTTPS-连接建立流程"><a href="#🔗-HTTPS-连接建立流程" class="headerlink" title="🔗 HTTPS 连接建立流程"></a>🔗 <strong>HTTPS 连接建立流程</strong></h3><h4 id="阶段-1：TCP-三次握手（基础连接）"><a href="#阶段-1：TCP-三次握手（基础连接）" class="headerlink" title="阶段 1：TCP 三次握手（基础连接）"></a><strong>阶段 1：TCP 三次握手</strong>（基础连接）</h4><ol>
@@ -4709,6 +4887,109 @@
 </li>
 </ul>
 <p><strong>总而言之，DDoS 是 DOS 的升级版和主流形态，利用僵尸网络的分布式特性发动规模更大、更难防御和追踪的拒绝服务攻击。</strong> DOS 在当今环境下已较少见且相对容易防御，而防御大规模 DDoS 攻击是现代网络安全的重要挑战，通常需要借助专业的第三方防护服务。</p>
+<h2 id="浏览器本地存储"><a href="#浏览器本地存储" class="headerlink" title="浏览器本地存储"></a>浏览器本地存储</h2><h3 id="1-浏览器本地存储方式及使用场景"><a href="#1-浏览器本地存储方式及使用场景" class="headerlink" title="1. 浏览器本地存储方式及使用场景"></a>1. 浏览器本地存储方式及使用场景</h3><h4 id="（1）Cookie"><a href="#（1）Cookie" class="headerlink" title="（1）Cookie"></a>（1）Cookie</h4><p>Cookie是最早被提出来的本地存储方式，在此之前，服务端是无法判断网络中的两个请求是否是同一用户发起的，为解决这个问题，Cookie就出现了。Cookie的大小只有4kb，它是一种纯文本文件，每次发起HTTP请求都会携带Cookie。</p>
+<p><strong>Cookie的特性：</strong></p>
+<ul>
+<li>Cookie一旦创建成功，名称就无法修改</li>
+<li>Cookie是无法跨域名的，也就是说a域名和b域名下的cookie是无法共享的，这也是由Cookie的隐私安全性决定的，这样就能够阻止非法获取其他网站的Cookie</li>
+<li>每个域名下Cookie的数量不能超过20个，每个Cookie的大小不能超过4kb</li>
+<li>有安全问题，如果Cookie被拦截了，那就可获得session的所有信息，即使加密也于事无补，无需知道cookie的意义，只要转发cookie就能达到目的</li>
+<li>Cookie在请求一个新的页面的时候都会被发送过去</li>
+</ul>
+<p>如果需要域名之间跨域共享Cookie，有两种方法：</p>
+<ol>
+<li>使用Nginx反向代理</li>
+<li>在一个站点登陆之后，往其他网站写Cookie。服务端的Session存储到一个节点，Cookie存储sessionId</li>
+</ol>
+<p><strong>Cookie的使用场景：</strong></p>
+<ul>
+<li>最常见的使用场景就是Cookie和session结合使用，我们将sessionId存储到Cookie中，每次发请求都会携带这个sessionId，这样服务端就知道是谁发起的请求，从而响应相应的信息。</li>
+<li>可以用来统计页面的点击次数</li>
+</ul>
+<h4 id="（2）LocalStorage"><a href="#（2）LocalStorage" class="headerlink" title="（2）LocalStorage"></a>（2）LocalStorage</h4><p>LocalStorage是HTML5新引入的特性，由于有的时候我们存储的信息较大，Cookie就不能满足我们的需求，这时候LocalStorage就派上用场了。</p>
+<p><strong>LocalStorage的优点：</strong></p>
+<ul>
+<li>在大小方面，LocalStorage的大小一般为5MB，可以储存更多的信息</li>
+<li>LocalStorage是持久储存，并不会随着页面的关闭而消失，除非主动清理，不然会永久存在</li>
+<li>仅储存在本地，不像Cookie那样每次HTTP请求都会被携带</li>
+</ul>
+<p><strong>LocalStorage的缺点：</strong></p>
+<ul>
+<li>存在浏览器兼容问题，IE8以下版本的浏览器不支持</li>
+<li>如果浏览器设置为隐私模式，那我们将无法读取到LocalStorage</li>
+<li>LocalStorage受到同源策略的限制，即端口、协议、主机地址有任何一个不相同，都不会访问</li>
+</ul>
+<p><strong>LocalStorage的****常用API：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存数据到 localStorage</span></span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;key&#x27;</span>, <span class="string">&#x27;value&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 localStorage 获取数据</span></span><br><span class="line"><span class="keyword">let</span> data = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;key&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 localStorage 删除保存的数据</span></span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;key&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 localStorage 删除所有保存的数据</span></span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">clear</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取某个索引的Key</span></span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">key</span>(index)</span><br></pre></td></tr></table></figure>
+
+<p><strong>LocalStorage的****使用场景：</strong></p>
+<ul>
+<li>有些网站有换肤的功能，这时候就可以将换肤的信息存储在本地的LocalStorage中，当需要换肤的时候，直接操作LocalStorage即可</li>
+<li>在网站中的用户浏览信息也会存储在LocalStorage中，还有网站的一些不常变动的个人信息等也可以存储在本地的LocalStorage中</li>
+</ul>
+<h4 id="（3）SessionStorage"><a href="#（3）SessionStorage" class="headerlink" title="（3）SessionStorage"></a>（3）SessionStorage</h4><p>SessionStorage和LocalStorage都是在HTML5才提出来的存储方案，SessionStorage 主要用于临时保存同一窗口(或标签页)的数据，刷新页面时不会删除，关闭窗口或标签页之后将会删除这些数据。</p>
+<p><strong>SessionStorage****与LocalStorage对比：</strong></p>
+<ul>
+<li>SessionStorage和LocalStorage都在<strong>本地进行数据存储</strong>；</li>
+<li>SessionStorage也有同源策略的限制，但是SessionStorage有一条更加严格的限制，SessionStorage<strong>只有在同一浏览器的同一窗口下才能够共享</strong>；</li>
+<li>LocalStorage和SessionStorage<strong>都不能被爬虫爬取</strong>；</li>
+</ul>
+<p><strong>SessionStorage的****常用API：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存数据到 sessionStorage</span></span><br><span class="line"><span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;key&#x27;</span>, <span class="string">&#x27;value&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 sessionStorage 获取数据</span></span><br><span class="line"><span class="keyword">let</span> data = <span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;key&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 sessionStorage 删除保存的数据</span></span><br><span class="line"><span class="variable language_">sessionStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;key&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 sessionStorage 删除所有保存的数据</span></span><br><span class="line"><span class="variable language_">sessionStorage</span>.<span class="title function_">clear</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取某个索引的Key</span></span><br><span class="line"><span class="variable language_">sessionStorage</span>.<span class="title function_">key</span>(index)</span><br></pre></td></tr></table></figure>
+
+<p><strong>SessionStorage的****使用场景</strong></p>
+<ul>
+<li>由于SessionStorage具有时效性，所以可以用来存储一些网站的游客登录的信息，还有临时的浏览记录的信息。当关闭网站之后，这些信息也就随之消除了。</li>
+</ul>
+<h3 id="2-Cookie有哪些字段，作用分别是什么"><a href="#2-Cookie有哪些字段，作用分别是什么" class="headerlink" title="2. Cookie有哪些字段，作用分别是什么"></a>2. Cookie有哪些字段，作用分别是什么</h3><p><strong>Cookie由以下字段组成</strong><strong>：</strong></p>
+<ul>
+<li><strong>Name</strong>：cookie的名称</li>
+<li><strong>Value</strong>：cookie的值，对于认证cookie，value值包括web服务器所提供的访问令牌；</li>
+<li><strong>Size</strong>： cookie的大小</li>
+<li><strong>Path</strong>：可以访问此cookie的页面路径。 比如domain是abc.com，path是<code>/test</code>，那么只有<code>/test</code>路径下的页面可以读取此cookie。</li>
+<li><strong>Secure</strong>： 指定是否使用HTTPS安全协议发送Cookie。使用HTTPS安全协议，可以保护Cookie在浏览器和Web服务器间的传输过程中不被窃取和篡改。该方法也可用于Web站点的身份鉴别，即在HTTPS的连接建立阶段，浏览器会检查Web网站的SSL证书的有效性。但是基于兼容性的原因（比如有些网站使用自签署的证书）在检测到SSL证书无效时，浏览器并不会立即终止用户的连接请求，而是显示安全风险信息，用户仍可以选择继续访问该站点。</li>
+<li><strong>Domain</strong>：可以访问该cookie的域名，Cookie 机制并未遵循严格的同源策略，允许一个子域可以设置或获取其父域的 Cookie。当需要实现单点登录方案时，Cookie 的上述特性非常有用，然而也增加了 Cookie受攻击的危险，比如攻击者可以借此发动会话定置攻击。因而，浏览器禁止在 Domain 属性中设置.org、.com 等通用顶级域名、以及在国家及地区顶级域下注册的二级域名，以减小攻击发生的范围。</li>
+<li><strong>HTTP</strong>： 该字段包含<code>HTTPOnly</code> 属性 ，该属性用来设置cookie能否通过脚本来访问，默认为空，即可以通过脚本访问。在客户端是不能通过js代码去设置一个httpOnly类型的cookie的，这种类型的cookie只能通过服务端来设置。该属性用于防止客户端脚本通过<code>document.cookie</code>属性访问Cookie，有助于保护Cookie不被跨站脚本攻击窃取或篡改。但是，HTTPOnly的应用仍存在局限性，一些浏览器可以阻止客户端脚本对Cookie的读操作，但允许写操作；此外大多数浏览器仍允许通过XMLHTTP对象读取HTTP响应中的Set-Cookie头。</li>
+<li>**Expires&#x2F;**<strong>Max-size</strong> ： 此cookie的超时时间。若设置其值为一个时间，那么当到达此时间后，此cookie失效。不设置的话默认值是Session，意思是cookie会和session一起失效。当浏览器关闭(不是浏览器标签页，而是整个浏览器) 后，此cookie失效。</li>
+</ul>
+<p><strong>总结：</strong></p>
+<p>服务器端可以使用 Set-Cookie 的响应头部来配置 cookie 信息。一条cookie 包括了5个属性值 expires、domain、path、secure、HttpOnly。其中 expires 指定了 cookie 失效的时间，domain 是域名、path是路径，domain 和 path 一起限制了 cookie 能够被哪些 url 访问。secure 规定了 cookie 只能在确保安全的情况下传输，HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚本访问。</p>
+<h3 id="3-Cookie、LocalStorage、SessionStorage区别"><a href="#3-Cookie、LocalStorage、SessionStorage区别" class="headerlink" title="3. Cookie、LocalStorage、SessionStorage区别"></a>3. Cookie、LocalStorage、SessionStorage区别</h3><p>浏览器端常用的存储技术是 cookie 、localStorage 和 sessionStorage。</p>
+<ul>
+<li>**cookie：**其实最开始是服务器端用于记录用户状态的一种方式，由服务器设置，在客户端存储，然后每次发起同源请求时，发送给服务器端。cookie 最多能存储 4 k 数据，它的生存时间由 expires 属性指定，并且 cookie 只能被同源的页面访问共享。</li>
+<li>**sessionStorage：**html5 提供的一种浏览器本地存储的方法，它借鉴了服务器端 session 的概念，代表的是一次会话中所保存的数据。它一般能够存储 5M 或者更大的数据，它在当前窗口关闭后就失效了，并且 sessionStorage 只能被同一个窗口的同源页面所访问共享。</li>
+<li>**localStorage：**html5 提供的一种浏览器本地存储的方法，它一般也能够存储 5M 或者更大的数据。它和 sessionStorage 不同的是，除非手动删除它，否则它不会失效，并且 localStorage 也只能被同源页面所访问共享。</li>
+</ul>
+<p>上面三种方式都是存储少量数据的时候的存储方式，当需要在本地存储大量数据的时候，我们可以使用浏览器的 indexDB 这是浏览器提供的一种本地的数据库存储机制。它不是关系型数据库，它内部采用对象仓库的形式存储数据，它更接近 NoSQL 数据库。</p>
+<p><strong>Web Storage 和 cookie 的区别总结如下：</strong></p>
+<ul>
+<li>Web Storage是为了更大容量存储设计的。Cookie 的大小是受限的，并且每次你请求一个新的页面的时候 Cookie 都会被发送过去，这样无形中浪费了带宽；</li>
+<li>cookie 需要指定作用域，不可以跨域调用；</li>
+<li>Web Storage 拥有 setItem,getItem,removeItem,clear 等方法，不像 cookie 需要前端开发者自己封装 setCookie，getCookie；</li>
+<li>Cookie 也是不可以或缺的：Cookie 的作用是与服务器进行交互，作为 HTTP 规范的一部分而存在 ，而 Web Storage 仅仅是为了在本地“存储”数据而生。</li>
+</ul>
+<h3 id="4-前端储存的⽅式有哪些？"><a href="#4-前端储存的⽅式有哪些？" class="headerlink" title="4. 前端储存的⽅式有哪些？"></a>4. 前端储存的⽅式有哪些？</h3><ul>
+<li>cookies： 在HTML5标准前本地储存的主要⽅式，优点是兼容性好，请求头⾃带cookie⽅便，缺点是⼤⼩只有4k，⾃动请求头加⼊cookie浪费流量，每个domain限制20个cookie，使⽤起来麻烦，需要⾃⾏封装；</li>
+<li>localStorage：HTML5加⼊的以键值对(Key-Value)为标准的⽅式，优点是操作⽅便，永久性储存（除⾮⼿动删除），⼤⼩为5M，兼容IE8+ ；</li>
+<li>sessionStorage：与localStorage基本类似，区别是sessionStorage当⻚⾯关闭后会被清理，⽽且与cookie、localStorage不同，他不能在所有同源窗⼝中共享，是会话级别的储存⽅式； </li>
+<li>Web SQL：2010年被W3C废弃的本地数据库数据存储⽅案，但是主流浏览器（⽕狐除外）都已经有了相关的实现，web sql类似于SQLite，是真正意义上的关系型数据库，⽤sql进⾏操作，当我们⽤JavaScript时要进⾏转换，较为繁琐； </li>
+<li>IndexedDB： 是被正式纳⼊HTML5标准的数据库储存⽅案，它是NoSQL数据库，⽤键值对进⾏储存，可以进⾏快速读取操作，⾮常适合web场景，同时⽤JavaScript进⾏操作会⾮常便。</li>
+</ul>
+<h3 id="5-IndexedDB有哪些特点？"><a href="#5-IndexedDB有哪些特点？" class="headerlink" title="5. IndexedDB有哪些特点？"></a>5. IndexedDB有哪些特点？</h3><p>IndexedDB 具有以下特点：</p>
+<ul>
+<li><p><strong>键值对储存</strong>：IndexedDB 内部采用对象仓库（object store）存放数据。所有类型的数据都可以直接存入，包括 JavaScript 对象。对象仓库中，数据以”键值对”的形式保存，每一个数据记录都有对应的主键，主键是独一无二的，不能有重复，否则会抛出一个错误。</p>
+</li>
+<li><p><strong>异步</strong>：IndexedDB 操作时不会锁死浏览器，用户依然可以进行其他操作，这与 LocalStorage 形成对比，后者的操作是同步的。异步设计是为了防止大量数据的读写，拖慢网页的表现。</p>
+</li>
+<li><p><strong>支持事务</strong>：IndexedDB 支持事务（transaction），这意味着一系列操作步骤之中，只要有一步失败，整个事务就都取消，数据库回滚到事务发生之前的状态，不存在只改写一部分数据的情况。</p>
+</li>
+<li><p>**同源限制：**IndexedDB 受到同源限制，每一个数据库对应创建它的域名。网页只能访问自身域名下的数据库，而不能访问跨域的数据库。</p>
+</li>
+<li><p><strong>储存空间大</strong>：IndexedDB 的储存空间比 LocalStorage 大得多，一般来说不少于 250MB，甚至没有上限。</p>
+</li>
+<li><p><strong>支持二进制储存</strong>：IndexedDB 不仅可以储存字符串，还可以储存二进制数据（ArrayBuffer 对象和 Blob 对象）。</p>
+</li>
+</ul>
 
       
     </div>
