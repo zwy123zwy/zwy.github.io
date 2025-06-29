@@ -175,63 +175,773 @@ React 将会为 `domNode` 创建一个根节点，并控制其中的 DOM。在�
 root.render(&lt;App /&gt;);
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">React 将会在 `根节点` 中显示 `&lt;App /&gt;` 组件，并且控制组件中的 DOM。</span><br><span class="line"></span><br><span class="line">**参数** </span><br><span class="line"></span><br><span class="line">- `reactNode`：一个你想要显示的 **React 节点**。它总是一段 JSX，就像 `&lt;App /&gt;`，但是你也总是可以传递一个 [`createElement()`](https://zh-hans.react.dev/reference/react/createElement) 构造的 React 元素、一个字符串、一个数字、`null` 或者 `undefined`。</span><br><span class="line"></span><br><span class="line">**返回值** </span><br><span class="line"></span><br><span class="line">`root.render` 返回 `undefined`。</span><br><span class="line"></span><br><span class="line">**注意** </span><br><span class="line"></span><br><span class="line">- 首次调用 `root.render` 时，React 会先清空根节点中所有已经存在的 HTML，然后才会渲染 React 组件。</span><br><span class="line">- 如果你的根节点包含了由 React 在构建期间通过服务端渲染生成的 HTML 内容，请使用 [`hydrateRoot()`](https://zh-hans.react.dev/reference/react-dom/client/hydrateRoot) 替代这个方法，这样才能把事件处理程序和现有的 HTML 绑定。</span><br><span class="line"></span><br><span class="line">如果你在一个根节点上多次调用了 `render`，React 仍然会更新 DOM，这样才能保证显示的内容是最新的。React 将会筛选出可复用的部分和需要更新的部分，对于需要更新的部分，是 React 通过与之前渲染的树进行 [“比较”](https://zh-hans.react.dev/learn/preserving-and-resetting-state) 得到的。在同一个根节点上再次调用 `render` 就和在根节点上调用 [`set` 函数](https://zh-hans.react.dev/reference/react/useState#setstate) 类似：React 会避免没必要的 DOM 更新。</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">**`root.unmount()`** </span><br><span class="line"></span><br><span class="line">调用 `root.unmount` 以销毁 React 根节点中的一个已经渲染的树。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 root.unmount();
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  通常情况下，一个完全由 React 构建的应用程序不会调用 `root.unmount`。</span><br><span class="line"></span><br><span class="line">  此方法适用的场景是，React 根节点中的 DOM 节点（或者它的任何一个父级节点）被除了这个方法以外的代码移除了。举个例子，试想在一个 jQuery 选项卡面板中，非活跃状态的选项卡的 DOM 结构将被移除。一个标签页被移除时，它内部的所有内容（包括 React 根节点）也将会从 DOM 树移除。在这种情况下，你才需要调用 `root.unmount` 来通知 React “停止”控制已经被移除的根节点的内容。否则，被移除的根节点的内部组件就不能及时释放消息订阅等资源。</span><br><span class="line"></span><br><span class="line">  调用 `root.unmout` 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</span><br><span class="line"></span><br><span class="line">  **参数** </span><br><span class="line"></span><br><span class="line">  `root.unmount` 不接收任何参数。</span><br><span class="line"></span><br><span class="line">  **返回值** </span><br><span class="line"></span><br><span class="line">  `root.unmount` 返回 `undefined`。</span><br><span class="line"></span><br><span class="line">  **注意事项** </span><br><span class="line"></span><br><span class="line">  - 调用 `root.unmout` 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</span><br><span class="line">  - 一旦调用 `root.unmout`，就不能在该根节点上调用 `root.render`。在一个已经卸载的根节点上尝试调用 `root.render` 将会抛出异常错误信息“无法更新一个未挂载的根节点（Cannot update an unmouted root）”。不过，你可以在卸载一个根节点后又重新创建它</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#  React 、 Vue 异同</span><br><span class="line"></span><br><span class="line">**相似之处：**</span><br><span class="line"></span><br><span class="line">- 都将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库</span><br><span class="line">- 都有自己的构建工具，能让你得到一个根据最佳实践设置的项目模板。</span><br><span class="line">- 都使用了Virtual DOM（虚拟DOM）提高重绘性能</span><br><span class="line">- 都有props的概念，允许组件间的数据传递</span><br><span class="line">- 都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**不同之处：** </span><br><span class="line"></span><br><span class="line">**1）数据流**</span><br><span class="line"></span><br><span class="line">Vue默认支持数据双向绑定，而React一直提倡单向数据流 </span><br><span class="line"></span><br><span class="line">**2）虚拟DOM**</span><br><span class="line"></span><br><span class="line">Vue2.x开始引入&quot;Virtual DOM&quot;，消除了和React在这方面的差异，但是在具体的细节还是有各自的特点。 </span><br><span class="line"></span><br><span class="line">- Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。</span><br><span class="line">- 对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent/shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。</span><br><span class="line"></span><br><span class="line">**3）组件化**</span><br><span class="line"></span><br><span class="line">React与Vue最大的不同是模板的编写。</span><br><span class="line"></span><br><span class="line">- Vue鼓励写近似常规HTML的模板。写起来很接近标准 HTML元素，只是多了一些属性。</span><br><span class="line">- React推荐你所有的模板通用JavaScript的语法扩展——JSX书写。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">具体来讲：React中render函数是支持闭包特性的，所以我们import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 完组件之后，还需要在 components 中再声明下。</span><br><span class="line"></span><br><span class="line">**4）监听数据变化的实现原理不同**</span><br><span class="line"></span><br><span class="line">- Vue 通过 getter/setter 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能</span><br><span class="line">- React 默认是通过比较引用的方式进行的，如果不优化（PureComponent/shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。</span><br><span class="line"></span><br><span class="line">**5）高阶组件**</span><br><span class="line"></span><br><span class="line">react可以通过高阶组件（Higher Order Components-- HOC）来扩展，而vue需要通过mixins来扩展。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">原因高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不采用HOC来实现。</span><br><span class="line"></span><br><span class="line">**6）构建工具**</span><br><span class="line"></span><br><span class="line">两者都有自己的构建工具</span><br><span class="line"></span><br><span class="line">- React ==&gt; Create React APP</span><br><span class="line">- Vue ==&gt; vue-cli</span><br><span class="line"></span><br><span class="line">**7）跨平台**</span><br><span class="line"></span><br><span class="line">- React ==&gt; React Native</span><br><span class="line">- Vue ==&gt; Weex</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># React 渲染</span><br><span class="line"></span><br><span class="line">##  哪些方法会触发 React 重新渲染？重新渲染 render 会做些什么？</span><br><span class="line"></span><br><span class="line">**（1）哪些方法会触发 react 重新渲染?** </span><br><span class="line"></span><br><span class="line">- **setState（）方法被调用**</span><br><span class="line"></span><br><span class="line">setState 是 React 中最常用的命令，通常情况下，执行 setState 会触发 render。但是这里有个点值得关注，执行 setState 的时候不一定会重新渲染。当 setState 传入 null 时，并不会触发 render。</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    a: 1</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    console.log(&quot;render&quot;);</span><br><span class="line">    return (</span><br><span class="line">      &lt;React.Fragement&gt;</span><br><span class="line">        &lt;p&gt;&#123;this.state.a&#125;&lt;/p&gt;</span><br><span class="line">        &lt;button</span><br><span class="line">          onClick=&#123;() =&gt; &#123;</span><br><span class="line">            this.setState(&#123; a: 1 &#125;); // 这里并没有改变 a 的值</span><br><span class="line">          &#125;&#125;</span><br><span class="line">        &gt;</span><br><span class="line">          Click me</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; this.setState(null)&#125;&gt;setState null&lt;/button&gt;</span><br><span class="line">        &lt;Child /&gt;</span><br><span class="line">      &lt;/React.Fragement&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre>
-<p>通常情况下，一个完全由 React 构建的应用程序不会调用 <code>root.unmount</code>。</p>
-<p>此方法适用的场景是，React 根节点中的 DOM 节点（或者它的任何一个父级节点）被除了这个方法以外的代码移除了。举个例子，试想在一个 jQuery 选项卡面板中，非活跃状态的选项卡的 DOM 结构将被移除。一个标签页被移除时，它内部的所有内容（包括 React 根节点）也将会从 DOM 树移除。在这种情况下，你才需要调用 <code>root.unmount</code> 来通知 React “停止”控制已经被移除的根节点的内容。否则，被移除的根节点的内部组件就不能及时释放消息订阅等资源。</p>
-<p>调用 <code>root.unmout</code> 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</p>
-<p><strong>参数</strong> </p>
-<p><code>root.unmount</code> 不接收任何参数。</p>
-<p><strong>返回值</strong> </p>
-<p><code>root.unmount</code> 返回 <code>undefined</code>。</p>
-<p><strong>注意事项</strong> </p>
+</li>
+<li><p><strong>父组件重新渲染</strong></p>
+</li>
+</ul>
+<p>只要父组件重新渲染了，即使传入子组件的 props 未发生变化，那么子组件也会重新渲染，进而触发 render</p>
+<p><strong>（2）重新渲染 render 会做些什么?</strong></p>
 <ul>
-<li>调用 <code>root.unmout</code> 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</li>
-<li>一旦调用 <code>root.unmout</code>，就不能在该根节点上调用 <code>root.render</code>。在一个已经卸载的根节点上尝试调用 <code>root.render</code> 将会抛出异常错误信息“无法更新一个未挂载的根节点（Cannot update an unmouted root）”。不过，你可以在卸载一个根节点后又重新创建它</li>
+<li>会对新旧 VNode 进行对比，也就是我们所说的Diff算法。</li>
+<li>对新旧两棵树进行一个深度优先遍历，这样每一个节点都会一个标记，在到深度遍历的时候，每遍历到一和个节点，就把该节点和新的节点树进行对比，如果有差异就放到一个对象里面</li>
+<li>遍历差异对象，根据差异的类型，根据对应对规则更新VNode</li>
+</ul>
+<p>React 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以最小的代价去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法，但是这个过程仍然会损耗性能.</p>
+<h2 id="React如何判断什么时候重新渲染组件？"><a href="#React如何判断什么时候重新渲染组件？" class="headerlink" title="React如何判断什么时候重新渲染组件？"></a>React如何判断什么时候重新渲染组件？</h2><p>组件状态的改变可以因为<code>props</code>的改变，或者直接通过<code>setState</code>方法改变。组件获得新的状态，然后React决定是否应该重新渲染组件。只要组件的state发生变化，React就会对组件进行重新渲染。这是因为React中的<code>shouldComponentUpdate</code>方法默认返回<code>true</code>，这就是导致每次更新都重新渲染的原因。</p>
+<p>当React将要渲染组件时会执行<code>shouldComponentUpdate</code>方法来看它是否返回<code>true</code>（组件应该更新，也就是重新渲染）。所以需要重写<code>shouldComponentUpdate</code>方法让它根据情况返回<code>true</code>或者<code>false</code>来告诉React什么时候重新渲染什么时候跳过重新渲染。</p>
+<h2 id="React-setState-调用的原理"><a href="#React-setState-调用的原理" class="headerlink" title="React setState 调用的原理"></a>React setState 调用的原理</h2><p><img src="/../img/image.png" alt="img"></p>
+<p>具体的执行过程如下（源码级解析）：</p>
+<ul>
+<li>首先调用了<code>setState</code> 入口函数，入口函数在这里就是充当一个分发器的角色，根据入参的不同，将其分发到不同的功能函数中去；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">ReactComponent</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">setState</span> = <span class="keyword">function</span> (<span class="params">partialState, callback</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">updater</span>.<span class="title function_">enqueueSetState</span>(<span class="variable language_">this</span>, partialState);</span><br><span class="line">  <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">updater</span>.<span class="title function_">enqueueCallback</span>(<span class="variable language_">this</span>, callback, <span class="string">&#x27;setState&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>enqueueSetState</code> 方法将新的 <code>state</code> 放进组件的状态队列里，并调用 <code>enqueueUpdate</code> 来处理将要更新的实例对象；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">enqueueSetState</span>: <span class="keyword">function</span> (<span class="params">publicInstance, partialState</span>) &#123;</span><br><span class="line">  <span class="comment">// 根据 this 拿到对应的组件实例</span></span><br><span class="line">  <span class="keyword">var</span> internalInstance = <span class="title function_">getInternalInstanceReadyForUpdate</span>(publicInstance, <span class="string">&#x27;setState&#x27;</span>);</span><br><span class="line">  <span class="comment">// 这个 queue 对应的就是一个组件实例的 state 数组</span></span><br><span class="line">  <span class="keyword">var</span> queue = internalInstance.<span class="property">_pendingStateQueue</span> || (internalInstance.<span class="property">_pendingStateQueue</span> = []);</span><br><span class="line">  queue.<span class="title function_">push</span>(partialState);</span><br><span class="line">  <span class="comment">//  enqueueUpdate 用来处理当前的组件实例</span></span><br><span class="line">  <span class="title function_">enqueueUpdate</span>(internalInstance);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>enqueueUpdate</code> 方法中引出了一个关键的对象——<code>batchingStrategy</code>，该对象所具备的<code>isBatchingUpdates</code> 属性直接决定了当下是要走更新流程，还是应该排队等待；如果轮到执行，就调用 <code>batchedUpdates</code> 方法来直接发起更新流程。由此可以推测，<code>batchingStrategy</code> 或许正是 React 内部专门用于管控批量更新的对象。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">enqueueUpdate</span>(<span class="params">component</span>) &#123;</span><br><span class="line">  <span class="title function_">ensureInjected</span>();</span><br><span class="line">  <span class="comment">// 注意这一句是问题的关键，isBatchingUpdates标识着当前是否处于批量创建/更新组件的阶段</span></span><br><span class="line">  <span class="keyword">if</span> (!batchingStrategy.<span class="property">isBatchingUpdates</span>) &#123;</span><br><span class="line">    <span class="comment">// 若当前没有处于批量创建/更新组件的阶段，则立即更新组件</span></span><br><span class="line">    batchingStrategy.<span class="title function_">batchedUpdates</span>(enqueueUpdate, component);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 否则，先把组件塞入 dirtyComponents 队列里，让它“再等等”</span></span><br><span class="line">  dirtyComponents.<span class="title function_">push</span>(component);</span><br><span class="line">  <span class="keyword">if</span> (component.<span class="property">_updateBatchNumber</span> == <span class="literal">null</span>) &#123;</span><br><span class="line">    component.<span class="property">_updateBatchNumber</span> = updateBatchNumber + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><code>batchingStrategy</code> 对象可以理解为“锁管理器”。这里的“锁”，是指 React 全局唯一的 <code>isBatchingUpdates</code> 变量，<code>isBatchingUpdates</code> 的初始值是 <code>false</code>，意味着“当前并未进行任何批量更新操作”。每当 React 调用 <code>batchedUpdate</code> 去执行更新动作时，会先把这个锁给“锁上”（置为 <code>true</code>），表明“现在正处于批量更新过程中”。当锁被“锁上”的时候，任何需要更新的组件都只能暂时进入 <code>dirtyComponents</code> 里排队等候下一次的批量更新，而不能随意“插队”。此处体现的“任务锁”的思想，是 React 面对大量状态仍然能够实现有序分批处理的基石。</p>
+<p><img src="/../img/v2-9fcf2cfa698301ce7bc78bc3857904ed_1440w.png"></p>
+<h2 id="requestIdleCallback、requestAnimationFrame"><a href="#requestIdleCallback、requestAnimationFrame" class="headerlink" title="requestIdleCallback、requestAnimationFrame"></a>requestIdleCallback、requestAnimationFrame</h2><p>浏览器用于优化任务调度的两个关键API，其核心区别在于<strong>执行时机、优先级和适用场景</strong>。以下是详细对比：</p>
+<hr>
+<h3 id="1-执行时机"><a href="#1-执行时机" class="headerlink" title="1. 执行时机"></a><strong>1. 执行时机</strong></h3><ul>
+<li><strong><code>requestAnimationFrame</code>（rAF）</strong><ul>
+<li><strong>触发时机</strong>：在浏览器每一帧渲染前执行（约16.6ms&#x2F;次，与屏幕刷新率同步）356。</li>
+<li><strong>设计目标</strong>：处理与渲染相关的任务（如动画、UI更新），确保任务在布局和绘制前完成。</li>
+<li><strong>特点</strong>：<ul>
+<li>高优先级，每帧必定执行；</li>
+<li>页面隐藏时自动暂停，节省资源27。</li>
 </ul>
 </li>
 </ul>
-<h1 id="React-、-Vue-异同"><a href="#React-、-Vue-异同" class="headerlink" title="React 、 Vue 异同"></a>React 、 Vue 异同</h1><p><strong>相似之处：</strong></p>
-<ul>
-<li>都将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库</li>
-<li>都有自己的构建工具，能让你得到一个根据最佳实践设置的项目模板。</li>
-<li>都使用了Virtual DOM（虚拟DOM）提高重绘性能</li>
-<li>都有props的概念，允许组件间的数据传递</li>
-<li>都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性</li>
+</li>
+<li><strong><code>requestIdleCallback</code>（rIC）</strong><ul>
+<li><strong>触发时机</strong>：在浏览器空闲时段执行（即一帧内主线程任务完成后，剩余时间超过16ms时）158。</li>
+<li><strong>设计目标</strong>：处理低优先级、非紧急任务（如日志上报、数据预加载）。</li>
+<li><strong>特点</strong>：<ul>
+<li>低优先级，可能因浏览器繁忙而跳过执行；</li>
+<li>需通过<code>timeout</code>参数强制超时执行（可能引起卡顿）12。</li>
 </ul>
-<p><strong>不同之处：</strong> </p>
-<p><strong>1）数据流</strong></p>
-<p>Vue默认支持数据双向绑定，而React一直提倡单向数据流 </p>
-<p><strong>2）虚拟DOM</strong></p>
-<p>Vue2.x开始引入”Virtual DOM”，消除了和React在这方面的差异，但是在具体的细节还是有各自的特点。 </p>
-<ul>
-<li>Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。</li>
-<li>对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent&#x2F;shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。</li>
+</li>
 </ul>
-<p><strong>3）组件化</strong></p>
-<p>React与Vue最大的不同是模板的编写。</p>
-<ul>
-<li>Vue鼓励写近似常规HTML的模板。写起来很接近标准 HTML元素，只是多了一些属性。</li>
-<li>React推荐你所有的模板通用JavaScript的语法扩展——JSX书写。</li>
+</li>
 </ul>
-<p>具体来讲：React中render函数是支持闭包特性的，所以我们import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 完组件之后，还需要在 components 中再声明下。</p>
-<p><strong>4）监听数据变化的实现原理不同</strong></p>
-<ul>
-<li>Vue 通过 getter&#x2F;setter 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能</li>
-<li>React 默认是通过比较引用的方式进行的，如果不优化（PureComponent&#x2F;shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。</li>
+<hr>
+<h3 id="2-优先级与性能影响"><a href="#2-优先级与性能影响" class="headerlink" title="2. 优先级与性能影响"></a><strong>2. 优先级与性能影响</strong></h3><table>
+<thead>
+<tr>
+<th align="left"><strong>特性</strong></th>
+<th align="left"><strong>rAF</strong></th>
+<th align="left"><strong>rIC</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>优先级</strong></td>
+<td align="left">高（渲染关键路径）</td>
+<td align="left">低（空闲时段）</td>
+</tr>
+<tr>
+<td align="left"><strong>阻塞主线程风险</strong></td>
+<td align="left">可能（若任务过重）</td>
+<td align="left">极低（任务可拆分）</td>
+</tr>
+<tr>
+<td align="left"><strong>影响FPS</strong></td>
+<td align="left">是（若超时导致丢帧）</td>
+<td align="left">否（除非强制超时）2</td>
+</tr>
+<tr>
+<td align="left"><strong>执行可靠性</strong></td>
+<td align="left">高（每帧必执行）</td>
+<td align="left">低（依赖空闲状态）8</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-适用场景"><a href="#3-适用场景" class="headerlink" title="3. 适用场景"></a>3. 适用场景</h3><h5 id="requestAnimationFrame（rAF）"><a href="#requestAnimationFrame（rAF）" class="headerlink" title="requestAnimationFrame（rAF）"></a><strong><code>requestAnimationFrame</code>（rAF）</strong></h5><ul>
+<li><strong>动画</strong>：CSS变换、Canvas动画36。</li>
+<li><strong>实时UI更新</strong>：滚动效果、WebSocket数据实时渲染38。</li>
+<li><strong>高频交互</strong>：确保流畅性，避免<code>setTimeout</code>丢帧56。</li>
 </ul>
-<p><strong>5）高阶组件</strong></p>
-<p>react可以通过高阶组件（Higher Order Components– HOC）来扩展，而vue需要通过mixins来扩展。</p>
-<p>原因高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不采用HOC来实现。</p>
-<p><strong>6）构建工具</strong></p>
-<p>两者都有自己的构建工具</p>
-<ul>
-<li>React &#x3D;&#x3D;&gt; Create React APP</li>
-<li>Vue &#x3D;&#x3D;&gt; vue-cli</li>
+<h5 id="requestIdleCallback（rIC）"><a href="#requestIdleCallback（rIC）" class="headerlink" title="requestIdleCallback（rIC）"></a><strong><code>requestIdleCallback</code>（rIC）</strong></h5><ul>
+<li><strong>非关键任务</strong>：日志上报、性能监控数据批量发送27。</li>
+<li><strong>后台计算</strong>：AI推理、大数据处理38。</li>
+<li><strong>资源预加载</strong>：非首屏图片或数据35。</li>
 </ul>
-<p><strong>7）跨平台</strong></p>
+<blockquote>
+<p>💡 <strong>关键区别</strong>：</p>
 <ul>
-<li>React &#x3D;&#x3D;&gt; React Native</li>
-<li>Vue &#x3D;&#x3D;&gt; Weex</li>
+<li>rAF 用于<strong>视觉相关</strong>任务，确保流畅渲染；</li>
+<li>rIC 用于<strong>非视觉相关</strong>任务，避免抢占主线程36。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="4-使用注意事项"><a href="#4-使用注意事项" class="headerlink" title="4. 使用注意事项"></a><strong>4. 使用注意事项</strong></h3><h5 id="rAF-的陷阱"><a href="#rAF-的陷阱" class="headerlink" title="rAF 的陷阱"></a><strong>rAF 的陷阱</strong></h5><ul>
+<li><strong>避免重任务</strong>：复杂计算会阻塞渲染，导致卡顿（需拆分任务）8。</li>
+<li><strong>隐藏页面暂停</strong>：后台标签页中动画自动停止27。</li>
+</ul>
+<h5 id="rIC-的陷阱"><a href="#rIC-的陷阱" class="headerlink" title="rIC 的陷阱"></a><strong>rIC 的陷阱</strong></h5><ul>
+<li><strong>禁止DOM操作</strong>：<br>空闲时段布局已确定，修改DOM会触发强制重排，严重损害性能15。</li>
+<li><strong>慎用Promise</strong>：<br>Promise回调可能在空闲结束后立即执行，拉长帧耗时1。</li>
+<li><strong>超时风险</strong>：<br>设置<code>timeout</code>可能强制执行，引发卡顿（超时任务需极轻量）18。</li>
+</ul>
+<hr>
+<h4 id="5-最佳实践"><a href="#5-最佳实践" class="headerlink" title="5. 最佳实践"></a><strong>5. 最佳实践</strong></h4><ol>
+<li><strong>混合使用</strong>：<ul>
+<li>视觉动画用 <strong>rAF</strong>（如元素移动）6；</li>
+<li>非紧急任务用 <strong>rIC</strong>（如埋点上报）27。</li>
+</ul>
+</li>
+<li><strong>任务拆分</strong>：<ul>
+<li>在rIC回调中用<code>deadline.timeRemaining()</code>检查剩余时间，分段执行任务58。</li>
+</ul>
+</li>
+<li><strong>兼容性处理</strong>：<ul>
+<li>rIC兼容性较差（不支持IE），可用<code>setTimeout(fn, 0)</code>降级8。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：rIC 分段任务</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">processTasks</span>(<span class="params">deadline</span>) &#123;</span><br><span class="line">  <span class="keyword">while</span> (deadline.<span class="title function_">timeRemaining</span>() &gt; <span class="number">0</span> &amp;&amp; tasks.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="title function_">executeTask</span>(tasks.<span class="title function_">shift</span>());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (tasks.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="title function_">requestIdleCallback</span>(processTasks, &#123; <span class="attr">timeout</span>: <span class="number">1000</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">requestIdleCallback</span>(processTasks);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结：核心区别"><a href="#总结：核心区别" class="headerlink" title="总结：核心区别"></a><strong>总结：核心区别</strong></h3><table>
+<thead>
+<tr>
+<th align="left"><strong>维度</strong></th>
+<th align="left"><strong>requestAnimationFrame</strong></th>
+<th align="left"><strong>requestIdleCallback</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>本质</strong></td>
+<td align="left">渲染流水线的一部分</td>
+<td align="left">空闲时段的任务调度</td>
+</tr>
+<tr>
+<td align="left"><strong>优先级</strong></td>
+<td align="left">高（影响用户体验）</td>
+<td align="left">低（可被跳过）</td>
+</tr>
+<tr>
+<td align="left"><strong>执行保证</strong></td>
+<td align="left">每帧必执行</td>
+<td align="left">依赖空闲时间</td>
+</tr>
+<tr>
+<td align="left"><strong>典型场景</strong></td>
+<td align="left">动画、实时UI</td>
+<td align="left">日志、预加载、后台计算</td>
+</tr>
+<tr>
+<td align="left"><strong>风险操作</strong></td>
+<td align="left">避免重计算</td>
+<td align="left">禁止DOM修改&#x2F;Promise回调</td>
+</tr>
+</tbody></table>
+<h2 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><strong>数据结构</strong></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 跟当前Fiber相关本地状态（比如浏览器环境就是DOM节点）</span></span><br><span class="line">  <span class="attr">stateNode</span>: any,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 单链表树结构</span></span><br><span class="line">  <span class="attr">return</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>,<span class="comment">// 指向他在Fiber节点树中的`parent`，用来在处理完这个节点之后向上返回</span></span><br><span class="line">  <span class="attr">child</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>,<span class="comment">// 指向自己的第一个子节点</span></span><br><span class="line">  <span class="attr">sibling</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>,  <span class="comment">// 指向自己的兄弟结构，兄弟节点的return指向同一个父节点</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新相关</span></span><br><span class="line">  <span class="attr">pendingProps</span>: any,  <span class="comment">// 新的变动带来的新的props</span></span><br><span class="line">  <span class="attr">memoizedProps</span>: any,  <span class="comment">// 上一次渲染完成之后的props</span></span><br><span class="line">  <span class="attr">updateQueue</span>: <span class="title class_">UpdateQueue</span>&lt;any&gt; | <span class="literal">null</span>,  <span class="comment">// 该Fiber对应的组件产生的Update会存放在这个队列里面</span></span><br><span class="line">  <span class="attr">memoizedState</span>: any, <span class="comment">// 上一次渲染的时候的state</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment">// Scheduler 相关</span></span><br><span class="line">  <span class="attr">expirationTime</span>: <span class="title class_">ExpirationTime</span>,  <span class="comment">// 代表任务在未来的哪个时间点应该被完成，不包括他的子树产生的任务</span></span><br><span class="line">  <span class="comment">// 快速确定子树中是否有不在等待的变化</span></span><br><span class="line">  <span class="attr">childExpirationTime</span>: <span class="title class_">ExpirationTime</span>,</span><br><span class="line">    </span><br><span class="line"> <span class="comment">// 在Fiber树更新的过程中，每个Fiber都会有一个跟其对应的Fiber</span></span><br><span class="line">  <span class="comment">// 我们称他为`current &lt;==&gt; workInProgress`</span></span><br><span class="line">  <span class="comment">// 在渲染完成之后他们会交换位置</span></span><br><span class="line">  <span class="attr">alternate</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Effect 相关的</span></span><br><span class="line">  <span class="attr">effectTag</span>: <span class="title class_">SideEffectTag</span>, <span class="comment">// 用来记录Side Effect</span></span><br><span class="line">  <span class="attr">nextEffect</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>, <span class="comment">// 单链表用来快速查找下一个side effect</span></span><br><span class="line">  <span class="attr">firstEffect</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>,  <span class="comment">// 子树中第一个side effect</span></span><br><span class="line">  <span class="attr">lastEffect</span>: <span class="title class_">Fiber</span> | <span class="literal">null</span>, <span class="comment">// 子树中最后一个side effect</span></span><br><span class="line">  ....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/../img/v2-cfaea6c0e9362b3701b1cf342ed4588b_1440w.png"></p>
+<h3 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a><strong>构建流程</strong></h3><ol>
+<li><p><strong>根节点启动</strong>：</p>
+<ul>
+<li>从根 Fiber 节点开始</li>
+<li>创建对应的 WIP 节点（<code>workInProgressRoot</code>）</li>
+</ul>
+</li>
+<li><p><strong>节点克隆&#x2F;创建</strong>：</p>
+<ul>
+<li>检查当前节点是否有对应的 <code>alternate</code>（上次渲染的 Fiber）</li>
+<li>有则克隆，无则创建全新 Fiber 节点</li>
+</ul>
+</li>
+<li><p><strong>属性继承</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复用状态和属性</span></span><br><span class="line">workInProgress.<span class="property">memoizedState</span> = current.<span class="property">memoizedState</span>;</span><br><span class="line">workInProgress.<span class="property">memoizedProps</span> = current.<span class="property">memoizedProps</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>子节点处理</strong>：</p>
+<ul>
+<li>递归处理每个子节点</li>
+<li>创建子 Fiber 节点并建立父子关系</li>
+<li>设置 <code>child</code>、<code>sibling</code>、<code>return</code> 指针</li>
+</ul>
+</li>
+<li><p><strong>深度优先遍历</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">workLoopSync</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">while</span> (workInProgress !== <span class="literal">null</span>) &#123;</span><br><span class="line">    workInProgress = <span class="title function_">performUnitOfWork</span>(workInProgress);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>完成节点</strong>：</p>
+<ul>
+<li>当节点没有子节点时，调用 <code>completeUnitOfWork</code></li>
+<li>处理兄弟节点或回溯到父节点</li>
+</ul>
+</li>
+<li><p>指针关系示例</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父节点</span></span><br><span class="line"><span class="keyword">const</span> parentFiber = &#123;</span><br><span class="line">  <span class="attr">child</span>: child1, <span class="comment">// 第一个子节点</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子节点1</span></span><br><span class="line"><span class="keyword">const</span> child1 = &#123;</span><br><span class="line">  <span class="attr">sibling</span>: child2, <span class="comment">// 下一个兄弟节点</span></span><br><span class="line">  <span class="attr">return</span>: parentFiber, <span class="comment">// 指向父节点</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子节点2</span></span><br><span class="line"><span class="keyword">const</span> child2 = &#123;</span><br><span class="line">  <span class="attr">sibling</span>: <span class="literal">null</span>, <span class="comment">// 最后一个节点</span></span><br><span class="line">  <span class="attr">return</span>: parentFiber,</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Diff-算法核心原则"><a href="#Diff-算法核心原则" class="headerlink" title="Diff 算法核心原则"></a>Diff 算法核心原则</h3><table>
+<thead>
+<tr>
+<th align="left">原则</th>
+<th align="left">描述</th>
+<th align="left">优势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>同级比较</strong></td>
+<td align="left">只比较同一层级节点</td>
+<td align="left">O(n) 复杂度</td>
+</tr>
+<tr>
+<td align="left"><strong>Key 优化</strong></td>
+<td align="left">使用 key 匹配相同节点</td>
+<td align="left">减少不必要的重建</td>
+</tr>
+<tr>
+<td align="left"><strong>类型优先</strong></td>
+<td align="left">不同类型组件直接替换</td>
+<td align="left">避免无效比较</td>
+</tr>
+<tr>
+<td align="left"><strong>组件稳定</strong></td>
+<td align="left">相同类型组件复用</td>
+<td align="left">保留状态和 DOM</td>
+</tr>
+</tbody></table>
+<p><img src="/../img/v2-8c3b88ee7471ba1303c4460967da36fa_1440w.png"></p>
+<h1 id="React-组件"><a href="#React-组件" class="headerlink" title="React 组件"></a><strong>React 组件</strong></h1><h2 id="React-高阶组件是什么，和普通组件有什么区别，适用什么场景"><a href="#React-高阶组件是什么，和普通组件有什么区别，适用什么场景" class="headerlink" title="React 高阶组件是什么，和普通组件有什么区别，适用什么场景"></a>React 高阶组件是什么，和普通组件有什么区别，适用什么场景</h2><p>官方解释∶ </p>
+<p>高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。</p>
+<p>高阶组件（HOC）就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件，它只是一种组件的设计模式，这种设计模式是由react自身的组合性质必然产生的。我们将它们称为纯组件，因为它们可以接受任何动态提供的子组件，但它们不会修改或复制其输入组件中的任何行为。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hoc的定义</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">withSubscription</span>(<span class="params">WrappedComponent, selectData</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> <span class="title class_">React</span>.<span class="property">Component</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">      <span class="variable language_">super</span>(props);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">        <span class="attr">data</span>: <span class="title function_">selectData</span>(<span class="title class_">DataSource</span>, props)</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 一些通用的逻辑处理</span></span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// ... 并使用新数据渲染被包装的组件!</span></span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">WrappedComponent</span> <span class="attr">data</span>=<span class="string">&#123;this.state.data&#125;</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">BlogPostWithSubscription</span> = <span class="title function_">withSubscription</span>(<span class="title class_">BlogPost</span>,</span><br><span class="line">  <span class="function">(<span class="params">DataSource, props</span>) =&gt;</span> <span class="title class_">DataSource</span>.<span class="title function_">getBlogPost</span>(props.<span class="property">id</span>));</span><br></pre></td></tr></table></figure>
+
+<p><strong>1）HOC的优缺点</strong></p>
+<ul>
+<li>优点∶ 逻辑服用、不影响被包裹组件的内部逻辑。</li>
+<li>缺点∶hoc传递给被包裹组件的props容易和被包裹后的组件重名，进而被覆盖</li>
+</ul>
+<p><strong>2）适用场景</strong></p>
+<ul>
+<li>代码复用，逻辑抽象 </li>
+<li>渲染劫持 </li>
+<li>State 抽象和更改 </li>
+<li>Props 更改</li>
+</ul>
+<p><strong>3）具体应用例子</strong> </p>
+<ul>
+<li>**权限控制：**利用高阶组件的 <strong>条件渲染</strong> 特性可以对页面进行权限控制，权限控制一般分为两个维度：页面级别和 页面元素级别</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HOC.js</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">withAdminAuth</span>(<span class="params">WrappedComponent</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> <span class="title class_">React</span>.<span class="property">Component</span> &#123;</span><br><span class="line">        state = &#123;</span><br><span class="line">            <span class="attr">isAdmin</span>: <span class="literal">false</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">async</span> <span class="title function_">UNSAFE_componentWillMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">const</span> currentRole = <span class="keyword">await</span> <span class="title function_">getCurrentUserRole</span>();</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">                <span class="attr">isAdmin</span>: currentRole === <span class="string">&#x27;Admin&#x27;</span>,</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">isAdmin</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">WrappedComponent</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> (<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>您没有权限查看该页面，请联系管理员！<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// pages/page-a.js</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PageA</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(props);</span><br><span class="line">        <span class="comment">// something here...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">UNSAFE_componentWillMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// fetching data</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// render page with data</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withAdminAuth</span>(<span class="title class_">PageA</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// pages/page-b.js</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PageB</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(props);</span><br><span class="line">    <span class="comment">// something here...</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="title function_">UNSAFE_componentWillMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// fetching data</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// render page with data</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withAdminAuth</span>(<span class="title class_">PageB</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>**组件渲染性能追踪：**借助父组件子组件生命周期规则捕获子组件的生命周期，可以方便的对某个组件的渲染时间进行记录∶</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Home</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">        <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="language-xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">withTiming</span>(<span class="params">WrappedComponent</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> <span class="title class_">WrappedComponent</span> &#123;</span><br><span class="line">            <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">                <span class="variable language_">super</span>(props);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">start</span> = <span class="number">0</span>;</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">end</span> = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title function_">UNSAFE_componentWillMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">super</span>.<span class="property">componentWillMount</span> &amp;&amp; <span class="variable language_">super</span>.<span class="title function_">componentWillMount</span>();</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">start</span> = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title function_">componentDidMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">super</span>.<span class="property">componentDidMount</span> &amp;&amp; <span class="variable language_">super</span>.<span class="title function_">componentDidMount</span>();</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">end</span> = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;WrappedComponent.name&#125;</span> 组件渲染时间为 <span class="subst">$&#123;<span class="variable language_">this</span>.end - <span class="variable language_">this</span>.start&#125;</span> ms`</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="variable language_">super</span>.<span class="title function_">render</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withTiming</span>(<span class="title class_">Home</span>);   </span><br></pre></td></tr></table></figure>
+
+<p>注意：withTiming 是利用 反向继承 实现的一个高阶组件，功能是计算被包裹组件（这里是 Home 组件）的渲染时间。</p>
+<ul>
+<li><strong>页面复用</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">withFetching</span> = fetching =&gt; <span class="function"><span class="params">WrappedComponent</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> <span class="title class_">React</span>.<span class="property">Component</span> &#123;</span><br><span class="line">        state = &#123;</span><br><span class="line">            <span class="attr">data</span>: [],</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">async</span> <span class="title function_">UNSAFE_componentWillMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="title function_">fetching</span>();</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">                data,</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">WrappedComponent</span> <span class="attr">data</span>=<span class="string">&#123;this.state.data&#125;</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// pages/page-a.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withFetching</span>(<span class="title function_">fetching</span>(<span class="string">&#x27;science-fiction&#x27;</span>))(<span class="title class_">MovieList</span>);</span><br><span class="line"><span class="comment">// pages/page-b.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withFetching</span>(<span class="title function_">fetching</span>(<span class="string">&#x27;action&#x27;</span>))(<span class="title class_">MovieList</span>);</span><br><span class="line"><span class="comment">// pages/page-other.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">withFetching</span>(<span class="title function_">fetching</span>(<span class="string">&#x27;some-other-type&#x27;</span>))(<span class="title class_">MovieList</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="类组件与函数组件有什么异同"><a href="#类组件与函数组件有什么异同" class="headerlink" title="类组件与函数组件有什么异同"></a>类组件与函数组件有什么异同</h2><p><strong>相同点：</strong></p>
+<p><strong>组件是 React 可复用的最小代码片段</strong>，它们会返回要在页面中渲染的 React 元素。也正因为组件是 React 的最小编码单位，所以无论是函数组件还是类组件，在使用方式和最终呈现效果上都是完全一致的。</p>
+<p>我们甚至可以将一个类组件改写成函数组件，或者把函数组件改写成一个类组件（虽然并不推荐这种重构行为）。从使用者的角度而言，很难从使用体验上区分两者，而且在现代浏览器中，闭包和类的性能只在极端场景下才会有明显的差别。所以，基本可认为两者作为组件是完全一致的。</p>
+<p><strong>不同点：</strong></p>
+<ul>
+<li>它们在开发时的心智模型上却存在巨大的差异。<strong>类组件是基于面向对象编程的</strong>，它主打的是继承、生命周期等核心概念；而<strong>函数组件内核是函数式编程</strong>，主打的是 immutable、没有副作用、引用透明等特点。</li>
+<li>之前，在使用场景上，如果存在需要使用生命周期的组件，那么主推类组件；设计模式上，如果需要使用继承，那么主推类组件。但现在由于 React Hooks 的推出，生命周期概念的淡出，函数组件可以完全取代类组件。其次继承并不是组件最佳的设计模式，官方更推崇“组合优于继承”的设计概念，所以类组件在这方面的优势也在淡出。</li>
+<li>性能优化上，<strong>类组件主要依靠 shouldComponentUpdate 阻断渲染来提升性能</strong>，<br>                而<strong>函数组件依靠 React.memo 缓存渲染结果来提升性能</strong>。</li>
+<li>从上手程度而言，类组件更容易上手，从未来趋势上看，由于React Hooks 的推出，函数组件成了社区未来主推的方案。</li>
+<li>类组件在未来时间切片与并发模式中，由于生命周期带来的复杂度，并不易于优化。而函数组件本身轻量简单，且<strong>在 Hooks 的基础上提供了比原先更细粒度的逻辑组织与复用</strong>，更能适应 React 的未来发展。</li>
+</ul>
+<h2 id="组件通信"><a href="#组件通信" class="headerlink" title="组件通信"></a>组件通信</h2><ul>
+<li><strong>⽗组件向⼦组件通讯</strong>: ⽗组件可以向⼦组件通过传 props 的⽅式，向⼦组件进⾏通讯 </li>
+<li><strong>⼦组件向⽗组件通讯</strong>: props+回调的⽅式，⽗组件向⼦组件传递props进⾏通讯，此props为作⽤域为⽗组件⾃身的函 数，⼦组件调⽤该函数，将⼦组件想要传递的信息，作为参数，传递到⽗组件的作⽤域中 </li>
+<li><strong>兄弟组件通信</strong>: 找到这两个兄弟节点共同的⽗节点,结合上⾯两种⽅式由⽗节点转发信息进⾏通信 </li>
+<li><strong>跨层级通信</strong>: Context 设计⽬的是为了共享那些对于⼀个组件树⽽⾔是“全局”的数据，例如当前认证的⽤户、主题或⾸选语⾔，对于跨越多层的全局数据通过 Context 通信再适合不过 </li>
+<li><strong>发布订阅模式</strong>: 发布者发布事件，订阅者监听事件并做出反应,我们可以通过引⼊event模块进⾏通信 </li>
+<li><strong>全局状态管理⼯具</strong>: 借助Redux或者Mobx等全局状态管理⼯具进⾏通信,这种⼯具会维护⼀个全局状态中⼼Store,并根据不同的事件产⽣新的状态</li>
+</ul>
+<h1 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h1><p>一个事件触发后，会在子元素和父元素之间传播（propagation）。这种传播分成三个阶段</p>
+<p><img src="/../img/2019011111581623.jpg" alt="img"></p>
+<p>如上图所示，事件传播分成三个阶段：</p>
+<p>捕获阶段：从window对象传导到目标节点（上层传到底层）称为“捕获阶段”（capture phase），捕获阶段不会响应任何事件；<br>目标阶段：在目标节点上触发，称为“目标阶段”<br>冒泡阶段：从目标节点传导回window对象（从底层传回上层），称为“冒泡阶段”（bubbling phase）。事件代理即是利用事件冒泡的机制把里层所需要响应的事件绑定到外层；<br><strong>事件代理</strong></p>
+<p>事件代理（Event Delegation），又称之为事件委托。是JavaScript中常用绑定事件的常用技巧。顾名思义，“事件代理”即是把原本需要绑定在子元素的响应事件（click、keydown……）委托给父元素，让父元素担当事件监听的职务。事件代理的原理是DOM元素的事件冒泡在React中事件需要通过元素的属性来设置，</p>
+<h3 id="React-事件机制"><a href="#React-事件机制" class="headerlink" title="React 事件机制"></a>React 事件机制</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div onClick=&#123;<span class="variable language_">this</span>.<span class="property">handleClick</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>)&#125;&gt;点我&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>React并不是将click事件绑定到了div的真实DOM上，而是<strong>在document处监听了所有的事件，当事件发生并且<font color="red">冒泡</font>到document处的时候，React将事件内容封装并交由真正的处理函数运行</strong>。这样的方式不仅仅减少了内存的消耗，还能在组件挂在销毁时统一订阅和移除事件。</p>
+<p>React <strong>基于 Virtual DOM 实现了一个SyntheticEvent（合成事件）层，我们所定义的事件处理器会接收到一个SyntheticEvent对象的实例</strong>。与原生事件直接在元素上注册的方式不同的是，react的合成事件不会直接绑定到目标dom节点上，用事件委托机制，以队列的方式，从触发事件的组件向父组件回溯直到document节点，因此<strong>React组件上声明的事件最终绑定到了document 上</strong>。用一个统一的监听器去监听，这个监听器上保存着目标节点与事件对象的映射，当组件挂载或卸载时，只是在这个统一的事件监听器上插入或删除一些对象；当事件发生时，首先被这个统一的事件监听器处理，然后在映射里找到真正的事件处理函数并调用</p>
+<p>除此之外，冒泡到document上的事件也不是原生的浏览器事件，而是由react自己实现的合成事件（SyntheticEvent）。因此如果不想要是事件冒泡的话应该调用<strong>event.preventDefault()方法</strong>，而不是调用event.stopProppagation()方法。</p>
+<p><img src="/../img/77fa6b2a59c92e160bc171f9c80783e7.jpg" alt="img"></p>
+<p><strong>JSX 上写的事件并没有绑定在对应的真实 DOM 上，而是通过事件代理的方式，将所有的事件都统一绑定在了 <code>document</code> 上。这样的方式不仅减少了内存消耗，还能在组件挂载销毁时统一订阅和移除事件。</strong></p>
+<p>另外冒泡到 <code>document</code> 上的事件也不是原生浏览器事件，而是 React 自己实现的合成事件（SyntheticEvent）。因此我们如果不想要事件冒泡的话，调用 <code>event.stopPropagation</code> 是无效的，而应该调用 <code>event.preventDefault</code>。</p>
+<p>实现合成事件的目的如下：</p>
+<ul>
+<li>合成事件首先抹平了浏览器之间的兼容问题，另外这是一个跨浏览器原生事件包装器，赋予了跨浏览器开发的能力；</li>
+<li>对于原生浏览器事件来说，浏览器会给监听器创建一个事件对象。如果你有很多的事件监听，那么就需要分配很多的事件对象，造成高额的内存分配问题。但是对于合成事件来说，有一个事件池专门来管理它们的创建和销毁，当事件需要被使用时，就会从池子中复用对象，事件回调结束后，就会销毁事件对象上的属性，从而便于下次复用事件对象。</li>
+</ul>
+<h3 id="React的事件和普通的HTML事件有什么不同？"><a href="#React的事件和普通的HTML事件有什么不同？" class="headerlink" title="React的事件和普通的HTML事件有什么不同？"></a>React的事件和普通的HTML事件有什么不同？</h3><p>区别：</p>
+<ul>
+<li><p>对于事件名称命名方式，原生事件为全小写，<strong>react 事件采用小驼峰</strong>；</p>
+</li>
+<li><p>对于事件函数处理语法，原生事件为字符串，<strong>react 事件为函数</strong>； </p>
+<p>和原生JS不同，在React中事件的属性需要使用驼峰命名法：</p>
+<p>onclick -&gt; onClick</p>
+<p>onchange -&gt; onChange</p>
+<p>属性值不能直接执行代码，而是需要一个回调函数：</p>
+<p>onclick&#x3D;”alert(123)”<br>onClick&#x3D;{()&#x3D;&gt;{alert(123)}}<br>onClick&#x3D;{handler}</p>
+</li>
+<li><p>react 事件不能采用 return false 的方式来阻止浏览器的默认行为，而必须要地明确地调用<code>preventDefault()</code>来阻止默认行为。</p>
+</li>
+</ul>
+<p>合成事件是 react 模拟原生 DOM 事件所有能力的一个事件对象，其优点如下：</p>
+<ul>
+<li>兼容所有浏览器，更好的跨平台；</li>
+<li>将事件统一存放在一个数组，避免频繁的新增与删除（垃圾回收）。</li>
+<li>方便 react 统一管理和事务机制。</li>
+</ul>
+<p>事件的执行顺序为<strong>原生事件先执行，合成事件后执行</strong>，<strong>合成事件会冒泡绑定到 document 上</strong>，所以尽量避免原生事件与合成事件混用，如果<strong>原生事件阻止冒泡，可能会导致合成事件不执行</strong>，因为需要冒泡到document 上合成事件才会执行。</p>
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p><img src="/../img/image-20240225161622185.png" alt="image-20240225161622185"></p>
+<p><strong>新的生命周期</strong></p>
+<p><img src="/../img/image-20240225160610933.png" alt="image-20240225160610933"></p>
+<h2 id="React的生命周期有哪些？"><a href="#React的生命周期有哪些？" class="headerlink" title="React的生命周期有哪些？"></a>React的生命周期有哪些？</h2><p> React 通常将组件生命周期分为三个阶段：</p>
+<ul>
+<li>装载阶段（Mount），组件第一次在DOM树中被渲染的过程；</li>
+<li>更新过程（Update），组件状态发生变化，重新更新渲染的过程；</li>
+<li>卸载过程（Unmount），组件从DOM树中被移除的过程；</li>
+</ul>
+<p><img src="/../img/image1111111.png" alt="img"></p>
+<h3 id="1）组件挂载阶段"><a href="#1）组件挂载阶段" class="headerlink" title="1）组件挂载阶段"></a>1）组件挂载阶段</h3><p>挂载阶段组件被创建，然后组件实例插入到 DOM 中，完成组件的第一次渲染，该过程只会发生一次，在此阶段会依次调用以下这些方法：</p>
+<ul>
+<li>constructor</li>
+<li>getDerivedStateFromProps</li>
+<li>render</li>
+<li>componentDidMount</li>
+</ul>
+<h4 id="（1）constructor"><a href="#（1）constructor" class="headerlink" title="（1）constructor"></a>（1）constructor</h4><p>组件的构造函数，第一个被执行，若没有显式定义它，会有一个默认的构造函数，但是若显式定义了构造函数，我们必须在构造函数中执行 <code>super(props)</code>，否则无法在构造函数中拿到this。</p>
+<p>如果不初始化 state 或不进行方法绑定，则不需要为 React 组件实现构造函数<strong>Constructor</strong>。</p>
+<p>constructor中通常只做两件事： </p>
+<ul>
+<li>初始化组件的 state</li>
+<li>给事件处理方法绑定 this</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">  <span class="variable language_">super</span>(props);</span><br><span class="line">  <span class="comment">// 不要在构造函数中调用 setState，可以直接给 state 设置初始值</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">state</span> = &#123; <span class="attr">counter</span>: <span class="number">0</span> &#125;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">handleClick</span> = <span class="variable language_">this</span>.<span class="property">handleClick</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）getDerivedStateFromProps"><a href="#（2）getDerivedStateFromProps" class="headerlink" title="（2）getDerivedStateFromProps"></a>（2）getDerivedStateFromProps</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="title function_">getDerivedStateFromProps</span>(props, state)</span><br></pre></td></tr></table></figure>
+
+<p>这是个静态方法，所以不能在这个函数里使用 <code>this</code>，有两个参数 <code>props</code> 和 <code>state</code>，分别指接收到的新参数和当前组件的 <code>state</code> 对象，这个函数会返回一个对象用来更新当前的 <code>state</code> 对象，如果不需要更新可以返回 <code>null</code>。</p>
+<p>该函数会在装载时，接收到新的 <code>props</code> 或者调用了 <code>setState</code> 和 <code>forceUpdate</code> 时被调用。如当接收到新的属性想修改 <code>state</code> ，就可以使用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当 props.counter 变化时，赋值给 state </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(props)</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">      <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">getDerivedStateFromProps</span>(<span class="params">props, state</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (props.<span class="property">counter</span> !== state.<span class="property">counter</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">counter</span>: props.<span class="property">counter</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">      <span class="attr">counter</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">counter</span> + <span class="number">1</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">h1</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Hello, world!&#123;this.state.counter&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在可以显式传入 <code>counter</code> ，但是这里有个问题，如果想要通过点击实现 <code>state.counter</code> 的增加，但这时会发现值不会发生任何变化，一直保持 <code>props</code> 传进来的值。这是由于在 React 16.4^ 的版本中 <code>setState</code> 和 <code>forceUpdate</code> 也会触发这个生命周期，所以当组件内部 <code>state</code> 变化后，就会重新走这个方法，同时会把 <code>state</code> 值赋值为 <code>props</code> 的值。因此需要多加一个字段来记录之前的 <code>props</code> 值，这样就会解决上述问题。具体如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里只列出需要变化的地方</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(props)</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">      <span class="comment">// 增加一个 preCounter 来记录之前的 props 传来的值</span></span><br><span class="line">      <span class="attr">preCounter</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">getDerivedStateFromProps</span>(<span class="params">props, state</span>) &#123;</span><br><span class="line">    <span class="comment">// 跟 state.preCounter 进行比较</span></span><br><span class="line">    <span class="keyword">if</span> (props.<span class="property">counter</span> !== state.<span class="property">preCounter</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">counter</span>: props.<span class="property">counter</span>,</span><br><span class="line">        <span class="attr">preCounter</span>: props.<span class="property">counter</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">      <span class="attr">counter</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">counter</span> + <span class="number">1</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">h1</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Hello, world!&#123;this.state.counter&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）render"><a href="#（3）render" class="headerlink" title="（3）render"></a>（3）render</h4><p>render是React 中最核心的方法，一个组件中必须要有这个方法，它会根据状态 <code>state</code> 和属性 <code>props</code> 渲染组件。这个函数只做一件事，就是返回需要渲染的内容，所以不要在这个函数内做其他业务逻辑，通常调用该方法会返回以下类型中一个：</p>
+<ul>
+<li><strong>React 元素</strong>：这里包括原生的 DOM 以及 React 组件；</li>
+<li><strong>数组和 Fragment（片段）</strong>：可以返回多个元素；</li>
+<li><strong>Portals（插槽）</strong>：可以将子元素渲染到不同的 DOM 子树种；</li>
+<li><strong>字符串和数字</strong>：被渲染成 DOM 中的 text 节点；</li>
+<li><strong>布尔值或 null</strong>：不渲染任何内容。</li>
+</ul>
+<h4 id="（4）componentDidMount"><a href="#（4）componentDidMount" class="headerlink" title="（4）componentDidMount()"></a>（4）componentDidMount()</h4><p>componentDidMount()会在组件挂载后（插入 DOM 树中）立即调。该阶段通常进行以下操作：</p>
+<ul>
+<li>执行依赖于DOM的操作；</li>
+<li>发送网络请求；（官方建议）</li>
+<li>添加订阅消息（会在componentWillUnmount取消订阅）；</li>
+</ul>
+<p>如果在 <code>componentDidMount</code> 中调用 <code>setState</code> ，就会触发一次额外的渲染，多调用了一次 <code>render</code> 函数，由于它是在浏览器刷新屏幕前执行的，所以用户对此是没有感知的，但是我应当避免这样使用，这样会带来一定的性能问题，尽量是在 <code>constructor</code> 中初始化 <code>state</code> 对象。</p>
+<p>在组件装载之后，将计数数字变为1：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>  &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(props)</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">      <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">componentDidMount</span> () &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">      <span class="attr">counter</span>: <span class="number">1</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">render</span> ()  &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;counter&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        counter值: &#123; this.state.counter &#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）组件更新阶段"><a href="#2）组件更新阶段" class="headerlink" title="2）组件更新阶段"></a>2）组件更新阶段</h3><p>当组件的 <code>props</code> 改变了，或组件内部调用了 <code>setState/forceUpdate</code>，会触发更新重新渲染，这个过程可能会发生多次。这个阶段会依次调用下面这些方法：</p>
+<ul>
+<li>getDerivedStateFromProps</li>
+<li>shouldComponentUpdate</li>
+<li>render</li>
+<li>getSnapshotBeforeUpdate</li>
+<li>componentDidUpdate</li>
+</ul>
+<h4 id="（1）shouldComponentUpdate"><a href="#（1）shouldComponentUpdate" class="headerlink" title="（1）shouldComponentUpdate"></a>（1）shouldComponentUpdate</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">shouldComponentUpdate</span>(nextProps, nextState)</span><br></pre></td></tr></table></figure>
+
+<p>在说这个生命周期函数之前，来看两个问题：</p>
+<ul>
+<li><strong>setState 函数在任何情况下都会导致组件重新渲染吗？例如下面这种情况：</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;<span class="attr">number</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">number</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>如果没有调用 setState，props 值也没有变化，是不是组件就不会重新渲染？</strong></li>
+</ul>
+<p>第一个问题答案是 <strong>会</strong> ，第二个问题如果是父组件重新渲染时，不管传入的 props 有没有变化，都会引起子组件的重新渲染。</p>
+<p>那么有没有什么方法解决在这两个场景下不让组件重新渲染进而提升性能呢？这个时候 <code>shouldComponentUpdate</code> 登场了，这个生命周期函数是用来提升速度的，它是在重新渲染组件开始前触发的，默认返回 <code>true</code>，可以比较 <code>this.props</code> 和 <code>nextProps</code> ，<code>this.state</code> 和 <code>nextState</code> 值是否变化，来确认返回 true 或者 <code>false</code>。当返回 <code>false</code> 时，组件的更新过程停止，后续的 <code>render</code>、<code>componentDidUpdate</code> 也不会被调用。</p>
+<p>**注意：**添加 <code>shouldComponentUpdate</code> 方法时，不建议使用深度相等检查（如使用 <code>JSON.stringify()</code>），因为深比较效率很低，可能会比重新渲染组件效率还低。而且该方法维护比较困难，建议使用该方法会产生明显的性能提升时使用。</p>
+<h4 id="（2）getSnapshotBeforeUpdate"><a href="#（2）getSnapshotBeforeUpdate" class="headerlink" title="（2）getSnapshotBeforeUpdate"></a>（2）getSnapshotBeforeUpdate</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">getSnapshotBeforeUpdate</span>(prevProps, prevState)</span><br></pre></td></tr></table></figure>
+
+<p>这个方法在 <code>render</code> 之后，<code>componentDidUpdate</code> 之前调用，有两个参数 <code>prevProps</code> 和 <code>prevState</code>，表示更新之前的 <code>props</code> 和 <code>state</code>，这个函数必须要和 <code>componentDidUpdate</code> 一起使用，并且要有一个返回值，默认是 <code>null</code>，这个返回值作为第三个参数传给 <code>componentDidUpdate</code>。</p>
+<h4 id="（3）componentDidUpdate"><a href="#（3）componentDidUpdate" class="headerlink" title="（3）componentDidUpdate"></a>（3）componentDidUpdate</h4><p>componentDidUpdate() 会在更新后会被立即调用，首次渲染不会执行此方法。 该阶段通常进行以下操作：</p>
+<ul>
+<li>当组件更新后，对 DOM 进行操作； </li>
+<li>如果你对更新前后的 props 进行了比较，也可以选择在此处进行网络请求；（例如，当 props 未发生变化时，则不会执行网络请求）。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">componentDidUpdate</span>(<span class="params">prevProps, prevState, snapshot</span>)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法有三个参数：</p>
+<ul>
+<li>prevProps: 更新前的props</li>
+<li>prevState: 更新前的state</li>
+<li>snapshot: getSnapshotBeforeUpdate()生命周期的返回值</li>
+</ul>
+<h3 id="3）组件卸载阶段"><a href="#3）组件卸载阶段" class="headerlink" title="3）组件卸载阶段"></a>3）组件卸载阶段</h3><p>卸载阶段只有一个生命周期函数，componentWillUnmount() 会在组件卸载及销毁之前直接调用。在此方法中执行必要的清理操作：</p>
+<ul>
+<li>清除 timer，取消网络请求或清除</li>
+<li>取消在 componentDidMount() 中创建的订阅等；</li>
+</ul>
+<p>这个生命周期在一个组件被卸载和销毁之前被调用，因此你不应该再这个方法中使用 <code>setState</code>，因为组件一旦被卸载，就不会再装载，也就不会重新渲染。</p>
+<h3 id="4）错误处理阶段"><a href="#4）错误处理阶段" class="headerlink" title="4）错误处理阶段"></a>4）错误处理阶段</h3><p>componentDidCatch(error, info)，此生命周期在后代组件抛出错误后被调用。 它接收两个参数∶</p>
+<ul>
+<li>error：抛出的错误。</li>
+<li>info：带有 componentStack key 的对象，其中包含有关组件引发错误的栈信息</li>
+</ul>
+<p>React常见的生命周期如下：</p>
+<p><img src="/../img/image222222.png" alt="img"></p>
+<p><strong>React常见生命周期的过程大致如下：</strong></p>
+<ul>
+<li>挂载阶段，首先执行constructor构造方法，来创建组件</li>
+<li>创建完成之后，就会执行render方法，该方法会返回需要渲染的内容</li>
+<li>随后，React会将需要渲染的内容挂载到DOM树上</li>
+<li><strong>挂载完成之后就会执行****componentDidMount生命周期函数</strong></li>
+<li>如果我们给组件创建一个props（用于组件通信）、调用setState（更改state中的数据）、调用forceUpdate（强制更新组件）时，都会重新调用render函数</li>
+<li>render函数重新执行之后，就会重新进行DOM树的挂载</li>
+<li><strong>挂载完成之后就会执行****componentDidUpdate生命周期函数</strong></li>
+<li><strong>当移除组件时，就会执行****componentWillUnmount生命周期函数</strong></li>
+</ul>
+<p><strong>React主要生命周期总结：</strong></p>
+<ol>
+<li><strong>getDefaultProps</strong>：这个函数会在组件创建之前被调用一次（有且仅有一次），它被用来初始化组件的 Props；</li>
+<li><strong>getInitialState</strong>：用于初始化组件的 state 值；</li>
+<li><strong>componentWillMount</strong>：在组件创建后、render 之前，会走到 componentWillMount 阶段。这个阶段我个人一直没用过、非常鸡肋。后来React 官方已经不推荐大家在 componentWillMount 里做任何事情、到现在 <strong>React16 直接废弃了这个生命周期</strong>，足见其鸡肋程度了；</li>
+<li><strong>render</strong>：这是所有生命周期中唯一一个你必须要实现的方法。一般来说需要返回一个 jsx 元素，这时 React 会根据 props 和 state 来把组件渲染到界面上；不过有时，你可能不想渲染任何东西，这种情况下让它返回 null 或者 false 即可；</li>
+<li><strong>componentDidMount</strong>：会在组件挂载后（插入 DOM 树中后）立即调用，标志着组件挂载完成。一些操作如果依赖获取到 DOM 节点信息，我们就会放在这个阶段来做。此外，这还是 React 官方推荐的发起 ajax 请求的时机。该方法和 componentWillMount 一样，有且仅有一次调用。</li>
+</ol>
+<h1 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h1><h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p><img src="/../img/image-20240225215635333.png" alt="image-20240225215635333"></p>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="createStore"><a href="#createStore" class="headerlink" title="createStore"></a>createStore</h3><p><code>createStore</code> 函数通常是用于创建 Redux store 的函数。Redux 是一个用于管理 JavaScript 应用程序状态的流行库。让我们来解析 <code>createStore</code> 函数的一般结构和作用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createStore</span>(<span class="params">reducer, preloadedState, enhancer</span>) &#123;</span><br><span class="line">  <span class="comment">// 内部状态 state</span></span><br><span class="line">  <span class="keyword">let</span> currentState = preloadedState;</span><br><span class="line">  <span class="comment">// 内部订阅者列表</span></span><br><span class="line">  <span class="keyword">let</span> currentListeners = [];</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 获取当前状态</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">getState</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> currentState;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修改状态的唯一方式，通过派发 action</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">dispatch</span>(<span class="params">action</span>) &#123;</span><br><span class="line">    <span class="comment">// 调用 reducer 来获取新的状态</span></span><br><span class="line">    currentState = <span class="title function_">reducer</span>(currentState, action);</span><br><span class="line">    <span class="comment">// 触发所有订阅者</span></span><br><span class="line">    currentListeners.<span class="title function_">forEach</span>(<span class="function"><span class="params">listener</span> =&gt;</span> <span class="title function_">listener</span>());</span><br><span class="line">    <span class="keyword">return</span> action;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 订阅状态的变化，每当状态变化时执行回调函数</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">subscribe</span>(<span class="params">listener</span>) &#123;</span><br><span class="line">    <span class="comment">// 将传入的回调函数加入到订阅者列表中</span></span><br><span class="line">    currentListeners.<span class="title function_">push</span>(listener);</span><br><span class="line">    <span class="comment">// 返回一个取消订阅的函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">unsubscribe</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// 将该回调函数从订阅者列表中移除</span></span><br><span class="line">      <span class="keyword">const</span> index = currentListeners.<span class="title function_">indexOf</span>(listener);</span><br><span class="line">      currentListeners.<span class="title function_">splice</span>(index, <span class="number">1</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 替换 reducer 的函数，用于动态地改变 reducer</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">replaceReducer</span>(<span class="params">nextReducer</span>) &#123;</span><br><span class="line">    reducer = nextReducer;</span><br><span class="line">    <span class="comment">// 调用 dispatch 一个内置的动作，以便更新状态</span></span><br><span class="line">    <span class="title function_">dispatch</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;@@redux/INIT&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 初始化 store，调用 reducer 以获取初始状态，并返回一个 store 对象</span></span><br><span class="line">  <span class="title function_">dispatch</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;@@redux/INIT&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回 store 对象，包含 getState、dispatch、subscribe 和 replaceReducer 方法</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    dispatch,</span><br><span class="line">    subscribe,</span><br><span class="line">    getState,</span><br><span class="line">    replaceReducer</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在让我来解释一下 <code>createStore</code> 函数的各个部分：</p>
+<ol>
+<li><p><strong>参数</strong>：</p>
+<p>​    在 <code>createStore</code> 函数中涉及到的核心数据类型主要有以下几种：</p>
+<ol>
+<li><strong>reducer</strong>：<code>reducer</code> 是一个函数，接收当前状态 (<code>state</code>) 和一个动作 (<code>action</code>)，并返回一个新的状态。它是一个纯函数，通常是通过 <code>switch</code> 语句来根据不同的动作类型进行状态更新的。动作类型通常是一个字符串，表示对状态进行何种操作，例如 <code>&#39;INCREMENT&#39;</code>、<code>&#39;DECREMENT&#39;</code> 等。</li>
+<li><strong>preloadedState</strong>：<code>preloadedState</code> 是一个 JavaScript 对象，表示应用程序的初始状态。它是可选的，如果不提供则状态将被初始化为 <code>undefined</code>，然后在调用 <code>reducer</code> 时被设置为 <code>reducer</code> 函数的默认值。</li>
+<li><strong>currentState</strong>：<code>currentState</code> 是一个变量，用于存储当前的应用程序状态。它会随着动作的派发而改变，通过调用 <code>reducer</code> 函数计算出新的状态。</li>
+<li><strong>currentListeners</strong>：<code>currentListeners</code> 是一个数组，用于存储所有订阅状态变化的回调函数。每当状态发生变化时，这些回调函数将会被依次调用。</li>
+<li><strong>action</strong>：<code>action</code> 是一个普通的 JavaScript 对象，必须包含一个 <code>type</code> 字段，表示动作的类型。除了 <code>type</code> 字段之外，<code>action</code> 对象可以包含其他字段，用于传递数据给 <code>reducer</code> 函数。</li>
+<li><strong>store</strong>：<code>store</code> 是一个对象，包含了 <code>dispatch</code>、<code>subscribe</code>、<code>getState</code> 和 <code>replaceReducer</code> 方法。它是整个 Redux 应用程序的核心，用于管理状态的变化和订阅状态变化。</li>
+</ol>
+<p>​    7.<code>enhancer</code> (可选): 一个函数，用于增强 <code>store</code> 的功能，例如中间件等。</p>
+</li>
+<li><p><strong>内部变量</strong>：</p>
+<ul>
+<li><code>currentState</code>: 存储当前状态的变量。</li>
+<li><code>currentListeners</code>: 一个数组，包含当前订阅状态变化的所有回调函数。</li>
+</ul>
+</li>
+<li><p><strong>方法</strong>：</p>
+<ul>
+<li><code>getState()</code>: 返回当前存储的状态。</li>
+<li><code>dispatch(action)</code>: 接收一个动作并触发状态变化。它通过调用 reducer 函数来计算新的状态，并通知所有的订阅者。</li>
+<li><code>subscribe(listener)</code>: 接收一个回调函数作为参数，每当状态发生变化时就会调用该回调函数。</li>
+<li><code>replaceReducer(nextReducer)</code>: 用于动态替换 reducer 函数。</li>
+</ul>
+</li>
+<li><p><strong>初始化</strong>：</p>
+<ul>
+<li>在初始化过程中，会调用 <code>dispatch(&#123; type: &#39;@@redux/INIT&#39; &#125;)</code> 来获取初始状态。</li>
+</ul>
+</li>
+<li><p><strong>返回值</strong>：</p>
+<ul>
+<li>返回一个包含 <code>dispatch</code>、<code>subscribe</code>、<code>getState</code> 和 <code>replaceReducer</code> 方法的对象，也就是 Redux 的 <code>store</code>。</li>
+</ul>
+</li>
+</ol>
+<p>PS:<code>redux</code> 发布 <code>4.2.0</code> 版本，该版本将原始 <code>createStore API</code> 标记为 <code>@deprecated</code>(废弃)，并且添加了一个全新的 <code>legacy_createStore API</code>，但是并没有添加弃用警告。</p>
+<h3 id="对-Redux-的理解，主要解决什么问题"><a href="#对-Redux-的理解，主要解决什么问题" class="headerlink" title="对 Redux 的理解，主要解决什么问题"></a>对 Redux 的理解，主要解决什么问题</h3><p>React是视图层框架。Redux是一个用来管理数据状态和UI状态的JavaScript应用工具。随着JavaScript单页应用（SPA）开发日趋复杂， JavaScript需要管理比任何时候都要多的state（状态）， Redux就是降低管理难度的。（Redux支持React、Angular、jQuery甚至纯JavaScript）。</p>
+<p>在 React 中，UI 以组件的形式来搭建，组件之间可以嵌套组合。但 React 中组件间通信的数据流是单向的，顶层组件可以通过 props 属性向下层组件传递数据，而下层组件不能向上层组件传递数据，兄弟组件之间同样不能。这样简单的单向数据流支撑起了 React 中的数据可控性。</p>
+<p>当项目越来越大的时候，管理数据的事件或回调函数将越来越多，也将越来越不好管理。管理不断变化的 state 非常困难。如果一个 model 的变化会引起另一个 model 变化，那么当 view 变化时，就可能引起对应 model 以及另一个 model 的变化，依次地，可能会引起另一个 view 的变化。直至你搞不清楚到底发生了什么。state 在什么时候，由于什么原因，如何变化已然不受控制。 当系统变得错综复杂的时候，想重现问题或者添加新功能就会变得举步维艰。如果这还不够糟糕，考虑一些来自前端开发领域的新需求，如更新调优、服务端渲染、路由跳转前请求数据等。state 的管理在大项目中相当复杂。</p>
+<p>Redux 提供了一个叫 store 的统一仓储库，组件通过 dispatch 将 state 直接传入store，不用通过其他的组件。并且组件通过 subscribe 从 store获取到 state 的改变。使用了 Redux，所有的组件都可以从 store 中获取到所需的 state，他们也能从store 获取到 state 的改变。这比组件之间互相传递数据清晰明朗的多。</p>
+<p><strong>主要解决的问题：</strong></p>
+<p>单纯的Redux只是一个状态机，是没有UI呈现的，react- redux作用是将Redux的状态机和React的UI呈现绑定在一起，当你dispatch action改变state的时候，会自动更新页面。</p>
+<h3 id="2-Redux-原理及工作流程"><a href="#2-Redux-原理及工作流程" class="headerlink" title="2. Redux 原理及工作流程"></a>2. Redux 原理及工作流程</h3><p><strong>（1）原理</strong></p>
+<p>Redux源码主要分为以下几个模块文件</p>
+<ul>
+<li>compose.js 提供从右到左进行函数式编程</li>
+<li>createStore.js 提供作为生成唯一store的函数</li>
+<li>combineReducers.js 提供合并多个reducer的函数，保证store的唯一性</li>
+<li>bindActionCreators.js 可以让开发者在不直接接触dispacth的前提下进行更改state的操作</li>
+<li>applyMiddleware.js 这个方法通过中间件来增强dispatch的功能</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> actionTypes = &#123;</span><br><span class="line">    <span class="attr">ADD</span>: <span class="string">&#x27;ADD&#x27;</span>,</span><br><span class="line">    <span class="attr">CHANGEINFO</span>: <span class="string">&#x27;CHANGEINFO&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> initState = &#123;</span><br><span class="line">    <span class="attr">info</span>: <span class="string">&#x27;初始化&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">initReducer</span>(<span class="params">state=initState, action</span>) &#123;</span><br><span class="line">    <span class="keyword">switch</span>(action.<span class="property">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> actionTypes.<span class="property">CHANGEINFO</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                <span class="attr">info</span>: action.<span class="property">preload</span>.<span class="property">info</span> || <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123; ...state &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">createStore</span>(<span class="params">reducer, initialState, middleFunc</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (initialState &amp;&amp; <span class="keyword">typeof</span> initialState === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        middleFunc = initialState;</span><br><span class="line">        initialState = <span class="literal">undefined</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> currentState = initialState;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> listeners = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (middleFunc &amp;&amp; <span class="keyword">typeof</span> middleFunc === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        <span class="comment">// 封装dispatch </span></span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">middleFunc</span>(createStore)(reducer, initialState);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">getState</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> currentState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">dispatch</span> = (<span class="params">action</span>) =&gt; &#123;</span><br><span class="line">        currentState = <span class="title function_">reducer</span>(currentState, action);</span><br><span class="line"></span><br><span class="line">        listeners.<span class="title function_">forEach</span>(<span class="function"><span class="params">listener</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">listener</span>();</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">subscribe</span> = (<span class="params">listener</span>) =&gt; &#123;</span><br><span class="line">        listeners.<span class="title function_">push</span>(listener);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        getState,</span><br><span class="line">        dispatch,</span><br><span class="line">        subscribe</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）工作流程</strong></p>
+<ul>
+<li>const store&#x3D; createStore（fn）生成数据; </li>
+<li>action: {type: Symble(‘action01), payload:’payload’ }定义行为; </li>
+<li>dispatch发起action：store.dispatch(doSomething(‘action001’)); </li>
+<li>reducer：处理action，返回新的state;</li>
+</ul>
+<p>通俗点解释：</p>
+<ul>
+<li>首先，用户（通过View）发出Action，发出方式就用到了dispatch方法</li>
+<li>然后，Store自动调用Reducer，并且传入两个参数：当前State和收到的Action，Reducer会返回新的State</li>
+<li>State—旦有变化，Store就会调用监听函数，来更新View</li>
+</ul>
+<p>以 store 为核心，可以把它看成数据存储中心，但是他要更改数据的时候不能直接修改，数据修改更新的角色由Reducers来担任，store只做存储，中间人，当Reducers的更新完成以后会通过store的订阅来通知react component，组件把新的状态重新获取渲染，组件中也能主动发送action，创建action后这个动作是不会执行的，所以要dispatch这个action，让store通过reducers去做更新React Component 就是react的每个组件。</p>
+<h3 id="3-Redux-中异步的请求怎么处理"><a href="#3-Redux-中异步的请求怎么处理" class="headerlink" title="3. Redux 中异步的请求怎么处理"></a>3. Redux 中异步的请求怎么处理</h3><p>可以在 componentDidmount 中直接进⾏请求⽆须借助redux。但是在⼀定规模的项⽬中,上述⽅法很难进⾏异步流的管理,通常情况下我们会借助redux的异步中间件进⾏异步处理。redux异步流中间件其实有很多，当下主流的异步中间件有两种redux-thunk、redux-saga。</p>
+<p><strong>（1）使用react-thunk中间件</strong></p>
+<p><strong>redux-thunk</strong>优点**:** </p>
+<ul>
+<li>体积⼩: redux-thunk的实现⽅式很简单,只有不到20⾏代码 </li>
+<li>使⽤简单: redux-thunk没有引⼊像redux-saga或者redux-observable额外的范式,上⼿简单</li>
+</ul>
+<p><strong>redux-thunk</strong>缺陷**:** </p>
+<ul>
+<li>样板代码过多: 与redux本身⼀样,通常⼀个请求需要⼤量的代码,⽽且很多都是重复性质的 </li>
+<li>耦合严重: 异步操作与redux的action偶合在⼀起,不⽅便管理 </li>
+<li>功能孱弱: 有⼀些实际开发中常⽤的功能需要⾃⼰进⾏封装</li>
+</ul>
+<p>使用步骤：</p>
+<ul>
+<li>配置中间件，在store的创建中配置</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;createStore, applyMiddleware, compose&#125; <span class="keyword">from</span> <span class="string">&#x27;redux&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> reducer <span class="keyword">from</span> <span class="string">&#x27;./reducer&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> thunk <span class="keyword">from</span> <span class="string">&#x27;redux-thunk&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置调试工具</span></span><br><span class="line"><span class="keyword">const</span> composeEnhancers = <span class="variable language_">window</span>.<span class="property">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span> ? <span class="variable language_">window</span>.<span class="title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;&#125;) : compose;</span><br><span class="line"><span class="comment">// 设置中间件</span></span><br><span class="line"><span class="keyword">const</span> enhancer = <span class="title function_">composeEnhancers</span>(</span><br><span class="line">  <span class="title function_">applyMiddleware</span>(thunk)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(reducer, enhancer);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加一个返回函数的actionCreator，将异步请求逻辑放在里面</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  发送get请求，并生成相应action，更新store的函数</span></span><br><span class="line"><span class="comment">  <span class="doctag">@param</span> url &#123;string&#125; 请求地址</span></span><br><span class="line"><span class="comment">  <span class="doctag">@param</span> func &#123;function&#125; 真正需要生成的action对应的actionCreator</span></span><br><span class="line"><span class="comment">  <span class="doctag">@return</span> &#123;<span class="type">function</span>&#125; </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// dispatch为自动接收的store.dispatch函数 </span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getHttpAction</span> = (<span class="params">url, func</span>) =&gt; <span class="function">(<span class="params">dispatch</span>) =&gt;</span> &#123;</span><br><span class="line">    axios.<span class="title function_">get</span>(url).<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">res</span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> action = <span class="title function_">func</span>(res.<span class="property">data</span>)</span><br><span class="line">        <span class="title function_">dispatch</span>(action)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>生成action，并发送action</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">componentDidMount</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> action = <span class="title function_">getHttpAction</span>(<span class="string">&#x27;/getData&#x27;</span>, getInitTodoItemAction)</span><br><span class="line">    <span class="comment">// 发送函数类型的action时，该action的函数体会自动执行</span></span><br><span class="line">    store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）使用redux-saga中间件</strong></p>
+<p><strong>redux-saga</strong>优点**:** </p>
+<ul>
+<li>异步解耦: 异步操作被被转移到单独 saga.js 中，不再是掺杂在 action.js 或 component.js 中 </li>
+<li>action摆脱thunk function: dispatch 的参数依然是⼀个纯粹的 action (FSA)，⽽不是充满 “⿊魔法” thunk function </li>
+<li>异常处理: 受益于 generator function 的 saga 实现，代码异常&#x2F;请求失败 都可以直接通过 try&#x2F;catch 语法直接捕获处理</li>
+<li>功能强⼤: redux-saga提供了⼤量的Saga 辅助函数和Effect 创建器供开发者使⽤,开发者⽆须封装或者简单封装即可使⽤ </li>
+<li>灵活: redux-saga可以将多个Saga可以串⾏&#x2F;并⾏组合起来,形成⼀个⾮常实⽤的异步flow </li>
+<li>易测试，提供了各种case的测试⽅案，包括mock task，分⽀覆盖等等</li>
+</ul>
+<p><strong>redux-saga</strong>缺陷**:** </p>
+<ul>
+<li>额外的学习成本: redux-saga不仅在使⽤难以理解的 generator function,⽽且有数⼗个API,学习成本远超redux-thunk,最重要的是你的额外学习成本是只服务于这个库的,与redux-observable不同,redux-observable虽然也有额外学习成本但是背后是rxjs和⼀整套思想 </li>
+<li>体积庞⼤: 体积略⼤,代码近2000⾏，min版25KB左右 </li>
+<li>功能过剩: 实际上并发控制等功能很难⽤到,但是我们依然需要引⼊这些代码 </li>
+<li>ts⽀持不友好: yield⽆法返回TS类型</li>
+</ul>
+<p>redux-saga可以捕获action，然后执行一个函数，那么可以把异步代码放在这个函数中，使用步骤如下：</p>
+<ul>
+<li>配置中间件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;createStore, applyMiddleware, compose&#125; <span class="keyword">from</span> <span class="string">&#x27;redux&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> reducer <span class="keyword">from</span> <span class="string">&#x27;./reducer&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> createSagaMiddleware <span class="keyword">from</span> <span class="string">&#x27;redux-saga&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">TodoListSaga</span> <span class="keyword">from</span> <span class="string">&#x27;./sagas&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> composeEnhancers = <span class="variable language_">window</span>.<span class="property">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span> ? <span class="variable language_">window</span>.<span class="title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;&#125;) : compose;</span><br><span class="line"><span class="keyword">const</span> sagaMiddleware = <span class="title function_">createSagaMiddleware</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> enhancer = <span class="title function_">composeEnhancers</span>(</span><br><span class="line">  <span class="title function_">applyMiddleware</span>(sagaMiddleware)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(reducer, enhancer);</span><br><span class="line">sagaMiddleware.<span class="title function_">run</span>(<span class="title class_">TodoListSaga</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将异步请求放在sagas.js中</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;takeEvery, put&#125; <span class="keyword">from</span> <span class="string">&#x27;redux-saga/effects&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123;initTodoList&#125; <span class="keyword">from</span> <span class="string">&#x27;./actionCreator&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123;<span class="variable constant_">GET_INIT_ITEM</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;./actionTypes&#x27;</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">func</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">// 可以获取异步返回数据</span></span><br><span class="line">        <span class="keyword">const</span> res = <span class="keyword">yield</span> axios.<span class="title function_">get</span>(<span class="string">&#x27;/getData&#x27;</span>)</span><br><span class="line">        <span class="keyword">const</span> action = <span class="title function_">initTodoList</span>(res.<span class="property">data</span>)</span><br><span class="line">        <span class="comment">// 将action发送到reducer</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="title function_">put</span>(action)</span><br><span class="line">    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;网络请求失败&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">mySaga</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// 自动捕获GET_INIT_ITEM类型的action，并执行func</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="title function_">takeEvery</span>(<span class="variable constant_">GET_INIT_ITEM</span>, func)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mySaga</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>发送action</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">componentDidMount</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">const</span> action = <span class="title function_">getInitTodoItemAction</span>()</span><br><span class="line">  store.<span class="title function_">dispatch</span>(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Redux-怎么实现属性传递，介绍下原理"><a href="#4-Redux-怎么实现属性传递，介绍下原理" class="headerlink" title="4. Redux 怎么实现属性传递，介绍下原理"></a>4. Redux 怎么实现属性传递，介绍下原理</h3><p>react-redux 数据传输∶ view–&gt;action–&gt;reducer–&gt;store–&gt;view。看下点击事件的数据是如何通过redux传到view上：</p>
+<ul>
+<li>view 上的AddClick 事件通过mapDispatchToProps 把数据传到action —&gt; click:()&#x3D;&gt;dispatch(ADD)</li>
+<li>action 的ADD 传到reducer上</li>
+<li>reducer传到store上 const store &#x3D; createStore(reducer);</li>
+<li>store再通过 mapStateToProps 映射穿到view上text:State.text</li>
+</ul>
+<p>代码示例∶</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">&#x27;redux&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Provider</span>, connect &#125; <span class="keyword">from</span> <span class="string">&#x27;react-redux&#x27;</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&#123;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> &#123; text, click, clickR &#125; = <span class="variable language_">this</span>.<span class="property">props</span>;</span><br><span class="line">        <span class="keyword">return</span>(</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">div</span>&gt;</span>数据:已有人&#123;text&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;click&#125;</span>&gt;</span>加人<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;clickR&#125;</span>&gt;</span>减人<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">    <span class="attr">text</span>:<span class="number">5</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> reducer = <span class="keyword">function</span>(<span class="params">state,action</span>)&#123;</span><br><span class="line">    <span class="keyword">switch</span>(action.<span class="property">type</span>)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;ADD&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="attr">text</span>:state.<span class="property">text</span>+<span class="number">1</span>&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;REMOVE&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="attr">text</span>:state.<span class="property">text</span>-<span class="number">1</span>&#125;</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> initialState;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable constant_">ADD</span> = &#123;</span><br><span class="line">    <span class="attr">type</span>:<span class="string">&#x27;ADD&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Remove</span> = &#123;</span><br><span class="line">    <span class="attr">type</span>:<span class="string">&#x27;REMOVE&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">createStore</span>(reducer);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mapStateToProps = <span class="keyword">function</span> (<span class="params">state</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span>&#123;</span><br><span class="line">        <span class="attr">text</span>:state.<span class="property">text</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mapDispatchToProps = <span class="keyword">function</span>(<span class="params">dispatch</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span>&#123;</span><br><span class="line">        <span class="attr">click</span>:<span class="function">()=&gt;</span><span class="title function_">dispatch</span>(<span class="variable constant_">ADD</span>),</span><br><span class="line">        <span class="attr">clickR</span>:<span class="function">()=&gt;</span><span class="title function_">dispatch</span>(<span class="title class_">Remove</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">App1</span> = <span class="title function_">connect</span>(mapStateToProps,mapDispatchToProps)(<span class="title class_">App</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Provider</span> <span class="attr">store</span> = <span class="string">&#123;store&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">App1</span>&gt;</span><span class="tag">&lt;/<span class="name">App1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Provider</span>&gt;</span></span>,<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-Redux-中间件是什么？接受几个参数？柯里化函数两端的参数具体是什么？"><a href="#5-Redux-中间件是什么？接受几个参数？柯里化函数两端的参数具体是什么？" class="headerlink" title="5. Redux 中间件是什么？接受几个参数？柯里化函数两端的参数具体是什么？"></a>5. Redux 中间件是什么？接受几个参数？柯里化函数两端的参数具体是什么？</h3><p>Redux 的中间件提供的是位于 action 被发起之后，到达 reducer 之前的扩展点，换而言之，原本 view -→&gt; action -&gt; reducer -&gt; store 的数据流加上中间件后变成了 view -&gt; action -&gt; middleware -&gt; reducer -&gt; store ，在这一环节可以做一些”副作用”的操作，如异步请求、打印日志等。</p>
+<p>applyMiddleware源码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">applyMiddleware</span>(<span class="params">...middlewares</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">createStore</span> =&gt;</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 利用传入的createStore和reducer和创建一个store</span></span><br><span class="line">        <span class="keyword">const</span> store = <span class="title function_">createStore</span>(...args)</span><br><span class="line">        <span class="keyword">let</span> <span class="title function_">dispatch</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> middlewareAPI = &#123;</span><br><span class="line">            <span class="attr">getState</span>: store.<span class="property">getState</span>,</span><br><span class="line">            <span class="attr">dispatch</span>: <span class="function">(<span class="params">...args</span>) =&gt;</span> <span class="title function_">dispatch</span>(...args)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 让每个 middleware 带着 middlewareAPI 这个参数分别执行一遍</span></span><br><span class="line">        <span class="keyword">const</span> chain = middlewares.<span class="title function_">map</span>(<span class="function"><span class="params">middleware</span> =&gt;</span> <span class="title function_">middleware</span>(middlewareAPI))</span><br><span class="line">        <span class="comment">// 接着 compose 将 chain 中的所有匿名函数，组装成一个新的函数，即新的 dispatch</span></span><br><span class="line">        dispatch = <span class="title function_">compose</span>(...chain)(store.<span class="property">dispatch</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            ...store,</span><br><span class="line">            dispatch</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从applyMiddleware中可以看出∶</p>
+<ul>
+<li>redux中间件接受一个对象作为参数，对象的参数上有两个字段 dispatch 和 getState，分别代表着 Redux Store 上的两个同名函数。</li>
+<li>柯里化函数两端一个是 middewares，一个是store.dispatch</li>
+</ul>
+<h3 id="6-Redux-请求中间件如何处理并发"><a href="#6-Redux-请求中间件如何处理并发" class="headerlink" title="6. Redux 请求中间件如何处理并发"></a>6. Redux 请求中间件如何处理并发</h3><p><strong>使用redux-Saga</strong></p>
+<p>redux-saga是一个管理redux应用异步操作的中间件，用于代替 redux-thunk 的。它通过创建 Sagas 将所有异步操作逻辑存放在一个地方进行集中处理，以此将react中的同步操作与异步操作区分开来，以便于后期的管理与维护。 redux-saga如何处理并发：</p>
+<ul>
+<li><strong>takeEvery</strong></li>
+</ul>
+<p>可以让多个 saga 任务并行被 fork 执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">    fork,</span><br><span class="line">    take</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&quot;redux-saga/effects&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">takeEvery</span> = (<span class="params">pattern, saga, ...args</span>) =&gt; <span class="title function_">fork</span>(<span class="keyword">function</span>*() &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> action = <span class="keyword">yield</span> <span class="title function_">take</span>(pattern)</span><br><span class="line">        <span class="keyword">yield</span> <span class="title function_">fork</span>(saga, ...args.<span class="title function_">concat</span>(action))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>takeLatest</strong></li>
+</ul>
+<p>takeLatest 不允许多个 saga 任务并行地执行。一旦接收到新的发起的 action，它就会取消前面所有 fork 过的任务（如果这些任务还在执行的话）。</p>
+<p>在处理 AJAX 请求的时候，如果只希望获取最后那个请求的响应， takeLatest 就会非常有用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">    cancel,</span><br><span class="line">    fork,</span><br><span class="line">    take</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&quot;redux-saga/effects&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">takeLatest</span> = (<span class="params">pattern, saga, ...args</span>) =&gt; <span class="title function_">fork</span>(<span class="keyword">function</span>*() &#123;</span><br><span class="line">    <span class="keyword">let</span> lastTask</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> action = <span class="keyword">yield</span> <span class="title function_">take</span>(pattern)</span><br><span class="line">        <span class="keyword">if</span> (lastTask) &#123;</span><br><span class="line">            <span class="keyword">yield</span> <span class="title function_">cancel</span>(lastTask) <span class="comment">// 如果任务已经结束，则 cancel 为空操作</span></span><br><span class="line">        &#125;</span><br><span class="line">        lastTask = <span class="keyword">yield</span> <span class="title function_">fork</span>(saga, ...args.<span class="title function_">concat</span>(action))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-Redux-状态管理器和变量挂载到-window-中有什么区别"><a href="#7-Redux-状态管理器和变量挂载到-window-中有什么区别" class="headerlink" title="7. Redux 状态管理器和变量挂载到 window 中有什么区别"></a>7. Redux 状态管理器和变量挂载到 window 中有什么区别</h3><p>两者都是存储数据以供后期使用。但是Redux状态更改可回溯——Time travel，数据多了的时候可以很清晰的知道改动在哪里发生，完整的提供了一套状态管理模式。</p>
+<p>随着 JavaScript 单页应用开发日趋复杂，JavaScript 需要管理比任何时候都要多的 state （状态）。 这些 state 可能包括服务器响应、缓存数据、本地生成尚未持久化到服务器的数据，也包括 UI状态，如激活的路由，被选中的标签，是否显示加载动效或者分页器等等。</p>
+<p>管理不断变化的 state 非常困难。如果一个 model 的变化会引起另一个 model 变化，那么当 view 变化时，就可能引起对应 model 以及另一个model 的变化，依次地，可能会引起另一个 view 的变化。直至你搞不清楚到底发生了什么。state 在什么时候，由于什么原因，如何变化已然不受控制。 当系统变得错综复杂的时候，想重现问题或者添加新功能就会变得举步维艰。</p>
+<p>如果这还不够糟糕，考虑一些来自前端开发领域的新需求，如更新调优、服务端渲染、路由跳转前请求数据等等。前端开发者正在经受前所未有的复杂性，难道就这么放弃了吗?当然不是。</p>
+<p>这里的复杂性很大程度上来自于：我们总是将两个难以理清的概念混淆在一起：变化和异步。 可以称它们为曼妥思和可乐。如果把二者分开，能做的很好，但混到一起，就变得一团糟。一些库如 React 视图在视图层禁止异步和直接操作 DOM来解决这个问题。美中不足的是，React 依旧把处理 state 中数据的问题留给了你。Redux就是为了帮你解决这个问题。</p>
+<h3 id="8-mobox-和-redux-有什么区别？"><a href="#8-mobox-和-redux-有什么区别？" class="headerlink" title="8. mobox 和 redux 有什么区别？"></a>8. mobox 和 redux 有什么区别？</h3><p><strong>（1）共同点</strong></p>
+<ul>
+<li>为了解决状态管理混乱，无法有效同步的问题统一维护管理应用状态;</li>
+<li>某一状态只有一个可信数据来源（通常命名为store，指状态容器）;</li>
+<li>操作更新状态方式统一，并且可控（通常以action方式提供更新状态的途径）;</li>
+<li>支持将store与React组件连接，如react-redux，mobx- react;</li>
+</ul>
+<p><strong>（2）区别</strong></p>
+<p>Redux更多的是遵循Flux模式的一种实现，是一个 JavaScript库，它关注点主要是以下几方面∶ </p>
+<ul>
+<li>Action∶ 一个JavaScript对象，描述动作相关信息，主要包含type属性和payload属性∶</li>
+</ul>
+<p>​         o type∶ action 类型; </p>
+<p>​         o payload∶ 负载数据;</p>
+<ul>
+<li>Reducer∶ 定义应用状态如何响应不同动作（action），如何更新状态;</li>
+<li>Store∶ 管理action和reducer及其关系的对象，主要提供以下功能∶</li>
+</ul>
+<p>​         o 维护应用状态并支持访问状态(getState());</p>
+<p>​         o 支持监听action的分发，更新状态(dispatch(action)); </p>
+<p>​         o 支持订阅store的变更(subscribe(listener));</p>
+<ul>
+<li>异步流∶ 由于Redux所有对store状态的变更，都应该通过action触发，异步任务（通常都是业务或获取数据任务）也不例外，而为了不将业务或数据相关的任务混入React组件中，就需要使用其他框架配合管理异步任务流程，如redux-thunk，redux-saga等;</li>
+</ul>
+<p>Mobx是一个透明函数响应式编程的状态管理库，它使得状态管理简单可伸缩∶</p>
+<ul>
+<li>Action∶定义改变状态的动作函数，包括如何变更状态;</li>
+<li>Store∶ 集中管理模块状态（State）和动作(action)</li>
+<li>Derivation（衍生）∶ 从应用状态中派生而出，且没有任何其他影响的数据</li>
+</ul>
+<p><strong>对比总结：</strong></p>
+<ul>
+<li>redux将数据保存在单一的store中，mobx将数据保存在分散的多个store中</li>
+<li>redux使用plain object保存数据，需要手动处理变化后的操作;mobx适用observable保存数据，数据变化后自动处理响应的操作</li>
+<li>redux使用不可变状态，这意味着状态是只读的，不能直接去修改它，而是应该返回一个新的状态，同时使用纯函数;mobx中的状态是可变的，可以直接对其进行修改</li>
+<li>mobx相对来说比较简单，在其中有很多的抽象，mobx更多的使用面向对象的编程思维;redux会比较复杂，因为其中的函数式编程思想掌握起来不是那么容易，同时需要借助一系列的中间件来处理异步和副作用</li>
+<li>mobx中有更多的抽象和封装，调试会比较困难，同时结果也难以预测;而redux提供能够进行时间回溯的开发工具，同时其纯函数以及更少的抽象，让调试变得更加的容易</li>
+</ul>
+<h3 id="9-Redux-和-Vuex-有什么区别，它们的共同思想"><a href="#9-Redux-和-Vuex-有什么区别，它们的共同思想" class="headerlink" title="9. Redux 和 Vuex 有什么区别，它们的共同思想"></a>9. Redux 和 Vuex 有什么区别，它们的共同思想</h3><p><strong>（1）Redux 和 Vuex区别</strong></p>
+<ul>
+<li>Vuex改进了Redux中的Action和Reducer函数，以mutations变化函数取代Reducer，无需switch，只需在对应的mutation函数里改变state值即可</li>
+<li>Vuex由于Vue自动重新渲染的特性，无需订阅重新渲染函数，只要生成新的State即可</li>
+<li>Vuex数据流的顺序是∶View调用store.commit提交对应的请求到Store中对应的mutation函数-&gt;store改变（vue检测到数据变化自动渲染）</li>
+</ul>
+<p>通俗点理解就是，vuex 弱化 dispatch，通过commit进行 store状态的一次更变；取消了action概念，不必传入特定的 action形式进行指定变更；弱化reducer，基于commit参数直接对数据进行转变，使得框架更加简易; </p>
+<p><strong>（2）共同思想</strong></p>
+<ul>
+<li>单—的数据源 </li>
+<li>变化可以预测</li>
+</ul>
+<p>本质上∶ redux与vuex都是对mvvm思想的服务，将数据从视图中抽离的一种方案。</p>
+<h3 id="10-Redux-中间件是怎么拿到store-和-action-然后怎么处理"><a href="#10-Redux-中间件是怎么拿到store-和-action-然后怎么处理" class="headerlink" title="10. Redux 中间件是怎么拿到store 和 action? 然后怎么处理?"></a>10. Redux 中间件是怎么拿到store 和 action? 然后怎么处理?</h3><p>redux中间件本质就是一个函数柯里化。redux applyMiddleware Api 源码中每个middleware 接受2个参数， Store 的getState 函数和dispatch 函数，分别获得store和action，最终返回一个函数。该函数会被传入 next 的下一个 middleware 的 dispatch 方法，并返回一个接收 action 的新函数，这个函数可以直接调用 next（action），或者在其他需要的时刻调用，甚至根本不去调用它。调用链中最后一个 middleware 会接受真实的 store的 dispatch 方法作为 next 参数，并借此结束调用链。所以，middleware 的函数签名是（{ getState，dispatch })&#x3D;&gt; next &#x3D;&gt; action。</p>
+<h3 id="11-Redux中的connect有什么作用"><a href="#11-Redux中的connect有什么作用" class="headerlink" title="11. Redux中的connect有什么作用"></a>11. Redux中的connect有什么作用</h3><p>connect负责连接React和Redux</p>
+<p><strong>（1）获取state</strong></p>
+<p>connect 通过 context获取 Provider 中的 store，通过<code> store.getState()</code> 获取整个store tree 上所有state </p>
+<p><strong>（2）包装原组件</strong></p>
+<p>将state和action通过props的方式传入到原组件内部 wrapWithConnect 返回—个 ReactComponent 对 象 Connect，Connect 重 新 render 外部传入的原组件 WrappedComponent ，并把 connect 中传入的 mapStateToProps，mapDispatchToProps与组件上原有的 props合并后，通过属性的方式传给WrappedComponent </p>
+<p><strong>（3）监听store tree变化</strong></p>
+<p>connect缓存了store tree中state的状态，通过当前state状态 和变更前 state 状态进行比较，从而确定是否调用 <code>this.setState()</code>方法触发Connect及其子组件的重新渲染</p>
+<h1 id="React-Hooks"><a href="#React-Hooks" class="headerlink" title="React Hooks"></a>React Hooks</h1><p>React Hooks 主要解决了以下问题：</p>
+<p><strong>（1）在组件之间复用状态逻辑很难</strong></p>
+<p>React 没有提供将可复用性行为“附加”到组件的途径（例如，把组件连接到 store）解决此类问题可以使用 render props 和 高阶组件。但是这类方案需要重新组织组件结构，这可能会很麻烦，并且会使代码难以理解。由 providers，consumers，高阶组件，render props 等其他抽象层组成的组件会形成“嵌套地狱”。尽管可以在 DevTools 过滤掉它们，但这说明了一个更深层次的问题：React 需要为共享状态逻辑提供更好的原生途径。</p>
+<p>可以使用 Hook 从组件中提取状态逻辑，使得这些逻辑可以单独测试并复用。Hook 使我们在无需修改组件结构的情况下复用状态逻辑。 这使得在组件间或社区内共享 Hook 变得更便捷。</p>
+<p><strong>（2）复杂组件变得难以理解</strong></p>
+<p>在组件中，每个生命周期常常包含一些不相关的逻辑。例如，组件常常在 componentDidMount 和 componentDidUpdate 中获取数据。但是，同一个 componentDidMount 中可能也包含很多其它的逻辑，如设置事件监听，而之后需在 componentWillUnmount 中清除。相互关联且需要对照修改的代码被进行了拆分，而完全不相关的代码却在同一个方法中组合在一起。如此很容易产生 bug，并且导致逻辑不一致。</p>
+<p>在多数情况下，不可能将组件拆分为更小的粒度，因为状态逻辑无处不在。这也给测试带来了一定挑战。同时，这也是很多人将 React 与状态管理库结合使用的原因之一。但是，这往往会引入了很多抽象概念，需要你在不同的文件之间来回切换，使得复用变得更加困难。</p>
+<p>为了解决这个问题，Hook 将组件中相互关联的部分拆分成更小的函数（比如设置订阅或请求数据），而并非强制按照生命周期划分。你还可以使用 reducer 来管理组件的内部状态，使其更加可预测。</p>
+<p><strong>（3）难以理解的 class</strong></p>
+<p>除了代码复用和代码管理会遇到困难外，class 是学习 React 的一大屏障。我们必须去理解 JavaScript 中 this 的工作方式，这与其他语言存在巨大差异。还不能忘记绑定事件处理器。没有稳定的语法提案，这些代码非常冗余。大家可以很好地理解 props，state 和自顶向下的数据流，但对 class 却一筹莫展。即便在有经验的 React 开发者之间，对于函数组件与 class 组件的差异也存在分歧，甚至还要区分两种组件的使用场景。</p>
+<p>为了解决这些问题，Hook 使你在非 class 的情况下可以使用更多的 React 特性。 从概念上讲，React 组件一直更像是函数。而 Hook 则拥抱了函数，同时也没有牺牲 React 的精神原则。Hook 提供了问题的解决方案，无需学习复杂的函数式或响应式编程技术</p>
+<h2 id="React-Hook-的使用限制"><a href="#React-Hook-的使用限制" class="headerlink" title="React Hook 的使用限制"></a>React Hook 的使用限制</h2><p>React Hooks 的限制主要有两条：</p>
+<ul>
+<li>不要在循环、条件或嵌套函数中调用 Hook；</li>
+<li>在 React 的函数组件中调用 Hook。</li>
+</ul>
+<p>那为什么会有这样的限制呢？Hooks 的设计初衷是为了改进 React 组件的开发模式。在旧有的开发模式下遇到了三个问题。</p>
+<ul>
+<li>组件之间难以复用状态逻辑。过去常见的解决方案是高阶组件、render props 及状态管理框架。</li>
+<li>复杂的组件变得难以理解。生命周期函数与业务逻辑耦合太深，导致关联部分难以拆分。</li>
+<li>人和机器都很容易混淆类。常见的有 this 的问题，但在 React 团队中还有类难以优化的问题，希望在编译优化层面做出一些改进。</li>
+</ul>
+<p>这三个问题在一定程度上阻碍了 React 的后续发展，所以为了解决这三个问题，Hooks <strong>基于函数组件</strong>开始设计。然而第三个问题决定了 Hooks 只支持函数组件。</p>
+<p>那为什么不要在循环、条件或嵌套函数中调用 Hook 呢？因为 Hooks 的设计是基于数组实现。在调用时按顺序加入数组中，如果使用循环、条件或嵌套函数很有可能导致数组取值错位，执行错误的 Hook。当然，实质上 React 的源码里不是数组，是链表。</p>
+<p>这些限制会在编码上造成一定程度的心智负担，新手可能会写错，为了避免这样的情况，可以引入 ESLint 的 Hooks 检查插件进行预防。</p>
+<h2 id="useEffect-与-useLayoutEffect-的区别"><a href="#useEffect-与-useLayoutEffect-的区别" class="headerlink" title="useEffect 与 useLayoutEffect 的区别"></a>useEffect 与 useLayoutEffect 的区别</h2><p><strong>（1）共同点</strong></p>
+<ul>
+<li>**运用效果：**useEffect 与 useLayoutEffect 两者都是用于处理副作用，这些副作用包括改变 DOM、设置订阅、操作定时器等。在函数组件内部操作副作用是不被允许的，所以需要使用这两个函数去处理。</li>
+<li>**使用方式：**useEffect 与 useLayoutEffect 两者底层的函数签名是完全一致的，都是调用的 mountEffectImpl方法，在使用上也没什么差异，基本可以直接替换。</li>
+</ul>
+<p><strong>（2）不同点</strong></p>
+<ul>
+<li><strong>使用场景</strong>**：**useEffect 在 React 的渲染过程中是被异步调用的，用于绝大多数场景；而 useLayoutEffect 会在所有的 DOM 变更之后同步调用，主要用于处理 DOM 操作、调整样式、避免页面闪烁等问题。也正因为是同步处理，所以需要避免在 useLayoutEffect 做计算量较大的耗时任务从而造成阻塞。</li>
+<li>**使用效果：**useEffect是按照顺序执行代码的，改变屏幕像素之后执行（先渲染，后改变DOM），当改变屏幕内容时可能会产生闪烁；useLayoutEffect是改变屏幕像素之前就执行了（会推迟页面显示的事件，先改变DOM后渲染），不会产生闪烁。<strong>useLayoutEffect总是比useEffect先执行。</strong></li>
+</ul>
+<p>在未来的趋势上，两个 API 是会长期共存的，暂时没有删减合并的计划，需要开发者根据场景去自行选择。React 团队的建议非常实用，如果实在分不清，先用 useEffect，一般问题不大；如果页面有异常，再直接替换为 useLayoutEffect 即可。</p>
+<h2 id="React-Hooks在平时开发中需要注意的问题和原因"><a href="#React-Hooks在平时开发中需要注意的问题和原因" class="headerlink" title="React Hooks在平时开发中需要注意的问题和原因"></a>React Hooks在平时开发中需要注意的问题和原因</h2><p>（1）<strong>不要在循环，条件或嵌套函数中调用Hook，必须始终在 React函数的顶层使用Hook</strong></p>
+<p>这是因为React需要利用调用顺序来正确更新相应的状态，以及调用相应的钩子函数。一旦在循环或条件分支语句中调用Hook，就容易导致调用顺序的不一致性，从而产生难以预料到的后果。</p>
+<p>**（2）<strong><strong>使用useState时候，使用push，pop，splice等直接更改数组</strong></strong>对象的坑**</p>
+<p>使用push直接更改数组无法获取到新值，应该采用析构方式，但是在class里面不会有这个问题。代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Indicatorfilter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> [num,setNums] = <span class="title function_">useState</span>([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">test</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 这里坑是直接采用push去更新num</span></span><br><span class="line">    <span class="comment">// setNums(num)是无法更新num的</span></span><br><span class="line">    <span class="comment">// 必须使用num = [...num ,1]</span></span><br><span class="line">    num.<span class="title function_">push</span>(<span class="number">1</span>)</span><br><span class="line">    <span class="comment">// num = [...num ,1]</span></span><br><span class="line">    <span class="title function_">setNums</span>(num)</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;filter&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;test&#125;</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          &#123;num.map((item,index) =&gt; (</span></span><br><span class="line"><span class="language-xml">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&#123;index&#125;</span>&gt;</span>&#123;item&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          ))&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Indicatorfilter</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&lt;any,any&gt;&#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">props:any</span>)&#123;</span><br><span class="line">      <span class="variable language_">super</span>(props)</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">          <span class="attr">nums</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">test</span> = <span class="variable language_">this</span>.<span class="property">test</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">test</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="comment">// class采用同样的方式是没有问题的</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">nums</span>.<span class="title function_">push</span>(<span class="number">1</span>)</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">          <span class="attr">nums</span>: <span class="variable language_">this</span>.<span class="property">state</span>.<span class="property">nums</span></span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">let</span> &#123;nums&#125; = <span class="variable language_">this</span>.<span class="property">state</span></span><br><span class="line">      <span class="keyword">return</span>(</span><br><span class="line">          <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;this.test&#125;</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                      &#123;nums.map((item:any,index:number) =&gt; (</span></span><br><span class="line"><span class="language-xml">                          <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&#123;index&#125;</span>&gt;</span>&#123;item&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                      ))&#125;</span></span><br><span class="line"><span class="language-xml">                  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">      )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）<strong>useState设置状态的时候，只有第一次生效，后期需要更新状态，必须通过useEffect</strong></p>
+<p>TableDeail是一个公共组件，在调用它的父组件里面，我们通过set改变columns的值，以为传递给TableDeail 的 columns是最新的值，所以tabColumn每次也是最新的值，但是实际tabColumn是最开始的值，不会随着columns的更新而更新：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">TableDeail</span> = (<span class="params">&#123;</span></span><br><span class="line"><span class="params">    columns,</span></span><br><span class="line"><span class="params">&#125;:TableData</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> [tabColumn, setTabColumn] = <span class="title function_">useState</span>(columns) </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确的做法是通过useEffect改变这个值</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">TableDeail</span> = (<span class="params">&#123;</span></span><br><span class="line"><span class="params">    columns,</span></span><br><span class="line"><span class="params">&#125;:TableData</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> [tabColumn, setTabColumn] = <span class="title function_">useState</span>(columns) </span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span>&#123;<span class="title function_">setTabColumn</span>(columns)&#125;,[columns])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（4）善用useCallback</strong></p>
+<p>父组件传递给子组件事件句柄时，如果我们没有任何参数变动可能会选用useMemo。但是每一次父组件渲染子组件即使没变化也会跟着渲染一次。 </p>
+<p><strong>（5）不要滥用useContext</strong></p>
+<p>可以使用基于 useContext 封装的状态管理工具。</p>
+<h1 id="React-Router"><a href="#React-Router" class="headerlink" title="React-Router"></a>React-Router</h1><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>客户端路由实现的思想：</p>
+<ul>
+<li><p>基于 hash 的路由：通过监听<code>hashchange</code>事件，感知 hash 的变化</p>
+</li>
+<li><ul>
+<li>改变 hash 可以直接通过 location.hash&#x3D;xxx</li>
+</ul>
+</li>
+<li><p>基于 H5 history 路由：</p>
+</li>
+<li><ul>
+<li>改变 url 可以通过 history.pushState 和 resplaceState 等，会将URL压入堆栈，同时能够应用 <code>history.go()</code> 等 API</li>
+<li>监听 url 的变化可以通过自定义事件触发实现</li>
+</ul>
+</li>
+</ul>
+<p><strong>react-router 实现的思想：</strong></p>
+<ul>
+<li>基于 <code>history</code> 库来实现上述不同的客户端路由实现思想，并且能够保存历史记录等，磨平浏览器差异，上层无感知</li>
+<li>通过维护的列表，在每次 URL 发生变化的回收，通过配置的 路由路径，匹配到对应的 Component，并且 render</li>
 </ul>
 
       
