@@ -93,7 +93,147 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><p>由Meta公司研发，是一个用于 构建Web和原生交互界面的库</p>
+<p><em>React 是一个用于<strong>构建用户界面的、 声明式、组件化</strong>的 JavaScript 库。</em></p>
+<p><strong>主要特点：</strong></p>
+<ul>
+<li>组件（Component）</li>
+<li>声明式界面编程（Declarative UI）</li>
+<li>响应式 DOM 更新机制（Reactive DOM updates）</li>
+</ul>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>React的常规开发方式并不是通过浏览器引入外部js脚本来使用，但在入门阶段我们暂且先使用这种方式来简单体会一下React。</p>
+<p>使用React开发Web项目，我们需要引入两个js脚本：<strong>react 18</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react.development.js</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>react 是react核心库，只要使用react就必须要引入</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-dom.development.js</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>react-dom 是react的dom包，使用react开发web应用时必须引入</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hello React<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;script/react.development.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;script/react-dom.development.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> button = <span class="title class_">React</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;button&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">         <span class="attr">onClick</span>: <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">alert</span>(<span class="string">&#x27;你点了按钮！&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            e.<span class="title function_">stopPropagation</span>();</span></span><br><span class="line"><span class="language-javascript">         &#125;</span></span><br><span class="line"><span class="language-javascript">      &#125;, <span class="string">&#x27;我是一个按钮&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> box = <span class="title class_">React</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="attr">onClick</span>: <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="title function_">alert</span>(<span class="string">&#x27;你点了div！&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">           <span class="variable language_">console</span>.<span class="title function_">log</span>(e);</span></span><br><span class="line"><span class="language-javascript">       &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="string">&#x27;我是一个div&#x27;</span>, button);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>));</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    root.<span class="title function_">render</span>(box);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>三者的区别</strong></p>
+<ul>
+<li>react：包含react所必须的核心代码</li>
+<li>react-dom：react渲染在不同平台所需要的核心代码</li>
+<li>babel：将jsx转换成React代码的工具</li>
+</ul>
+<h2 id="三个API"><a href="#三个API" class="headerlink" title="三个API"></a>三个API</h2><ul>
+<li><pre><code>React.createElement()
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `React.createElement(type, [props], [...children])`</span><br><span class="line"></span><br><span class="line">- 参数：</span><br><span class="line"></span><br><span class="line">  type：表示要渲染的**元素类型**。这里可以传入一个元素 Tag 名称，也可以传入一个组件（如div span 等，也可以是是函数组件和类组件）</span><br><span class="line"></span><br><span class="line">  props：**创建React元素所需要的props**。</span><br><span class="line"></span><br><span class="line">  childrens（可选参数）：要渲染元素的子元素，这里可以向后传入n个参数。可以为文本字符串，也可以为数组</span><br><span class="line"></span><br><span class="line">  用来创建React元素</span><br><span class="line"></span><br><span class="line">- React元素无法修改   返回的是虚拟dom对象</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">console.log(</span><br><span class="line">  React.createElement(</span><br><span class="line">    &#x27;h1&#x27;,</span><br><span class="line">    &#123;</span><br><span class="line">      className: &#x27;title&#x27;,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x27;Hello React&#x27;</span><br><span class="line">  )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+![img](../img/3058803936-1121353711213220_fix732.png)
+返回的这个对象就是虚拟 DOM 了。
+
+我们来分析它返回的对象参数，首先第一个是
+
+- **`$$typeof: REACT_ELEMENT_TYPE`**
+
+这个是 React 元素对象的标识属性
+
+REACT_ELEMENT_TYPE 的值是一个 Symbol 类型，代表了一个独一无二的值。如果浏览器不支持 Symbol类型，值就是一个二进制值。
+
+&gt; 为什么是 Symbol？主要防止 XSS 攻击伪造一个假的 React 组件。**因为 JSON 中是不会存在 Symbol 类型的。**
+
+- key：这个比如循环中会用到这个key值
+- props：传入的属性值，比如 id, className, style, children 等
+- ref： DOM 的引用
+</code></pre>
+</li>
+<li><pre><code class="language-js">ReactDOM.createRoot()
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `createRoot(container[, options])`</span><br><span class="line">- 用来创建React的根容器，容器用来放置React元素</span><br><span class="line"></span><br><span class="line">**`createRoot(domNode, options?)`** </span><br><span class="line"></span><br><span class="line">调用 `createRoot` 以在浏览器 DOM 元素中创建根节点显示内容。</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">import &#123; createRoot &#125; from &#x27;react-dom/client&#x27;;</span><br><span class="line">const domNode = document.getElementById(&#x27;root&#x27;);</span><br><span class="line">const root = createRoot(domNode);</span><br></pre></td></tr></table></figure>
+
+React 将会为 `domNode` 创建一个根节点，并控制其中的 DOM。在已经创建根节点之后，需要调用 [`root.render`](https://zh-hans.react.dev/reference/react-dom/client/createRoot#root-render) 来显示 React 组件：
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>);</span><br></pre></td></tr></table></figure>
+
+对于一个完全用 React 构建的应用程序，通常会调用一个 `createRoot` 来创建它的根节点。而对于一个使用了“少量” React 来创建部分内容的应用程序，则要按具体需求来确定根节点的数量。
+
+**参数** 
+
+- `domNode`：一个 [DOM 元素](https://developer.mozilla.org/zh-CN/docs/Web/API/Element)。React 将为这个 DOM 元素创建一个根节点然后允许你在这个根节点上调用函数，比如 `render` 来显示渲染的 React 内容。
+- **可选** `options`：用于配置这个 React 根节点的对象。
+  - **可选** `onRecoverableError`：回调函数，在 React 从异常错误中恢复时自动调用。
+  - **可选** `identifierPrefix`：一个 React 用来配合 [`useId`](https://zh-hans.react.dev/reference/react/useId) 生成 id 的字符串前缀。在同一个页面上使用多个根节点的场景下，这将能有效避免冲突。
+
+**返回值** 
+
+`createRoot` 返回一个带有两个方法的的对象，这两个方法是：[`render`](https://zh-hans.react.dev/reference/react-dom/client/createRoot#root-render) 和 [`unmount`](https://zh-hans.react.dev/reference/react-dom/client/createRoot#root-unmount)。
+
+**注意** 
+
+- 如果应用程序是服务端渲染的，那么不能使用 `createRoot()`。请使用 [`hydrateRoot()`](https://zh-hans.react.dev/reference/react-dom/client/hydrateRoot) 替代它。
+- 在你的应用程序中，可能只调用了一次 `createRoot`。但如果你使用了框架，它可能已经自动帮你完成了这次调用。
+- 当你想要渲染一段 JSX，但是它存在于 DOM 树的其他位置，并非当前组件的子组件  时（比如，一个弹窗或者提示框），使用 [`createPortal`](https://zh-hans.react.dev/reference/react-dom/createPortal) 替代 `createRoot`。
+</code></pre>
+</li>
+<li><pre><code class="language-js">root.render()
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `root.render(element)`</span><br><span class="line">- 当首次调用时，容器节点里的所有 DOM 元素都会被替换，后续的调用则会使用 React 的 DOM 差分算法（DOM diffing algorithm）进行高效的更新。</span><br><span class="line">- 不会修改容器节点（只会修改容器的子节点）。可以在不覆盖现有子节点的情况下，将组件插入已有的 DOM 节点中。</span><br><span class="line"></span><br><span class="line">**`root.render(reactNode)`** </span><br><span class="line"></span><br><span class="line">调用 `root.render` 以将一段 [JSX](https://zh-hans.react.dev/learn/writing-markup-with-jsx)（“React 节点”）在 React 的根节点中渲染为 DOM 节点并显示。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+root.render(&lt;App /&gt;);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">React 将会在 `根节点` 中显示 `&lt;App /&gt;` 组件，并且控制组件中的 DOM。</span><br><span class="line"></span><br><span class="line">**参数** </span><br><span class="line"></span><br><span class="line">- `reactNode`：一个你想要显示的 **React 节点**。它总是一段 JSX，就像 `&lt;App /&gt;`，但是你也总是可以传递一个 [`createElement()`](https://zh-hans.react.dev/reference/react/createElement) 构造的 React 元素、一个字符串、一个数字、`null` 或者 `undefined`。</span><br><span class="line"></span><br><span class="line">**返回值** </span><br><span class="line"></span><br><span class="line">`root.render` 返回 `undefined`。</span><br><span class="line"></span><br><span class="line">**注意** </span><br><span class="line"></span><br><span class="line">- 首次调用 `root.render` 时，React 会先清空根节点中所有已经存在的 HTML，然后才会渲染 React 组件。</span><br><span class="line">- 如果你的根节点包含了由 React 在构建期间通过服务端渲染生成的 HTML 内容，请使用 [`hydrateRoot()`](https://zh-hans.react.dev/reference/react-dom/client/hydrateRoot) 替代这个方法，这样才能把事件处理程序和现有的 HTML 绑定。</span><br><span class="line"></span><br><span class="line">如果你在一个根节点上多次调用了 `render`，React 仍然会更新 DOM，这样才能保证显示的内容是最新的。React 将会筛选出可复用的部分和需要更新的部分，对于需要更新的部分，是 React 通过与之前渲染的树进行 [“比较”](https://zh-hans.react.dev/learn/preserving-and-resetting-state) 得到的。在同一个根节点上再次调用 `render` 就和在根节点上调用 [`set` 函数](https://zh-hans.react.dev/reference/react/useState#setstate) 类似：React 会避免没必要的 DOM 更新。</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">**`root.unmount()`** </span><br><span class="line"></span><br><span class="line">调用 `root.unmount` 以销毁 React 根节点中的一个已经渲染的树。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+root.unmount();
+</code></pre>
+<p>通常情况下，一个完全由 React 构建的应用程序不会调用 <code>root.unmount</code>。</p>
+<p>此方法适用的场景是，React 根节点中的 DOM 节点（或者它的任何一个父级节点）被除了这个方法以外的代码移除了。举个例子，试想在一个 jQuery 选项卡面板中，非活跃状态的选项卡的 DOM 结构将被移除。一个标签页被移除时，它内部的所有内容（包括 React 根节点）也将会从 DOM 树移除。在这种情况下，你才需要调用 <code>root.unmount</code> 来通知 React “停止”控制已经被移除的根节点的内容。否则，被移除的根节点的内部组件就不能及时释放消息订阅等资源。</p>
+<p>调用 <code>root.unmout</code> 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</p>
+<p><strong>参数</strong> </p>
+<p><code>root.unmount</code> 不接收任何参数。</p>
+<p><strong>返回值</strong> </p>
+<p><code>root.unmount</code> 返回 <code>undefined</code>。</p>
+<p><strong>注意事项</strong> </p>
+<ul>
+<li>调用 <code>root.unmout</code> 将卸载根节点内的所有组件，该根节点上的 React 将被剥离，即所有事件处理程序以及组件树上的状态将被移除。</li>
+<li>一旦调用 <code>root.unmout</code>，就不能在该根节点上调用 <code>root.render</code>。在一个已经卸载的根节点上尝试调用 <code>root.render</code> 将会抛出异常错误信息“无法更新一个未挂载的根节点（Cannot update an unmouted root）”。不过，你可以在卸载一个根节点后又重新创建它</li>
+</ul>
+</li>
+</ul>
+<h1 id="React-、-Vue-异同"><a href="#React-、-Vue-异同" class="headerlink" title="React 、 Vue 异同"></a>React 、 Vue 异同</h1><p><strong>相似之处：</strong></p>
+<ul>
+<li>都将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库</li>
+<li>都有自己的构建工具，能让你得到一个根据最佳实践设置的项目模板。</li>
+<li>都使用了Virtual DOM（虚拟DOM）提高重绘性能</li>
+<li>都有props的概念，允许组件间的数据传递</li>
+<li>都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性</li>
+</ul>
+<p><strong>不同之处：</strong> </p>
+<p><strong>1）数据流</strong></p>
+<p>Vue默认支持数据双向绑定，而React一直提倡单向数据流 </p>
+<p><strong>2）虚拟DOM</strong></p>
+<p>Vue2.x开始引入”Virtual DOM”，消除了和React在这方面的差异，但是在具体的细节还是有各自的特点。 </p>
+<ul>
+<li>Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。</li>
+<li>对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent&#x2F;shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。</li>
+</ul>
+<p><strong>3）组件化</strong></p>
+<p>React与Vue最大的不同是模板的编写。</p>
+<ul>
+<li>Vue鼓励写近似常规HTML的模板。写起来很接近标准 HTML元素，只是多了一些属性。</li>
+<li>React推荐你所有的模板通用JavaScript的语法扩展——JSX书写。</li>
+</ul>
+<p>具体来讲：React中render函数是支持闭包特性的，所以我们import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 完组件之后，还需要在 components 中再声明下。</p>
+<p><strong>4）监听数据变化的实现原理不同</strong></p>
+<ul>
+<li>Vue 通过 getter&#x2F;setter 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能</li>
+<li>React 默认是通过比较引用的方式进行的，如果不优化（PureComponent&#x2F;shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。</li>
+</ul>
+<p><strong>5）高阶组件</strong></p>
+<p>react可以通过高阶组件（Higher Order Components– HOC）来扩展，而vue需要通过mixins来扩展。</p>
+<p>原因高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不采用HOC来实现。</p>
+<p><strong>6）构建工具</strong></p>
+<p>两者都有自己的构建工具</p>
+<ul>
+<li>React &#x3D;&#x3D;&gt; Create React APP</li>
+<li>Vue &#x3D;&#x3D;&gt; vue-cli</li>
+</ul>
+<p><strong>7）跨平台</strong></p>
+<ul>
+<li>React &#x3D;&#x3D;&gt; React Native</li>
+<li>Vue &#x3D;&#x3D;&gt; Weex</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -101,6 +241,8 @@
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
     </footer>
   </div>
   
@@ -6074,7 +6216,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
     </div>
   </div>
 
@@ -6084,7 +6226,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
     </div>
   </div>
 
