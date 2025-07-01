@@ -71,6 +71,98 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-React补充" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/" class="article-date">
+  <time class="dt-published" datetime="2025-07-01T02:54:22.000Z" itemprop="datePublished">2025-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/07/01/React%E8%A1%A5%E5%85%85/">React补充</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="React-类组件的this"><a href="#React-类组件的this" class="headerlink" title="React 类组件的this"></a>React 类组件的this</h1><h2 id="this丢失"><a href="#this丢失" class="headerlink" title="this丢失"></a>this丢失</h2><p>类的方法在调用时并没有明确的上下文</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">handleClick</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// undefined</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="为什么this会丢失？"><a href="#为什么this会丢失？" class="headerlink" title="为什么this会丢失？"></a>为什么this会丢失？</h3><p>当类方法作为回调传递时（如事件处理函数），<strong>this会丢失绑定</strong>，变成<code>undefined</code>。</p>
+<p>原因：</p>
+<ul>
+<li>JavaScript中的函数有自己的<code>this</code>绑定规则</li>
+<li>React事件系统调用处理函数时，不会自动绑定组件实例</li>
+<li>类方法默认没有绑定到实例</li>
+</ul>
+<h3 id="哪些地方容易出现this问题？"><a href="#哪些地方容易出现this问题？" class="headerlink" title="哪些地方容易出现this问题？"></a>哪些地方容易出现this问题？</h3><ul>
+<li>事件处理函数（onClick, onChange等）</li>
+<li>异步回调函数（setTimeout, Promise等）</li>
+<li>将方法作为props传递给子组件</li>
+</ul>
+<h2 id="绑定this的常见方法"><a href="#绑定this的常见方法" class="headerlink" title="绑定this的常见方法"></a><strong>绑定<code>this</code>的常见方法</strong></h2><p><strong>1</strong>. 在构造函数中绑定</p>
+<p>在组件的构造函数中使用<code>bind</code>方法绑定<code>this</code>是最常见的方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(props);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">handleClick</span> = <span class="variable language_">this</span>.<span class="property">handleClick</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">handleClick</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式的好处是只需在构造函数中绑定一次，所有的事件处理函数都会使用相同的<code>this</code>。</p>
+<p><strong>2. 使用箭头函数</strong></p>
+<p>箭头函数没有自己的<code>this</code>，它会捕获其定义时所在上下文的<code>this</code>值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式简洁明了，但需要注意的是，箭头函数可能会引起内存泄漏，尤其是在大型应用中。</p>
+<p><strong>3. 在调用时绑定</strong></p>
+<p>在事件处理函数被调用时，使用箭头函数绑定<code>this</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">handleClick</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> this.handleClick()&#125;&gt;Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式虽然简单，但每次渲染都会创建一个新的函数，可能会导致性能问题。</p>
+<h2 id="常见的陷阱及解决方案"><a href="#常见的陷阱及解决方案" class="headerlink" title="常见的陷阱及解决方案"></a><strong>常见的陷阱及解决方案</strong></h2><p><strong>陷阱1：忘记绑定<code>this</code></strong></p>
+<p>忘记绑定<code>this</code>会导致方法调用时<code>this</code>为<code>undefined</code>，从而引发错误。解决方案是在构造函数中绑定<code>this</code>，或者使用箭头函数。</p>
+<p><strong>陷阱2：在回调函数中使用<code>this</code></strong></p>
+<p>在回调函数中，<code>this</code>的指向可能会发生变化：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  handleClick = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 指向组件实例</span></span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handleClick&#125;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，使用箭头函数可以确保<code>this</code>的正确指向。</p>
+<p><strong>陷阱3：在渲染方法中使用箭头函数</strong></p>
+<p>在渲染方法中使用箭头函数会导致每次渲染都创建一个新的函数，影响性能：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">handleClick</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> this.handleClick()&#125;&gt;Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决方案是在构造函数中绑定<code>this</code>，或者使用类属性定义箭头函数。</p>
+<p>在使用箭头函数时，需要注意性能问题。箭头函数可能会导致组件的渲染性能下降，尤其是在大型应用中。为了避免性能问题，建议在构造函数中绑定<code>this</code>，或者使用类属性定义箭头函数</p>
+<h2 id="不需要绑定-this-的情况"><a href="#不需要绑定-this-的情况" class="headerlink" title="不需要绑定 this 的情况"></a>不需要绑定 <code>this</code> 的情况</h2><ul>
+<li><strong>生命周期方法</strong>（如 <code>componentDidMount</code>）：React 自动绑定</li>
+<li><strong>Render 方法</strong>：React 自动绑定</li>
+<li><strong>静态方法</strong>（<code>static</code>）：不访问实例，无需绑定</li>
+</ul>
+<h1 id="React合成事件顺序"><a href="#React合成事件顺序" class="headerlink" title="React合成事件顺序"></a>React合成事件顺序</h1><p><img src="/../img/image-20250701134656066.png" alt="image-20250701134656066"></p>
+<p><img src="/../img/image-20250701134806200.png" alt="image-20250701134806200"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/01/React%E8%A1%A5%E5%85%85/" data-id="cmck5rqum0000s4ur1tuognbj" data-title="React补充" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-React" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/06/29/React/" class="article-date">
@@ -1956,7 +2048,151 @@ root.unmount();
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="Js错误"><a href="#Js错误" class="headerlink" title="Js错误"></a>Js错误</h1><h2 id="JavaScript-错误类型总览"><a href="#JavaScript-错误类型总览" class="headerlink" title="JavaScript 错误类型总览"></a>JavaScript 错误类型总览</h2><table>
+        <p>q</p>
+<h1 id="前端安全补充"><a href="#前端安全补充" class="headerlink" title="前端安全补充"></a>前端安全补充</h1><h2 id="DoS-Denial-of-Service-Attack-拒绝服务攻击"><a href="#DoS-Denial-of-Service-Attack-拒绝服务攻击" class="headerlink" title="DoS (Denial-of-Service Attack - 拒绝服务攻击)"></a>DoS (Denial-of-Service Attack - 拒绝服务攻击)</h2><ul>
+<li><strong>核心目标：</strong> 使目标系统（服务器、网络、服务、应用程序等）<strong>无法为合法用户提供正常的服务</strong>。通常是通过耗尽目标的关键资源（如带宽、CPU、内存、连接数、磁盘I&#x2F;O等）来实现。</li>
+<li><strong>基本原理：</strong><ul>
+<li><strong>单源攻击：</strong> 攻击流量<strong>主要来源于一个攻击者或一台被攻击者控制的机器</strong>。</li>
+<li><strong>资源耗尽：</strong> 攻击者利用协议漏洞、设计缺陷或单纯发送海量垃圾请求，试图压垮目标的某项或多项资源：<ul>
+<li><strong>带宽耗尽：</strong> 发送巨大的数据流（如UDP洪水、ICMP洪水&#x2F;Ping of Death）堵塞目标的网络管道。</li>
+<li><strong>连接耗尽：</strong> 建立大量半开连接（如SYN洪水攻击），耗尽服务器的TCP连接池，阻止新的合法连接。</li>
+<li><strong>CPU&#x2F;内存耗尽：</strong> 发送需要大量计算资源才能处理的请求（如复杂的数据库查询、加密解密操作、特定格式的畸形数据包），导致服务器忙于处理攻击请求而无法响应正常请求。</li>
+<li><strong>应用层攻击：</strong> 针对特定的应用协议（如HTTP、DNS、SMTP），发送看似合法但精心构造的请求（如Slowloris攻击、HTTP洪水攻击、CC攻击），消耗应用服务器资源（线程、会话）或后端资源（数据库连接）。</li>
+</ul>
+</li>
+<li><strong>协议利用：</strong> 利用某些网络协议本身的设计弱点（如TCP的三次握手在SYN洪水中的脆弱性、UDP的无连接性在反射放大攻击中的作用）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="DDoS-Distributed-Denial-of-Service-Attack-分布式拒绝服务攻击"><a href="#DDoS-Distributed-Denial-of-Service-Attack-分布式拒绝服务攻击" class="headerlink" title="DDoS (Distributed Denial-of-Service Attack - 分布式拒绝服务攻击)"></a>DDoS (Distributed Denial-of-Service Attack - 分布式拒绝服务攻击)</h2><ul>
+<li><strong>核心目标：</strong> 与DoS相同，也是使目标系统瘫痪，无法提供正常服务。</li>
+<li><strong>基本原理：</strong> <strong>DoS攻击的进化版和加强版</strong>。<ul>
+<li><strong>多源攻击：</strong> 攻击流量<strong>来源于大量（成千上万甚至数百万）分布在全球不同地理位置的、被攻击者控制的设备</strong>。这些设备组成了一个 <strong>“僵尸网络”</strong> 。</li>
+<li><strong>僵尸网络：</strong> 攻击者通过恶意软件（病毒、蠕虫、特洛伊木马）感染和控制了大量普通用户的计算机、服务器、IoT设备（摄像头、路由器、智能家居）等。这些被控制的设备称为 <strong>“僵尸”</strong> 或 <strong>“肉鸡”</strong> 。</li>
+<li><strong>集中指挥：</strong> 攻击者通过一个或多个 <strong>“命令与控制服务器”</strong> 向僵尸网络中的设备发送攻击指令。</li>
+<li><strong>放大效应：</strong><ul>
+<li><strong>数量放大：</strong> 成千上万的僵尸同时发起攻击，流量规模远超单源DoS。</li>
+<li><strong>反射放大：</strong> 利用一些协议（如DNS、NTP、SSDP、Memcached）的响应包远大于请求包的特性，<strong>伪造受害者的IP地址</strong> 向这些服务的开放服务器发送大量小请求，导致这些服务器将巨大的响应流量反射回受害者，从而<strong>放大攻击流量</strong>（可能放大几十倍甚至数万倍）。这是DDoS中极具破坏力的一种形式。</li>
+</ul>
+</li>
+<li><strong>隐蔽性与防御难度：</strong><ul>
+<li>流量来源分散且通常是合法的被劫持设备，难以直接定位真正的攻击者。</li>
+<li>海量流量来自不同IP，传统的基于IP黑名单的过滤方法效果有限。</li>
+<li>攻击流量可能模仿正常流量，增加了区分难度。</li>
+<li>攻击规模可以轻易达到数百Gbps甚至数Tbps，远超单个网络的承受能力。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结攻击原理的核心差异"><a href="#总结攻击原理的核心差异" class="headerlink" title="总结攻击原理的核心差异"></a>总结攻击原理的核心差异</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">DoS (拒绝服务)</th>
+<th align="left">DDoS (分布式拒绝服务)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>攻击源</strong></td>
+<td align="left"><strong>单一</strong> 或 <strong>少量</strong> 源头</td>
+<td align="left"><strong>海量分布式</strong> 源头 (僵尸网络)</td>
+</tr>
+<tr>
+<td align="left"><strong>流量规模</strong></td>
+<td align="left">相对较小，通常能被单点防御阻挡</td>
+<td align="left"><strong>极其巨大</strong> (Gbps&#x2F;Tbps 级别)，难以单点防御</td>
+</tr>
+<tr>
+<td align="left"><strong>复杂性</strong></td>
+<td align="left">较低，技术门槛不高</td>
+<td align="left"><strong>高</strong>，需要构建&#x2F;租用僵尸网络，组织复杂</td>
+</tr>
+<tr>
+<td align="left"><strong>隐蔽性</strong></td>
+<td align="left">较低，源头易被追踪和屏蔽</td>
+<td align="left"><strong>高</strong>，源头分散且多为被劫持设备</td>
+</tr>
+<tr>
+<td align="left"><strong>防御难度</strong></td>
+<td align="left"><strong>较低</strong></td>
+<td align="left"><strong>极高</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>攻击威力</strong></td>
+<td align="left"><strong>有限</strong></td>
+<td align="left"><strong>毁灭性</strong></td>
+</tr>
+</tbody></table>
+<h2 id="D-DOS-防范措施"><a href="#D-DOS-防范措施" class="headerlink" title="D&#x2F;DOS 防范措施"></a>D&#x2F;DOS 防范措施</h2><p>防范D&#x2F;DoS攻击是一个<strong>多层次、持续性的综合工程</strong>，没有银弹。主要策略包括：</p>
+<h3 id="1-基础设施层防护"><a href="#1-基础设施层防护" class="headerlink" title="1. 基础设施层防护"></a>1. 基础设施层防护</h3><ul>
+<li><strong>增加带宽冗余：</strong> 虽然无法完全抵御大型DDoS，但更大的带宽能争取更多响应时间，对小规模攻击有效。这是基础。</li>
+<li><strong>部署内容分发网络：</strong> CDN将网站内容缓存到全球分布的边缘节点。用户访问边缘节点，大大减少直接攻击源站的机会。CDN提供商通常自身具备强大的DDoS缓解能力，能吸收和过滤大量攻击流量。</li>
+<li><strong>使用云防护&#x2F;清洗服务：</strong> <strong>(最有效且主流的方式)</strong><ul>
+<li><strong>流量清洗中心：</strong> 所有流量先经过服务提供商的清洗中心。在这里，利用大数据分析、行为分析、机器学习等技术<strong>实时区分恶意流量和合法流量</strong>，只将清洗后的干净流量转发给目标服务器。阿里云DDoS防护、腾讯云大禹、AWS Shield Advanced、Cloudflare、Akamai Prolexic 等都是这类服务。</li>
+<li><strong>Anycast 网络：</strong> 云防护提供商通常使用Anycast技术，将攻击流量分散到全球多个数据中心入口点进行处理，稀释攻击威力。</li>
+</ul>
+</li>
+<li><strong>分布式架构：</strong> 设计系统时避免单点故障，采用负载均衡将流量分散到多个服务器或数据中心。</li>
+</ul>
+<h3 id="2-网络与系统层加固"><a href="#2-网络与系统层加固" class="headerlink" title="2. 网络与系统层加固"></a>2. 网络与系统层加固</h3><ul>
+<li><strong>防火墙配置：</strong><ul>
+<li>严格配置入站&#x2F;出站规则。</li>
+<li>启用抗DDoS模式（如SYN Cookie&#x2F;Cookie Challenge）。</li>
+<li>限制特定协议（如ICMP、UDP）的速率或直接屏蔽。</li>
+<li>设置连接数限制和新建连接速率限制。</li>
+</ul>
+</li>
+<li><strong>路由器&#x2F;交换机配置：</strong><ul>
+<li>启用访问控制列表限制来源。</li>
+<li>配置流量限速。</li>
+<li>启用源IP验证，防止IP欺骗。</li>
+</ul>
+</li>
+<li><strong>服务器优化：</strong><ul>
+<li><strong>及时打补丁：</strong> 修复操作系统、Web服务器、数据库等软件漏洞，防止攻击者利用漏洞发动DoS。</li>
+<li><strong>资源限制：</strong> 调整内核参数（如<code>net.core.somaxconn</code>, <code>net.ipv4.tcp_max_syn_backlog</code>），优化TCP&#x2F;IP栈性能，增加半连接队列大小。</li>
+<li><strong>关闭不必要的服务：</strong> 减少攻击面。</li>
+<li><strong>启用SYN Cookies：</strong> 有效防御SYN洪水攻击。</li>
+</ul>
+</li>
+<li><strong>入侵检测&#x2F;防御系统：</strong> 部署NIDS&#x2F;NIPS，配置规则检测常见DoS攻击模式（如SYN Flood, UDP Flood）并自动阻断。</li>
+</ul>
+<h3 id="3-应用层防护"><a href="#3-应用层防护" class="headerlink" title="3. 应用层防护"></a>3. 应用层防护</h3><ul>
+<li><strong>Web应用防火墙：</strong> WAF能有效防御应用层DDoS攻击（如HTTP Flood、Slowloris、CC攻击）以及利用应用漏洞的攻击。它可以识别恶意Bot流量、设置请求速率限制、验证挑战等。</li>
+<li><strong>输入验证与过滤：</strong> 严格检查所有用户输入，防止畸形数据包导致服务崩溃或资源耗尽。</li>
+<li><strong>会话管理：</strong> 合理设置会话超时时间，防止僵尸会话占用资源。</li>
+<li><strong>资源使用限制：</strong> 对API调用、文件上传、数据库查询等操作实施严格的频率和资源消耗限制。</li>
+<li><strong>验证码：</strong> 在可疑流量或高频率操作时引入验证码，区分人机。</li>
+<li><strong>限制特定User-Agent或爬虫行为。</strong></li>
+</ul>
+<h3 id="4-监控与响应"><a href="#4-监控与响应" class="headerlink" title="4. 监控与响应"></a>4. 监控与响应</h3><ul>
+<li><strong>实时监控：</strong> 部署全面的网络流量监控系统，密切关注带宽使用率、连接数、CPU&#x2F;内存负载、特定协议流量等关键指标。设置告警阈值。</li>
+<li><strong>流量分析工具：</strong> 使用NetFlow&#x2F;sFlow&#x2F;IPFIX、深度包检测等技术分析流量模式，识别异常。</li>
+<li><strong>制定应急预案：</strong> 明确在遭受攻击时各个团队（网络、安全、运维、应用开发）的职责和操作流程。包括：<ul>
+<li>如何快速确认攻击类型和规模。</li>
+<li>如何启动云清洗服务或联系ISP协助。</li>
+<li>如何调整防火墙&#x2F;WAF规则进行临时封堵（谨慎使用）。</li>
+<li>如何与业务部门沟通。</li>
+<li>攻击缓解后的恢复步骤和根因分析。</li>
+</ul>
+</li>
+<li><strong>定期演练：</strong> 测试应急预案的有效性。</li>
+</ul>
+<h3 id="5-其他重要措施"><a href="#5-其他重要措施" class="headerlink" title="5. 其他重要措施"></a>5. 其他重要措施</h3><ul>
+<li><strong>隐藏真实IP：</strong> 尽可能不要让关键服务的真实服务器IP直接暴露在公网上。使用CDN、云WAF、反向代理或高防IP作为前端。</li>
+<li><strong>ISP合作：</strong> 与你的互联网服务提供商建立联系。大型ISP通常具备在更上游（靠近攻击源）缓解大规模DDoS的能力。在攻击发生时，及时向其报告并寻求协助。</li>
+<li><strong>减少反射放大面：</strong> 确保你管理的服务器（如DNS递归解析器、NTP服务器、Memcached服务器）不会被滥用为反射源。正确配置它们（如限制递归查询来源、禁用不必要功能、更新软件）。</li>
+<li><strong>安全意识：</strong> 防止内部设备成为僵尸网络成员（安装杀毒软件、及时更新、强密码）。</li>
+</ul>
+<h2 id="三、-重要总结"><a href="#三、-重要总结" class="headerlink" title="三、 重要总结"></a>三、 重要总结</h2><ol>
+<li><strong>DDoS是更强大、更主流的威胁：</strong> 如今单纯的DoS攻击已较少见，DDoS利用僵尸网络的规模和反射放大技术成为常态。</li>
+<li><strong>云防护是核心：</strong> 面对大型DDoS攻击，依靠自身网络和设备几乎无法抵御。专业的云DDoS防护&#x2F;清洗服务是<strong>最有效和最主流</strong>的解决方案。</li>
+<li><strong>纵深防御：</strong> 没有单一完美的防御手段。需要结合<strong>基础设施冗余、网络设备加固、服务器优化、应用层防护、持续监控和成熟的应急响应计划</strong>，构建多层次防御体系。</li>
+<li><strong>持续性与成本：</strong> DDoS防御是一个持续投入的过程，包括技术、人力和服务成本。需要根据业务的重要性来评估所需的防护等级。</li>
+<li><strong>Mirai僵尸网络的警示：</strong> Mirai及其变种利用大量安全性薄弱的IoT设备发动了史上最大规模的DDoS攻击之一，凸显了IoT安全问题和反射放大攻击的威力。</li>
+</ol>
+<h1 id="Js错误"><a href="#Js错误" class="headerlink" title="Js错误"></a>Js错误</h1><h2 id="JavaScript-错误类型总览"><a href="#JavaScript-错误类型总览" class="headerlink" title="JavaScript 错误类型总览"></a>JavaScript 错误类型总览</h2><table>
 <thead>
 <tr>
 <th align="left">错误类型</th>
@@ -2451,11 +2687,117 @@ root.unmount();
 <li><strong>浏览器容器：</strong> 像一个预制的“活动板房”（网页）。施工队（浏览器引擎）按照统一的“国际标准”（Web标准），用自带的“标准化板材”（HTML&#x2F;CSS）在任何地方快速搭建。房子可以快速搭建和修改，但可能不如本地定制的那么坚固或贴合当地环境。</li>
 </ul>
 <p><strong>选择哪一个？</strong></p>
+<p>需要<strong>最佳性能、深度设备集成、原生用户体验</strong> -&gt; <strong>React Native</strong>。</p>
+<p>需要<strong>最广泛的跨平台覆盖（包括Web）、最快的开发迭代速度、即时更新</strong> -&gt; <strong>浏览器容器 (Web技术&#x2F;PWA)</strong>。</p>
+<p>混合方案：在原生App中嵌入<strong>WebView</strong>来展示部分内容（如帮助页面、营销活动页），结合两者优势。React Native 本身也提供了 <code>WebView</code> 组件来实现这一点。</p>
+<h2 id="静态资源失效"><a href="#静态资源失效" class="headerlink" title="静态资源失效"></a>静态资源失效</h2><h3 id="方法一：基础而有效的-onerror-事件降级"><a href="#方法一：基础而有效的-onerror-事件降级" class="headerlink" title="方法一：基础而有效的 onerror 事件降级"></a><strong>方法一：基础而有效的 onerror 事件降级</strong></h3><h3 id="先讲个小故事："><a href="#先讲个小故事：" class="headerlink" title="先讲个小故事："></a><strong>先讲个小故事：</strong></h3><p>有次上线前我自信满满，刚发版就邀请产品经理来验收。结果尴尬的是，CDN图片资源同步延迟了，头像全裂开。产品经理抬头问我：“这是个啥？”。我赶紧安抚后，马上想到的应急方案就是 <code>onerror</code>：</p>
+<h3 id="原理说明："><a href="#原理说明：" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p><code>onerror</code> 事件会在资源加载失败时被触发，我们只要捕获到这个错误，就可以立即切换到备用资源。</p>
+<p>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 图片加载失败用默认头像补救 --&gt;</span><br><span class="line">&lt;img src=&quot;https://cdn.example.com/avatar.png&quot;</span><br><span class="line">     alt=&quot;用户头像&quot;</span><br><span class="line">     onerror=&quot;this.onerror=null;this.src=&#x27;/static/default-avatar.png&#x27;;&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>JS脚本的方案类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const script = document.createElement(&#x27;script&#x27;);</span><br><span class="line">script.src = &#x27;https://cdn.example.com/app.js&#x27;;</span><br><span class="line">script.onerror = () =&gt; &#123;</span><br><span class="line">  console.warn(&#x27;CDN挂了，正在加载本地脚本...&#x27;);</span><br><span class="line">  const localScript = document.createElement(&#x27;script&#x27;);</span><br><span class="line">  localScript.src = &#x27;/static/app.js&#x27;;</span><br><span class="line">  document.head.appendChild(localScript);</span><br><span class="line">&#125;;</span><br><span class="line">document.head.appendChild(script);</span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处是：简单、直接，而且对用户几乎无感知。</p>
+<p>不过缺点也明显，每个资源都需要单独处理，管理起来会有点麻烦。</p>
+<h3 id="方法二：Service-Worker-缓存兜底方案"><a href="#方法二：Service-Worker-缓存兜底方案" class="headerlink" title="方法二：Service Worker 缓存兜底方案"></a><strong>方法二：Service Worker 缓存兜底方案</strong></h3><h3 id="再聊个真实场景："><a href="#再聊个真实场景：" class="headerlink" title="再聊个真实场景："></a><strong>再聊个真实场景：</strong></h3><p>去年负责做一个PWA应用，上线后有用户特意反馈：“你们的网站牛啊，进电梯没网还能打开！”我当时特别得意，因为这正是 Service Worker 缓存策略发挥了作用。</p>
+<h3 id="原理说明：-1"><a href="#原理说明：-1" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>Service Worker 会在后台拦截页面的网络请求，实现「缓存优先（Cache First）」，让页面的关键资源都预先存好，离线也能打开。</p>
+<p>核心代码示意：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&#x27;install&#x27;, event =&gt; &#123;</span><br><span class="line">  event.waitUntil(</span><br><span class="line">    caches.open(&#x27;v1&#x27;).then(cache =&gt; cache.addAll([</span><br><span class="line">      &#x27;/index.html&#x27;, &#x27;/styles.css&#x27;, &#x27;/app.js&#x27;</span><br><span class="line">    ]))</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;fetch&#x27;, event =&gt; &#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    caches.match(event.request).then(cachedResponse =&gt; &#123;</span><br><span class="line">      return cachedResponse || fetch(event.request).then(networkResponse =&gt; &#123;</span><br><span class="line">        caches.open(&#x27;v1&#x27;).then(cache =&gt; cache.put(event.request, networkResponse.clone()));</span><br><span class="line">        return networkResponse;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，首次访问后关键文件都会被缓存，后续访问即便网络不佳，体验依旧稳定。</p>
+<p>不过要注意缓存版本管理，定期更新缓存版本，比如<code>v1</code>变更为<code>v2</code>时要及时清理旧缓存。</p>
+<h3 id="方法三：CSS资源的优雅降级（防止页面变丑）"><a href="#方法三：CSS资源的优雅降级（防止页面变丑）" class="headerlink" title="方法三：CSS资源的优雅降级（防止页面变丑）"></a><strong>方法三：CSS资源的优雅降级（防止页面变丑）</strong></h3><h3 id="说个囧事儿："><a href="#说个囧事儿：" class="headerlink" title="说个囧事儿："></a><strong>说个囧事儿：</strong></h3><p>之前赶上线，有次CSS文件被错误删除了，用户打开网页一瞬间以为电脑坏了，满屏都是乱掉的元素。我赶紧临时补救——塞了一段最小可用的内联样式，勉强挽救了场面。</p>
+<h3 id="原理说明：-2"><a href="#原理说明：-2" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>CSS出问题容易导致“无样式内容闪现”（FOUC），解决方法是利用 preload 提前加载关键 CSS，并配合超时策略内联兜底。</p>
+<p>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;preload&quot; href=&quot;/critical.css&quot; as=&quot;style&quot; onload=&quot;this.rel=&#x27;stylesheet&#x27;&quot;&gt;</span><br><span class="line">&lt;noscript&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;/critical.css&quot;&gt;&lt;/noscript&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">  if (!document.querySelector(&#x27;link[href=&quot;/critical.css&quot;]&#x27;)) &#123;</span><br><span class="line">    const style = document.createElement(&#x27;style&#x27;);</span><br><span class="line">    style.textContent = `</span><br><span class="line">      body &#123; font-family: sans-serif; background-color: #fff; &#125;</span><br><span class="line">      h1, p &#123; margin: 0; padding: 10px; &#125;</span><br><span class="line">    `;</span><br><span class="line">    document.head.appendChild(style);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, 3000);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这个策略让页面至少能保证基础的样式效果。用户甚至不会觉察出原始样式加载失败。</p>
+<h3 id="方法四：React-Vue-组件的错误边界"><a href="#方法四：React-Vue-组件的错误边界" class="headerlink" title="方法四：React&#x2F;Vue 组件的错误边界"></a><strong>方法四：React&#x2F;Vue 组件的错误边界</strong></h3><h3 id="现场再现："><a href="#现场再现：" class="headerlink" title="现场再现："></a><strong>现场再现：</strong></h3><p>有一次后台项目演示，我用了个特别重的图表组件，结果网络不好加载失败。</p>
+<p>如果整个页面跟着白屏，估计当场想死的心都有。不过我提前用了 React 的 Error Boundary 包裹这个组件，它显示了一句友好的“加载失败，请稍后重试”，整个页面还能用。最后老板就只提了一嘴看看啥情况（还好还好）。</p>
+<h3 id="原理说明：-3"><a href="#原理说明：-3" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>React 的 Error Boundary 就是捕获组件渲染或加载错误的边界组件，常配合懒加载 (<code>React.lazy</code>) 使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// ErrorBoundary.jsx</span><br><span class="line">class ErrorBoundary extends React.Component &#123;</span><br><span class="line">  state = &#123; hasError: false &#125;;</span><br><span class="line">static getDerivedStateFromError() &#123; return &#123; hasError: true &#125;; &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    if (this.state.hasError) &#123;</span><br><span class="line">      return&lt;div&gt;加载失败，稍后重试一下~&lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">    returnthis.props.children;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// App.jsx</span><br><span class="line">const Chart = React.lazy(() =&gt;import(&#x27;./Chart&#x27;));</span><br><span class="line">function App() &#123;</span><br><span class="line">return (</span><br><span class="line">    &lt;ErrorBoundary&gt;</span><br><span class="line">      &lt;Suspense fallback=&#123;&lt;div&gt;加载中...&lt;/div&gt;&#125;&gt;</span><br><span class="line">        &lt;Chart /&gt;</span><br><span class="line">      &lt;/Suspense&gt;</span><br><span class="line">    &lt;/ErrorBoundary&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理简单而实用：一个组件失败，不会影响整体页面。类似的，Vue中也有 <code>defineAsyncComponent</code> 做类似的降级处理。</p>
+<h3 id="深度总结：降级处理的精髓是什么？"><a href="#深度总结：降级处理的精髓是什么？" class="headerlink" title="深度总结：降级处理的精髓是什么？"></a><strong>深度总结：降级处理的精髓是什么？</strong></h3><p>其实，资源降级真正的核心思路就三个字：</p>
+<ol>
+<li><strong>稳</strong>：确保页面基本功能绝不挂掉；</li>
+<li><strong>快</strong>：用户尽量无感知，备用方案秒级切换；</li>
+<li><strong>省</strong>：兜底策略简单易维护，不制造新麻烦。</li>
+</ol>
+<p>从<code>onerror</code>事件、Service Worker缓存，到CSS优雅降级和组件级错误边界，这些方案是逐步深入的，形成一整套完整的容错机制。此外，还要配合前端监控（如上报加载失败率），形成反馈闭环，确保长期稳定运行。</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><h3 id="一、衡量前端性能"><a href="#一、衡量前端性能" class="headerlink" title="一、衡量前端性能"></a><strong>一、衡量前端性能</strong></h3><p>要做前端性能优化，首要工作是<strong>分析和衡量</strong>页面内容，找出网站中需要优化的部分，对症下药。</p>
+<p>衡量性能的方式有以下几种：</p>
+<ol>
+<li>加载时间</li>
+<li>性能指标</li>
+<li>长任务卡顿</li>
+<li>浏览器 Performance 选项卡</li>
+</ol>
+<h4 id="1、加载时间"><a href="#1、加载时间" class="headerlink" title="1、加载时间"></a><strong>1、加载时间</strong></h4><p>浏览器 <code>PerformanceNavigationTiming</code> 对象提供了关于页面加载性能各种计时的详细信息。（<code>对应旧版本的 performance.timing 对象</code>）比如可以分析 <strong>DOM 树构建完成的时间（<code>DOMContentLoaded</code>） 和 页面完整的加载时间（<code>load</code>）</strong>。</p>
+<p>如下示例，在 DOM 树中增加一个  标签来渲染图片，其中：</p>
 <ul>
-<li>需要<strong>最佳性能、深度设备集成、原生用户体验</strong> -&gt; <strong>React Native</strong>。</li>
-<li>需要<strong>最广泛的跨平台覆盖（包括Web）、最快的开发迭代速度、即时更新</strong> -&gt; <strong>浏览器容器 (Web技术&#x2F;PWA)</strong>。</li>
-<li>混合方案：在原生App中嵌入<strong>WebView</strong>来展示部分内容（如帮助页面、营销活动页），结合两者优势。React Native 本身也提供了 <code>WebView</code> 组件来实现这一点。</li>
+<li><code>DOMContentLoaded</code>，是一个 DOM 事件，当浏览器完成 HTML 文档的解析，构建完成 DOM 树后触发，但不包含图片、CSS、JavaScript 等外部资源的加载。</li>
+<li><code>onLoad</code>，是一个 JS 事件，它在页面的所有资源（包括 HTML、CSS、图片、JavaScript 等）完全加载完成后触发。</li>
 </ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/200/300&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;load&quot;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 新版浏览器 API：PerformanceNavigationTiming 提供了关于页面加载性能的详细信息，替代旧的 performance.timing</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (performance.<span class="property">getEntriesByType</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> perfEntries = performance.<span class="title function_">getEntriesByType</span>(<span class="string">&quot;navigation&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (perfEntries.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> navigationEntry = perfEntries[<span class="number">0</span>];</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> &#123; domContentLoadedEventStart, loadEventStart, fetchStart &#125; = navigationEntry;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> <span class="title class_">DOMContentLoadedTime</span> = domContentLoadedEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`DOMContentLoaded 的执行时间：<span class="subst">$&#123;DOMContentLoadedTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> loadTime = loadEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`load 页面完整的加载时间：<span class="subst">$&#123;loadTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 旧版浏览器降级使用 performance.timing</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> &#123; fetchStart, domContentLoadedEventStart, loadEventStart &#125; = performance.<span class="property">timing</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> <span class="title class_">DOMContentLoadedTime</span> = domContentLoadedEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`---DOMContentLoaded 的执行时间：<span class="subst">$&#123;DOMContentLoadedTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> loadTime = loadEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`load 页面完整的加载时间：<span class="subst">$&#123;loadTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>PS：页面加载性能详细信息参考资料：<strong>PerformanceNavigationTiming</strong>[1]</p>
+<h3 id="2、性能指标"><a href="#2、性能指标" class="headerlink" title="2、性能指标"></a><strong>2、性能指标</strong></h3><p>分析以用户为中心的性能指标，包含 <strong>FP（首次像素绘制）、FCP（首次内容绘制）、FMP（首次有意义内容绘制）、LCP（页面中最大可见 图片或者文本块 加载时间）等</strong>。</p>
+<p>一般在 <strong>客户端渲染单页面应用</strong> 中，为了优化<strong>首屏渲染白屏时间</strong>，会重点关注 <strong>FCP（首次内容绘制）</strong> 性能指标。该绘制时长越短，说明白屏时间越少，用户打开网站的使用体验就越好。</p>
+<blockquote>
+<p>说明：<strong>FCP 首次内容绘制</strong> 是指用户在页面中看到了有效内容。比如在 React 框架中，初始时会有一个空 id&#x3D;root div 元素，此时不会计算 FCP，只有等 id&#x3D;root 经过 ReactDOM render 以后，页面呈现了文本等有效内容，这时会计算出 FCP。</p>
+</blockquote>
+<p>JS 可以通过 <code>PerformanceObserver</code> 观察 <code>event type paint</code> 来获取 FCP 指标。如下示例，初始放置一个空 div，在 1s 以后给 div 中添加有效内容（模拟框架渲染），FCP 指标会在这时生成。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 设置背景图，生成 FP 指标 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-id">#root</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#eee</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 模拟框架渲染，1s 后在页面呈现有效内容</span></span></span><br><span class="line"><span class="language-javascript">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        root.<span class="property">innerHTML</span> = <span class="string">&quot;content&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">      &#125;, <span class="number">1000</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">PerformanceObserver</span>(<span class="keyword">function</span>(<span class="params">entryList</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> perfEntries = entryList.<span class="title function_">getEntries</span>();</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">for</span> (<span class="keyword">const</span> perfEntry <span class="keyword">of</span> perfEntries) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (perfEntry.<span class="property">name</span> === <span class="string">&quot;first-paint&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> <span class="variable constant_">FP</span> = perfEntry;</span></span><br><span class="line"><span class="language-javascript">              <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;首次像素绘制 时间：&quot;</span>, <span class="variable constant_">FP</span>?.<span class="property">startTime</span>); <span class="comment">// 674ms（div 设有背景图，会在元素渲染时生成 FP 指标）</span></span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="title function_">elseif</span> (perfEntry.<span class="property">name</span> === <span class="string">&quot;first-contentful-paint&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> <span class="variable constant_">FCP</span> = perfEntry;</span></span><br><span class="line"><span class="language-javascript">              <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;首次内容绘制 时间：&quot;</span>, <span class="variable constant_">FCP</span>?.<span class="property">startTime</span>); <span class="comment">// 1174ms</span></span></span><br><span class="line"><span class="language-javascript">              observer.<span class="title function_">disconnect</span>(); <span class="comment">// 断开观察，不再观察了</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 观察 paint 相关性能指标</span></span></span><br><span class="line"><span class="language-javascript">        observer.<span class="title function_">observe</span>(&#123; <span class="attr">entryTypes</span>: [<span class="string">&quot;paint&quot;</span>] &#125;);</span></span><br><span class="line"><span class="language-javascript">      &#125;;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、页面卡顿"><a href="#3、页面卡顿" class="headerlink" title="3、页面卡顿"></a><strong>3、页面卡顿</strong></h3><p>当一段代码的执行占用主线程时间过长时，用户在页面上的交互就会出现卡顿，我们可以通过监控这类长任务，针对性地进行优化。</p>
+<p>如下示例，点击按钮执行一个 1000ms 长任务，我们可以使用 <code>PerformanceObserver</code> 观察 <code>event type longtask</code> 并设置阈值。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;longTaskBtn&quot;</span>&gt;</span>执行longTask<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 默认长任务</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> longTaskBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;longTaskBtn&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">longTask</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;longTask开始 start&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">while</span> (<span class="title class_">Date</span>.<span class="title function_">now</span>() &lt; <span class="number">1000</span> + start) &#123;&#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;longTask结束 end，耗时：&quot;</span>, <span class="title class_">Date</span>.<span class="title function_">now</span>() - start);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">      longTaskBtn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, longTask);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 观察长任务</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">new</span> <span class="title class_">PerformanceObserver</span>(<span class="function">(<span class="params">list</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        list.<span class="title function_">getEntries</span>().<span class="title function_">forEach</span>(<span class="function">(<span class="params">entry</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 设定卡顿阈值：执行时长大于 500 ms</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (entry.<span class="property">duration</span> &gt; <span class="number">500</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;执行的长任务耗时：&quot;</span>, entry.<span class="property">duration</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">      &#125;).<span class="title function_">observe</span>(&#123; <span class="attr">entryTypes</span>: [<span class="string">&quot;longtask&quot;</span>] &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4、浏览器-Performance-选项卡"><a href="#4、浏览器-Performance-选项卡" class="headerlink" title="4、浏览器 Performance 选项卡"></a><strong>4、浏览器 Performance 选项卡</strong></h3><p>除了上述通过代码进行度量性能外，还可以在 <strong>浏览器控制台 - Performance 选项卡</strong> 中查看和分析页面性能。其中包含 <strong>FCP 性能指标、页面内容绘制 的耗时统计</strong> 等。</p>
+<p><img src="C:\Users\Zhangwenye\Desktop\博客\source\img\640.jpg" alt="image.png"></p>
+<h3 id="二、代码逻辑"><a href="#二、代码逻辑" class="headerlink" title="二、代码逻辑"></a><strong>二、代码逻辑</strong></h3><p>在特定需求场景下，我们可以通过一些 <strong>编程技巧</strong> 来提升性能网站的运行时性能。如：<strong>防抖&#x2F;节流、图片懒加载、时间切片</strong>等。</p>
+<h4 id="1、关注复杂度分析"><a href="#1、关注复杂度分析" class="headerlink" title="1、关注复杂度分析"></a><strong>1、关注复杂度分析</strong></h4><p>我们在学习算法的时候入门课就是接触<strong>复杂度分析(大 O 表示法)</strong>，通过它来分析一个算法的 执行效率 和 占用内存 的好坏。</p>
+<p>复杂度分析同样可以应用在日常开发中，它能约束你的代码编写逻辑，也会考察你的 编程思维 和 基础内功。</p>
+<p>现有一个需求：在一组数据中查询目标值。</p>
+<p>如果不注重代码执行效率，可能会写成下面这样，查找 N 个目标值就要执行 N 遍循环，如果不忽略系数，它的时间复杂度为 O(n^2)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = [</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;bj&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;北京&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sh&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;上海&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;gz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;广州&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;深圳&quot;</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bj = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;bj&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> sh = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;sh&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> gz = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;gz&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> sz = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;sz&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>而对于注重编程思维的工程师，只需进行一轮遍历并将结果存储在 <code>Map</code> 中实现需求（时间复杂度 O(n) ）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = [</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;bj&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;北京&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sh&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;上海&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;gz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;广州&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;深圳&quot;</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cityMap = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">city</span>) =&gt;</span> &#123;</span><br><span class="line">  cityMap[city.<span class="property">cityId</span>] = city;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; bj, sh, gz, sz &#125; = cityMap;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、防抖和节流"><a href="#2、防抖和节流" class="headerlink" title="2、防抖和节流"></a><strong>2、防抖和节流</strong></h4><p>防抖和节流大家都不陌生，在用户频繁操作一个功能时，可以适当使用 <strong>防抖和节流</strong> 优化逻辑执行时机，避免重复执行 JS 逻辑造成页面交互阻塞。</p>
+<ul>
+<li>对于防抖，常见的场景是 <strong>输入框搜索查询</strong>，短时间内重复操作会 <strong>清除并重新计时</strong> 来执行回调任务；</li>
+<li>对于节流，常见的场景是 <strong>调整窗口大小</strong>，以 <strong>固定的短间隔频率</strong> 执行回调任务。</li>
+</ul>
+<h4 id="3、图片懒加载"><a href="#3、图片懒加载" class="headerlink" title="3、图片懒加载"></a><strong>3、图片懒加载</strong></h4><p>图片懒加载也是一种网站优化手段。如果不做控制，图片全部加载发送 HTTP 请求可能会导致网站卡顿崩溃。</p>
+<p>首次进入页面，我们只需要加载出首屏区域的图片，其他区域的图片放置一个小的默认图，后续将图片滑动到可视区域后再加载实际的图片。</p>
+<p>懒加载可以使用 <strong>IntersectionObserver API</strong> 实现。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./loading-url.png&quot;</span> <span class="attr">data-src</span>=<span class="string">&quot;./url.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">const imgList = [...document.querySelectorAll(&#x27;img&#x27;)];</span><br><span class="line">const io = new IntersectionObserver((entries) =&gt;&#123;</span><br><span class="line">  entries.forEach(item =&gt; &#123;</span><br><span class="line">    // isIntersecting 是一个 Boolean 值，判断目标元素当前是否进入 root 视窗（默认 root 是 window 窗口可视区域）</span><br><span class="line">    if (item.isIntersecting) &#123;</span><br><span class="line">      item.target.src = item.target.dataset.src; // 真实的图片地址存放在 data-src 自定义属性上</span><br><span class="line">      // 图片加载后停止监听该元素，释放内存</span><br><span class="line">      io.unobserve(item.target);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">// observe 监听所有 img 节点</span><br><span class="line">imgList.forEach(img =&gt; io.observe(img));</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、时间切片"><a href="#4、时间切片" class="headerlink" title="4、时间切片"></a><strong>4、时间切片</strong></h4><p>我们知道 浏览器的渲染 和 JS 运行在一个单线程上，如果 JS 执行一个 <strong>LongTask 长任务</strong>，势必会阻塞浏览器渲染，导致用户在界面交互出现卡顿。</p>
+<p>因此我们需要避免长任务的执行，或按照一定规则拆分成一个个小任务通过 <strong>时间切片</strong> 来管理和执行。</p>
+<h4 id="5、Web-Worker-子线程"><a href="#5、Web-Worker-子线程" class="headerlink" title="5、Web Worker 子线程"></a><strong>5、Web Worker 子线程</strong></h4><p>如果说一个长任务仅是做一些计算的逻辑，并不一定非要在主线程上运行，那么可以选择使用 Worker 开启子线程并行执行计算任务。</p>
+<p>常见的场景是 <strong>大文件切片上传 - 计算文件 hash</strong>，文件越大计算 hash 耗时就越长，因此这种耗时的工作可以交给 Web Worker。</p>
+<h4 id="6、LRU-算法"><a href="#6、LRU-算法" class="headerlink" title="6、LRU 算法"></a><strong>6、LRU 算法</strong></h4><p>在做业务功能时为了提升用户体验（提升二次访问速度），会涉及 <strong>对已访问数据进行缓存</strong> 的操作，缓存存储可以是在 <strong>内存变量 或 浏览器本地缓存</strong> 中。</p>
+<p>无论是哪种存放位置，都不宜无限制的向缓存中存储数据，存储的越多，就会导致计算机运行越来越慢。</p>
+<p><strong>LRU（最近最少使用）算法用于管理缓存中的数据</strong>，确保缓存集合中数据的条目在一个可控的范围内。</p>
+<p>通过 <strong>队列</strong> 可以实现 LRU 算法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span> &#123;</span><br><span class="line"><span class="title function_">constructor</span>(<span class="params">max</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">max</span> = max; <span class="comment">// 缓存容量</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">cache</span> = <span class="title function_">newMap</span>(); <span class="comment">// 定义缓存 Map，优化查找速度</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span> = []; <span class="comment">// 队列，记录最近节点的 key</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问数据</span></span><br><span class="line"><span class="title function_">get</span>(<span class="params">key</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">has</span>(key)) &#123;</span><br><span class="line">      <span class="comment">// 更新节点到队列尾部</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">update</span>(key);</span><br><span class="line">      <span class="keyword">const</span> val = <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">get</span>(key);</span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line">    returnundefined;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加/更新数据</span></span><br><span class="line">  <span class="title function_">put</span>(<span class="params">key, val</span>) &#123;</span><br><span class="line">    <span class="comment">// 1、更新数据（和 get 相似都是更新节点到队列尾部，不过多了更新 val 操作）</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">has</span>(key)) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">set</span>(key, val);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">update</span>(key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2、添加数据</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">set</span>(key, val); <span class="comment">// 记录到 Map 中</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">push</span>(key); <span class="comment">// 添加到队列尾部</span></span><br><span class="line">      <span class="comment">// 考虑容量是否超出</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">keys</span>.<span class="property">length</span> &gt; <span class="variable language_">this</span>.<span class="property">max</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> oldKey = <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">shift</span>(); <span class="comment">// 删除队列头部</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">delete</span>(oldKey);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移动到队列尾部</span></span><br><span class="line">  <span class="title function_">update</span>(<span class="params">key</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">indexOf</span>(key);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">splice</span>(index, <span class="number">1</span>); <span class="comment">// 删除旧的位置</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">push</span>(key); <span class="comment">// 添加到队列尾部</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试用例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cache = <span class="keyword">new</span> <span class="title class_">LRUCache</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 添加新数据，此时缓存未满</span></span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>);</span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;b&quot;</span>, <span class="number">2</span>);</span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;c&quot;</span>, <span class="number">3</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [a, b, c]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 访问已有数据</span></span><br><span class="line">cache.<span class="title function_">get</span>(<span class="string">&quot;b&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [a, c, b]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 添加新数据，此时缓存已满</span></span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;d&quot;</span>, <span class="number">4</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [c, b, d]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7、虚拟滚动列表"><a href="#7、虚拟滚动列表" class="headerlink" title="7、虚拟滚动列表"></a><strong>7、虚拟滚动列表</strong></h4><p><strong>虚拟滚动列表</strong> 是一种用于优化长列表或大量数据展示的前端技术。它的核心思想是只渲染当前可视区域内的数据项，而不是一次性渲染整个列表。</p>
+<p>这种方式可以显著减少DOM操作，降低浏览器的渲染负担，从而提高性能和用户体验。</p>
+<p>假设我们向服务端查询到 1000 条数据，<strong>如果原样将这 1000 个数据渲染在页面上，就会生成 1000 个 DOM 节点</strong>。</p>
+<p>对于用户而言，其实并不关心是否是一次性将数据全部渲染到列表容器中，只要在容器的可视区域内的 DOM 数据能够正常看到就行。</p>
+<p>虚拟滚动的核心优化思路：<strong>结合滚动条 top 位置和容器的可视区域，计算出这个区间的数据项，渲染到滚动容器中</strong>。</p>
+<p>另外还有一个 <strong>虚拟滑动列表</strong> 也称为 无限滑动列表，和虚拟滚动列表的实现相似，适合应用在 H5 移动端，类似抖音的 短视频 推荐列表。</p>
 
       
     </div>
@@ -2464,7 +2806,7 @@ root.unmount();
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" rel="tag">前端页面、错误监控、性能</a></li></ul>
 
     </footer>
   </div>
@@ -2845,10 +3187,13 @@ root.unmount();
 <li><p>:disabled 不可用的表单元素（有 disabled 属性）。</p>
 </li>
 </ol>
-<p>   五、目标伪类（了解） :target 选中锚点指向的元素。 </p>
-<p>   六、语言伪类（了解） :lang() 根据指定的语言选择元素（本质是看 lang 属性的值）。</p>
 </li>
 </ol>
+<p>​      </p>
+<pre><code>  五、目标伪类（了解） :target 选中锚点指向的元素。 
+
+  六、语言伪类（了解） :lang() 根据指定的语言选择元素（本质是看 lang 属性的值）。
+</code></pre>
 <h2 id="伪元素选择器"><a href="#伪元素选择器" class="headerlink" title="伪元素选择器"></a>伪元素选择器</h2><p><img src="/../img/13609.jpg"></p>
 <h2 id="百分比计算规则"><a href="#百分比计算规则" class="headerlink" title="百分比计算规则"></a>百分比计算规则</h2><table>
 <thead>
@@ -3408,6 +3753,64 @@ root.unmount();
 <td align="left">专业摄影、医学影像、设计素材</td>
 </tr>
 </tbody></table>
+<h2 id="回流与重绘"><a href="#回流与重绘" class="headerlink" title="回流与重绘"></a>回流与重绘</h2><h3 id="1-回流与重绘的概念及触发条件"><a href="#1-回流与重绘的概念及触发条件" class="headerlink" title="1. 回流与重绘的概念及触发条件"></a>1. 回流与重绘的概念及触发条件</h3><h4 id="（1）回流"><a href="#（1）回流" class="headerlink" title="（1）回流"></a>（1）回流</h4><p>当渲染树中部分或者全部元素的尺寸、结构或者属性发生变化时，浏览器会重新渲染部分或者全部文档的过程就称为<strong>回流</strong>。</p>
+<p>下面这些操作会导致回流：</p>
+<ul>
+<li>页面的首次渲染</li>
+<li>浏览器的窗口大小发生变化</li>
+<li>元素的内容发生变化</li>
+<li>元素的尺寸或者位置发生变化</li>
+<li>元素的字体大小发生变化</li>
+<li>激活CSS伪类</li>
+<li>查询某些属性或者调用某些方法</li>
+<li>添加或者删除可见的DOM元素</li>
+</ul>
+<p>在触发回流（重排）的时候，由于浏览器渲染页面是基于流式布局的，所以当触发回流时，会导致周围的DOM元素重新排列，它的影响范围有两种：</p>
+<ul>
+<li>全局范围：从根节点开始，对整个渲染树进行重新布局</li>
+<li>局部范围：对渲染树的某部分或者一个渲染对象进行重新布局</li>
+</ul>
+<h4 id="（2）重绘"><a href="#（2）重绘" class="headerlink" title="（2）重绘"></a>（2）重绘</h4><p>当页面中某些元素的样式发生变化，但是不会影响其在文档流中的位置时，浏览器就会对元素进行重新绘制，这个过程就是<strong>重绘</strong>。</p>
+<p>下面这些操作会导致重绘：</p>
+<ul>
+<li>color、background 相关属性：background-color、background-image 等</li>
+<li>outline 相关属性：outline-color、outline-width 、text-decoration</li>
+<li>border-radius、visibility、box-shadow</li>
+</ul>
+<p>注意： <strong>当触发回流时，一定会触发重绘，但是重绘不一定会引发回流。</strong></p>
+<p>样式设置</p>
+<p>1、避免使用层级较深的选择器，或其他一些复杂的选择器，以提高CSS渲染效率</p>
+<p>2、避免使用CSS<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E8%A1%A8%E8%BE%BE%E5%BC%8F&zhida_source=entity">表达式</a>，CSS表达式是动态设置CSS属性的强大但危险方法，它的问题就在于计算频率很快。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次</p>
+<p>3、元素适当地定义高度或最小高度，否则元素的动态内容载入时，会出现页面元素的晃动或位置，造成回流</p>
+<p>4、给图片设置尺寸。如果图片不设置尺寸，首次载入时，占据空间会从0到完全出现，上下左右都可能位移，发生回流</p>
+<p>5、不要使用table布局，因为一个小改动可能会造成整个table重新布局。而且table渲染通常要3倍于同等元素时间</p>
+<p>6、能够使用CSS实现的效果，尽量使用CSS而不使用JS实现</p>
+<p><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E6%B8%B2%E6%9F%93%E5%B1%82&zhida_source=entity">渲染层</a></p>
+<p>1、此外，将需要多次重绘的元素独立为render layer渲染层，如设置absolute，可以减少重绘范围</p>
+<p>2、对于一些进行动画的元素，使用硬件渲染，从而避免重绘和回流</p>
+<p>DOM优化</p>
+<p>1、缓存DOM</p>
+<p>const div &#x3D; document.getElementById(‘div’)</p>
+<p>由于查询DOM比较耗时，在同一个节点无需多次查询的情况下，可以缓存DOM</p>
+<p>2、减少DOM深度及DOM数量</p>
+<p>HTML 中标签元素越多，标签的层级越深，浏览器解析DOM并绘制到浏览器中所花的时间就越长，所以应尽可能保持 DOM 元素简洁和层级较少。</p>
+<p>3、批量操作DOM</p>
+<p>　　由于DOM操作比较耗时，且可能会造成回流，因此要避免频繁操作DOM，可以批量操作DOM，先用字符串拼接完毕，再用innerHTML更新DOM</p>
+<p>4、批量操作CSS样式</p>
+<p>　　通过切换class或者使用元素的style.csstext属性去批量操作元素样式</p>
+<p>5、在内存中操作DOM</p>
+<p>　　使用DocumentFragment对象，让DOM操作发生在内存中，而不是页面上</p>
+<p>6、<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=DOM%E5%85%83%E7%B4%A0&zhida_source=entity">DOM元素</a>离线更新</p>
+<p>　　对DOM进行相关操作时，例、appendChild等都可以使用Document Fragment对象进行离线操作，带元素“组装”完成后再一次插入页面，或者使用display:none 对元素隐藏，在元素“消失”后进行相关操作</p>
+<p>7、DOM<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB&zhida_source=entity">读写分离</a></p>
+<p>　　浏览器具有惰性渲染机制，连接多次修改DOM可能只触发浏览器的一次渲染。而如果修改DOM后，立即读取DOM。为了保证读取到正确的DOM值，会触发浏览器的一次渲染。因此，修改DOM的操作要与访问DOM分开进行</p>
+<p>8、<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86&zhida_source=entity">事件代理</a></p>
+<p>　　事件代理是指将事件监听器注册在父级元素上，由于子元素的事件会通过事件冒泡的方式向上传播到父节点，因此，可以由父节点的监听函数统一处理多个子元素的事件</p>
+<p>　　利用事件代理，可以减少内存使用，提高性能及降低代码复杂度</p>
+<p>9、防抖和节流</p>
+<p>　　使用函数节流（throttle）或函数去抖（debounce），限制某一个方法的频繁触发</p>
+<p>10、及时清理环境</p>
+<p>　　及时消除<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8&zhida_source=entity">对象引用</a>，清除定时器，清除事件监听器，创建最小<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=185471240&content_type=Article&match_order=1&q=%E4%BD%9C%E7%94%A8%E5%9F%9F&zhida_source=entity">作用域</a>变量，可以及时回收内存</p>
 <h1 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h1><h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>变量、函数、属性或函数参数的名称。标识符可以由一或多个下列字符组成： </p>
 <ul>
 <li>第一个字符必须是一个字母、下划线（_）或美元符号（$）； </li>
@@ -6935,7 +7338,7 @@ root.unmount();
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" rel="tag">前端页面、错误监控、性能指标</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" rel="tag">前端页面、错误监控、性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
     </div>
   </div>
 
@@ -6945,7 +7348,7 @@ root.unmount();
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" style="font-size: 10px;">前端页面、错误监控、性能指标</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" style="font-size: 10px;">前端页面、错误监控、性能</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
     </div>
   </div>
 
@@ -6954,7 +7357,7 @@ root.unmount();
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li></ul>
     </div>
   </div>
 
@@ -6965,6 +7368,10 @@ root.unmount();
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/">React补充</a>
+          </li>
         
           <li>
             <a href="/2025/06/29/React/">React</a>
@@ -6980,10 +7387,6 @@ root.unmount();
         
           <li>
             <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/">前端性能[C</a>
           </li>
         
       </ul>
