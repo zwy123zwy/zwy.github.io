@@ -71,6 +71,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-AI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/01/AI/" class="article-date">
+  <time class="dt-published" datetime="2025-07-01T09:52:16.000Z" itemprop="datePublished">2025-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/07/01/AI/">AI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="MCP"><a href="#MCP" class="headerlink" title="MCP"></a>MCP</h1><p><strong>Model context Protocol 模型上下文协议， 出现在2024.11.25</strong></p>
+<p><strong>以一致的方式将各种数据源、工具和功能连接到 AI 模型</strong>（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。MCP 的目标是创建一个通用标准，使 AI 应用程序的开发和集成变得更加简单和统一。</p>
+<p><img src="/../img/v2-3a242914e1f4958e631dd158e043b7c3_1440w.jpg"></p>
+<p><strong>Function call</strong>   函数调用返回结果作为大模型的补充</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/01/AI/" data-id="cmcle30ei0000usur7rsa5c9q" data-title="AI" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-React补充" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/" class="article-date">
@@ -2002,7 +2046,131 @@ root.unmount();
 </ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span>, <span class="comment">// 生产模式自动开启 Tree Shaking</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">optimization</span>: &#123;</span><br><span class="line">    <span class="attr">usedExports</span>: <span class="literal">true</span>, <span class="comment">// 标记未使用的导出</span></span><br><span class="line">    <span class="attr">minimize</span>: <span class="literal">true</span>,    <span class="comment">// 启用代码压缩</span></span><br><span class="line">    <span class="attr">minimizer</span>: [</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">TerserPlugin</span>(), <span class="comment">// 使用 Terser 进行压缩</span></span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">CssMinimizerPlugin</span>() <span class="comment">// 压缩 CSS</span></span><br><span class="line">    ],</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代码分割配置</span></span><br><span class="line">    <span class="attr">splitChunks</span>: &#123;</span><br><span class="line">      <span class="attr">chunks</span>: <span class="string">&#x27;all&#x27;</span>,</span><br><span class="line">      <span class="attr">cacheGroups</span>: &#123;</span><br><span class="line">        <span class="attr">vendors</span>: &#123;</span><br><span class="line">          <span class="attr">test</span>: <span class="regexp">/[\\/]node_modules[\\/]/</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;vendors&#x27;</span>,</span><br><span class="line">          <span class="attr">chunks</span>: <span class="string">&#x27;all&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h1 id="Babel的原理"><a href="#Babel的原理" class="headerlink" title="Babel的原理"></a><strong>Babel</strong>的原理</h1><p>babel 的转译过程也分为三个阶段，这三步具体是： </p>
+
+
+
+
+<h2 id="前端工程化"><a href="#前端工程化" class="headerlink" title="前端工程化"></a>前端工程化</h2><blockquote>
+<p>首先这就涉及到我们程序员编写代码的思路和方式了</p>
+</blockquote>
+<blockquote>
+<p>我们都喜欢多模块，SASS&#x2F;LESS预编译器，前沿语法，前言API，命名友好，资源分组，有注释的方式</p>
+</blockquote>
+<blockquote>
+<p>而浏览器喜欢的是少量文件，CSS，兼容语法，兼容API，单字节命名，资源集中，无注释的方式。</p>
+</blockquote>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/c7qqzppjlk64c_4fa1deb056684296a4303053b7227c8b.png" alt="image"></p>
+<blockquote>
+<p>所以我们前端工程化的意义和作用就来了。使用webpack和vite来帮助我们把我们写的代码转换成浏览器能够读写的模式。让我们可以随意的编写我们喜欢的格式的代码</p>
+</blockquote>
+<h2 id="webpack的构建流程-1"><a href="#webpack的构建流程-1" class="headerlink" title="webpack的构建流程"></a>webpack的构建流程</h2><p><img src="https://ucc.alicdn.com/pic/developer-ecology/c7qqzppjlk64c_4cedd31a7a1444e0a62cfd5ae7ae2b94.png" alt="image"></p>
+<ul>
+<li><strong>初始化参数：</strong> 从配置文件和shell语句中读取合并参数，得出最终的配置参数。</li>
+<li><strong>开始编译：</strong> 从上一步得到的参数初始化compiler对象，加载所有配置插件，执行对象的run方法开始编译</li>
+<li><strong>确定入口：</strong> 通过entry找出入口文件</li>
+<li><strong>编译模块：</strong> 从入口文件出发，调用所有配置的 <code>loader</code> 对模块进行翻译，再找出该模块依赖的模块，这个步骤是递归执行的，直至所有入口依赖的模块文件都经过本步骤的处理。</li>
+<li><strong>完成模块编译：</strong> 经过第 4 步使用 loader 翻译完所有模块后，得到了每个模块被翻译后的最终内容以及它们之间的依赖关系。</li>
+<li><strong>输出资源：</strong> 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 <code>chunk</code>，再把每个 <code>chunk</code> 转换成一个单独的文件加入到输出列表，这一步是可以修改输出内容的最后机会。</li>
+<li><strong>输出完成：</strong> 在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。</li>
+</ul>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/c7qqzppjlk64c_846b80577af74866b212694e710cb593.png" alt="image"></p>
+<h2 id="vite的构建流程"><a href="#vite的构建流程" class="headerlink" title="vite的构建流程"></a>vite的构建流程</h2><p>Vite 的构建流程与传统的打包工具（如Webpack）有所不同，主要体现在开发阶段和生产环境阶段。以下是 Vite 的构建流程：</p>
+<p><strong>开发阶段：</strong></p>
+<ul>
+<li><strong>启动开发服务器：</strong> 当你启动 Vite 时，它会启动一个开发服务器来为你提供服务。这个开发服务器利用现代浏览器对 ES 模块的本地支持，实现了快速的冷启动和热模块替换（HMR）。</li>
+<li><strong>解析并提供文件：</strong> 当浏览器请求某个文件时，Vite 会解析这个文件，并根据需要进行转换。例如，对于 Vue 单文件组件（SFC），Vite 会将其实时编译成 JavaScript，然后返回给浏览器。</li>
+<li><strong>处理依赖关系：</strong> 当浏览器中的代码引入其他模块时，Vite 会分析这些依赖关系，并通过浏览器原生的 ES 模块加载功能来动态地获取这些模块。</li>
+</ul>
+<p><strong>生产环境阶段：</strong></p>
+<ul>
+<li><strong>预构建：</strong> 在生产环境中，Vite 会预先构建你的应用程序，以便在部署时能够提供尽可能高效的代码。</li>
+<li><strong>优化和压缩：</strong> Vite 会对代码进行优化和压缩，以提高应用程序的性能，并生成适合生产环境部署的静态资源。</li>
+<li><strong>输出：</strong> 完成构建后，Vite 会将最终的生产代码输出到指定的目录，准备用于部署到生产环境。</li>
+</ul>
+<h2 id="webpack和vite的对比"><a href="#webpack和vite的对比" class="headerlink" title="webpack和vite的对比"></a>webpack和vite的对比</h2><h3 id="服务器启动区别"><a href="#服务器启动区别" class="headerlink" title="服务器启动区别"></a>服务器启动区别</h3><ul>
+<li><strong>wepack:</strong> 当冷启动开发服务器时，基于打包器的方式是在提供服务前去急切地抓取和构建你的整个应用。</li>
+</ul>
+<blockquote>
+<p>而 Vite 是通过在一开始将应用中的模块区分为 <strong>依赖</strong> 和 <strong>源码</strong> 两类，改进了开发服务器启动时间。</p>
+</blockquote>
+<blockquote>
+<p><strong>依赖</strong> 大多为纯 JavaScript 并在开发时不会变动。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会以某些方式（例如 ESM 或者 CommonJS）被拆分到大量小模块中。</p>
+</blockquote>
+<blockquote>
+<p>Vite 将会使用 esbuild 预构建依赖。<strong>Esbuild 使用 Go 编写</strong>，并且比以 JavaScript 编写的打包器预构建依赖快 10-100 倍。</p>
+</blockquote>
+<blockquote>
+<p>源码 通常包含一些并非直接是 <strong>JavaScript</strong> 的文件，需要转换（例如 JSX，CSS 或者 Vue&#x2F;Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载。（例如基于路由拆分的代码模块）。</p>
+</blockquote>
+<blockquote>
+<p>Vite 以 原生 <strong>ESM</strong> 方式服务源码。这实际上是让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器请求源码时进行转换并<strong>按需提供源码</strong>。根据情景动态导入的代码，即只在当前屏幕上实际使用时才会被处理。</p>
+</blockquote>
+<h3 id="热更新的区别"><a href="#热更新的区别" class="headerlink" title="热更新的区别"></a>热更新的区别</h3><blockquote>
+<p>webpack</p>
+</blockquote>
+<p><strong>全局刷新：</strong> Webpack 的 HMR 通常会在代码发生变化时替换整个模块，然后通过 HMR runtime 来触发页面级别的刷新或重新渲染，这可能导致部分页面状态的丢失。</p>
+<p><strong>较慢的冷启动：</strong> Webpack 的开发模式下，由于整个应用程序需要被打包和构建，因此冷启动时间相对较长，尤其是随着项目规模的增大，冷启动时间会进一步延长。</p>
+<p><strong>配置复杂：</strong> 在使用 Webpack 进行 HMR 时，需要进行一定的配置，包括设置 HMR 插件、编写 HMR 相关的代码等，相对来说略显复杂。</p>
+<blockquote>
+<p><strong>vite</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>局部更新：</strong> Vite 的 HMR 实现了更细粒度的模块更新，可以实现局部模块的更新而无需刷新整个页面，从而减少页面状态的丢失。</p>
+</li>
+<li><p><strong>快速冷启动：</strong> Vite 利用现代浏览器的原生 ES 模块加载能力，实现了快速的冷启动时间，因为它不需要将整个应用程序打包成一个或多个文件。</p>
+</li>
+<li><p><strong>无需额外配置：</strong> 在 Vite 中，HMR 是开箱即用的，无需额外配置。Vite 会自动处理模块的更新和热替换，让开发者专注于业务逻辑的开发。</p>
+</li>
+</ul>
+<h3 id="底层代码实现的区别？"><a href="#底层代码实现的区别？" class="headerlink" title="底层代码实现的区别？"></a>底层代码实现的区别？</h3><blockquote>
+<p>webpack是用的node.js来实现的，node.js支持的生态库更多，前后端的一致性比较高，对于异步编程有着很好的支持，node.js的跨平台性比较好，在window，Mac,和linux等不同操作系统上都可以运行</p>
+</blockquote>
+<blockquote>
+<p>vite是使用的 esbuild，esbuild 是用 Go 语言编写的，专注于快速的构建和打包，它的底层实现经过了高度优化，能够充分利用多核处理器和其他硬件资源，以及高效的算法和数据结构，从而实现了极快的构建速度。</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>webpack服务器启动速度比vite慢：由于vite启动的时候不需要打包，也就<strong>无需分析模块依赖、编译</strong>，所以启动速度<strong>非常快</strong>。当浏览器请求需要的模块时，再对模块进行编译，这种按需动态编译的模式，极大缩短了编译时间，当项目越大，文件越多时，vite的开发时优势越明显</p>
+</blockquote>
+<blockquote>
+<p>vite热更新比webpack快:vite在<strong>HRM</strong>方面，当某个模块内容改变时，让浏览器去<strong>重新请求该模块</strong>即可，而不是像webpack重新将该模块的所有依赖<strong>重新编译</strong>；</p>
+</blockquote>
+<blockquote>
+<p>vite使用<strong>esbuild(Go 编写)</strong> 预构建依赖，而webpack基于<strong>nodejs</strong>, esbuild比node快 10-100 倍</p>
+</blockquote>
+<blockquote>
+<p>vite生态不及webpack，加载器、插件不够丰富</p>
+</blockquote>
+<h2 id="vite的缺点是什么？"><a href="#vite的缺点是什么？" class="headerlink" title="vite的缺点是什么？"></a>vite的缺点是什么？</h2><ul>
+<li><strong>生态，生态，生态不如webpack</strong></li>
+</ul>
+<blockquote>
+<p>wepback厉害之处在于loader和plugin非常丰富,不过我认为生态只是时间问题，现在的vite,更像是当时刚出来的M1芯片Mac，作者当时非常喜欢M1的Mac，毫不犹豫买了，现在也没什么问题，相信vite后续更新会更好</p>
+</blockquote>
+<ul>
+<li><strong>prod环境的构建，目前用的Rollup</strong></li>
+</ul>
+<blockquote>
+<p>原因在于esbuild对于css和代码分割不是很友好</p>
+</blockquote>
+<ul>
+<li><strong>还没有被大规模使用,很多问题或者诉求没有真正暴露出来</strong></li>
+</ul>
+<blockquote>
+<p>vite真正崛起那一天，是跟vue3有关系的,当vue3广泛开始使用在生产环境的时候，vite也就大概率意味着被大家慢慢开始接受了</p>
+</blockquote>
+<h2 id="vite一定比webpack快吗"><a href="#vite一定比webpack快吗" class="headerlink" title="vite一定比webpack快吗?"></a>vite一定比webpack快吗?</h2><blockquote>
+<p>不能说vite一定比webpack快，相对于不同的场景，webpack和vite有不同的速度优势吧。</p>
+</blockquote>
+<blockquote>
+<p>vite相对于webpack在开发环境下有着更快的启动速度，因为vite底层是用的esbuild,这种设计使得 Vite 能够以非常低的延迟启动开发服务器，并且在修改文件时能够实现近乎即时的重新加载。</p>
+</blockquote>
+<blockquote>
+<p>然而，在生产环境中，Vite 和 Webpack 的性能差异可能会变得不那么明显。Webpack 通过使用高度优化的构建算法和各种插件来提供出色的打包性能，尤其适用于复杂的项目和大规模的应用程序。</p>
+</blockquote>
+<blockquote>
+<p>因此，是否可以说 Vite 一定比 Webpack 快，取决于具体的使用场景和项目需求。对于简单的小型项目，特别是新项目，Vite 通常会具有更快的启动和开发速度。而对于复杂的项目或需要更多自定义配置和功能的情况，Webpack 可能会更适合，因为它提供了更多的灵活性和扩展性。</p>
+</blockquote>
+<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><h1 id="Babel的原理"><a href="#Babel的原理" class="headerlink" title="Babel的原理"></a><strong>Babel</strong>的原理</h1><p>babel 的转译过程也分为三个阶段，这三步具体是： </p>
 <ul>
 <li><strong>解析 Parse</strong>: 将代码解析⽣成抽象语法树（AST），即词法分析与语法分析的过程；</li>
 <li><strong>转换 Transform</strong>: 对于 AST 进⾏变换⼀系列的操作，babel 接受得到 AST 并通过 babel-traverse 对其进⾏遍历，在此过程中进⾏添加、更新及移除等操作；</li>
@@ -2048,7 +2216,32 @@ root.unmount();
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>q</p>
+        <h1 id="性能监控"><a href="#性能监控" class="headerlink" title="性能监控"></a>性能监控</h1><p>前端监控的目的是：</p>
+<p>*<strong>获取用户行为以及跟踪产品在用户端的使用情况，并以监控数据为基础，指明产品优化的方向*</strong>。</p>
+<p>前端监控可以分为三类：数据监控、性能监控和异常监控。下面我们来一一的了解。</p>
+<h4 id="1-数据监控"><a href="#1-数据监控" class="headerlink" title="(1)数据监控"></a>(1)数据监控</h4><p>数据监控，顾名思义就是监听用户的行为。常见的数据监控包括：</p>
+<ul>
+<li>PV&#x2F;UV:PV(page view)，即页面浏览量或点击量。UV:指访问某个站点或点击某条新闻的不同IP地址的人数</li>
+<li>用户在每一个页面的停留时间</li>
+<li>用户通过什么入口来访问该网页</li>
+<li>用户在相应的页面中触发的行为</li>
+</ul>
+<p>统计这些数据是有意义的，比如我们知道了用户来源的渠道，可以促进产品的推广，知道用户在每一个页面停留的时间，可以针对停留较长的页面，增加广告推送等等。</p>
+<h4 id="2-性能监控"><a href="#2-性能监控" class="headerlink" title="(2)性能监控"></a>(2)性能监控</h4><p>性能监控指的是监听前端的性能，主要包括监听网页或者说产品在用户端的体验。常见的性能监控数据包括：</p>
+<ul>
+<li>不同用户，不同机型和不同系统下的首屏加载时间</li>
+<li>白屏时间</li>
+<li>http等请求的响应时间</li>
+<li>静态资源整体下载时间</li>
+<li>页面渲染时间</li>
+<li>页面交互动画完成时间</li>
+</ul>
+<p>这些性能监控的结果，可以展示前端性能的好坏，根据性能监测的结果可以进一步的去优化前端性能，比如兼容低版本浏览器的动画效果，加快首屏加载等等。</p>
+<h4 id="3-异常监控"><a href="#3-异常监控" class="headerlink" title="(3)异常监控"></a>(3)异常监控</h4><p>此外，产品的前端代码在执行过程中也会发生异常，因此需要引入异常监控。及时的上报异常情况，可以避免线上故障的发上。虽然大部分异常可以通过try catch的方式捕获，但是比如内存泄漏以及其他偶现的异常难以捕获。常见的需要监控的异常包括：</p>
+<ul>
+<li>Javascript的异常监控</li>
+<li>样式丢失的异常监控</li>
+</ul>
 <h1 id="前端安全补充"><a href="#前端安全补充" class="headerlink" title="前端安全补充"></a>前端安全补充</h1><h2 id="DoS-Denial-of-Service-Attack-拒绝服务攻击"><a href="#DoS-Denial-of-Service-Attack-拒绝服务攻击" class="headerlink" title="DoS (Denial-of-Service Attack - 拒绝服务攻击)"></a>DoS (Denial-of-Service Attack - 拒绝服务攻击)</h2><ul>
 <li><strong>核心目标：</strong> 使目标系统（服务器、网络、服务、应用程序等）<strong>无法为合法用户提供正常的服务</strong>。通常是通过耗尽目标的关键资源（如带宽、CPU、内存、连接数、磁盘I&#x2F;O等）来实现。</li>
 <li><strong>基本原理：</strong><ul>
@@ -2806,7 +2999,7 @@ root.unmount();
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" rel="tag">前端页面、错误监控、性能</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" rel="tag">前端页面、错误监控、</a></li></ul>
 
     </footer>
   </div>
@@ -7338,7 +7531,7 @@ root.unmount();
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" rel="tag">前端页面、错误监控、性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" rel="tag">前端页面、错误监控、</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
     </div>
   </div>
 
@@ -7348,7 +7541,7 @@ root.unmount();
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81%E6%80%A7%E8%83%BD/" style="font-size: 10px;">前端页面、错误监控、性能</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" style="font-size: 10px;">前端页面、错误监控、</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">大模型</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
     </div>
   </div>
 
@@ -7370,6 +7563,10 @@ root.unmount();
       <ul>
         
           <li>
+            <a href="/2025/07/01/AI/">AI</a>
+          </li>
+        
+          <li>
             <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/">React补充</a>
           </li>
         
@@ -7383,10 +7580,6 @@ root.unmount();
         
           <li>
             <a href="/2025/06/29/Node/">Node</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a>
           </li>
         
       </ul>
