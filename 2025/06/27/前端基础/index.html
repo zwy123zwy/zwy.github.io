@@ -45,7 +45,7 @@
 <meta property="og:image" content="http://example.com/img/26826.jpg">
 <meta property="og:image" content="http://example.com/img/%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE1.png">
 <meta property="article:published_time" content="2025-06-27T13:36:28.000Z">
-<meta property="article:modified_time" content="2025-07-09T05:36:48.958Z">
+<meta property="article:modified_time" content="2025-07-11T18:07:10.655Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络，浏览器原理">
 <meta name="twitter:card" content="summary">
@@ -755,10 +755,10 @@
 <li><p>如果发送方操作的速度快于接收方，接收到的数据最终将充满接收方的缓冲区，导致接收方通告一个零窗口 。发送方收到一个零窗口通告时，必须停止发送，直到接收方重新通告一个正的窗口。</p>
 </li>
 </ul>
-<h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p>HTTP 是超文本传输协议，它定义了客户端和服务器之间交换报文的格式和方式，默认使用 80 端口。它使用 TCP 作为传输层协议，保证了数据传输的可靠性。</p>
+<h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p>HTTP 是<strong>超文本传输协议</strong>，它定义了客户端和服务器之间交换报文的格式和方式，默认使用 <strong>80 端口</strong>。它使用 <strong>TCP</strong> 作为传输层协议，保证了数据传输的可靠性。</p>
 <p>HTTP协议具有以下<strong>优点</strong>：</p>
 <ul>
-<li>支持客户端&#x2F;服务器模式</li>
+<li>支持<strong>客户端&#x2F;服务器</strong>模式</li>
 <li><strong>简单快速</strong>：客户向服务器请求服务时，只需传送请求方法和路径。由于 HTTP 协议简单，使得 HTTP 服务器的程序规模小，因而通信速度很快。</li>
 <li><strong>无连接</strong>：无连接就是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接，采用这种方式可以节省传输时间。</li>
 <li><strong>无状态</strong>：HTTP 协议是无状态协议，这里的状态是指通信过程的上下文信息。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能会导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就比较快。</li>
@@ -1199,7 +1199,7 @@
 <hr>
 <h3 id="六、典型数据传输流程"><a href="#六、典型数据传输流程" class="headerlink" title="六、典型数据传输流程"></a>六、典型数据传输流程</h3><p>以文件下载为例：</p>
 <ol>
-<li><p>**连接建立</p>
+<li><p>连接建立</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Client → Server: Client Hello (携带 0-RTT 数据)</span><br><span class="line">Server → Client: Server Hello + ACK</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>数据传输</strong>：</p>
@@ -1277,7 +1277,7 @@
 <li>选定的 TLS 版本</li>
 <li>服务器随机数（Server Random）</li>
 <li>选定的加密套件</li>
-<li><strong>🔑 服务器证书链</strong>（含公钥、域名、CA 签名）</li>
+<li><strong>服务器证书链</strong>（含公钥、域名、CA 签名）</li>
 </ul>
 </li>
 </ul>
@@ -1323,7 +1323,7 @@
 </li>
 </ul>
 <hr>
-<h3 id="CA-证书验证机制"><a href="#CA-证书验证机制" class="headerlink" title="CA 证书验证机制**"></a>CA 证书验证机制**</h3><p>证书验证是防范中间人攻击的核心：</p>
+<h3 id="CA-证书验证机制"><a href="#CA-证书验证机制" class="headerlink" title="CA 证书验证机制"></a>CA 证书验证机制</h3><p>证书验证是防范中间人攻击的核心：</p>
 <ol>
 <li><strong>证书链校验</strong>：<ul>
 <li>服务器证书 → 中间 CA 证书 → 根 CA 证书</li>
@@ -1341,7 +1341,7 @@
 </li>
 </ol>
 <hr>
-<h3 id="无响应时的处理策略"><a href="#无响应时的处理策略" class="headerlink" title="无响应时的处理策略**"></a>无响应时的处理策略**</h3><p>TLS 协议内置超时重传机制：</p>
+<h3 id="无响应时的处理策略"><a href="#无响应时的处理策略" class="headerlink" title="无响应时的处理策略"></a>无响应时的处理策略</h3><p>TLS 协议内置超时重传机制：</p>
 <table>
 <thead>
 <tr>
@@ -1367,7 +1367,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h3 id="防范中间人攻击（MitM）措施"><a href="#防范中间人攻击（MitM）措施" class="headerlink" title="防范中间人攻击（MitM）措施**"></a>防范中间人攻击（MitM）措施**</h3><p>HTTPS 通过四重机制防御：</p>
+<h3 id="防范中间人攻击（MitM）措施"><a href="#防范中间人攻击（MitM）措施" class="headerlink" title="防范中间人攻击（MitM）措施"></a>防范中间人攻击（MitM）措施</h3><p>HTTPS 通过四重机制防御：</p>
 <ol>
 <li><strong>证书签名体系</strong>：<ul>
 <li>攻击者无法伪造 CA 签名的合法证书（除非控制根 CA）</li>
