@@ -71,6 +71,322 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Koa" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/13/Koa/" class="article-date">
+  <time class="dt-published" datetime="2025-07-13T08:18:33.000Z" itemprop="datePublished">2025-07-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/07/13/Koa/">Koa</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Koa"><a href="#Koa" class="headerlink" title="Koa"></a>Koa</h1><p>Koa 是一个基于 Node.js 平台的下一代 web 开发框架，由 Express 的原班人马打造。它旨在提供一个更小、更富有表现力、更健壮的基础结构，用于构建 web 应用和 API。Koa 通过使用 async 函数，允许你丢弃回调函数，并极大地增强错误处理能力。Koa 的核心设计理念是中间件（middleware），它通过组合不同的中间件来处理 HTTP 请求。</p>
+<p><strong>体积更小，基于async&#x2F;await、组合不同的中间件来处理 HTTP 请求</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Koa</span> = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="title class_">Koa</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 中间件示例</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">  <span class="keyword">const</span> ms = <span class="title class_">Date</span>.<span class="title function_">now</span>() - start;</span><br><span class="line">  ctx.<span class="title function_">set</span>(<span class="string">&#x27;X-Response-Time&#x27;</span>, <span class="string">`<span class="subst">$&#123;ms&#125;</span>ms`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  ctx.<span class="property">body</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server is running on http://localhost:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>1. 轻量级框架</strong></p>
+<p>Koa 的设计哲学是保持核心代码的简洁性，这使得它成为一个非常轻量级的框架。Koa 的核心代码只有几百行，开发者可以很容易地理解其工作原理，并根据需要进行扩展。</p>
+<p><strong>2. 中间件机制</strong></p>
+<p>Koa 的中间件机制是其最显著的特性之一。Koa 使用洋葱模型来处理中间件，这意味着请求会依次通过所有中间件，然后再依次返回。这种机制使得开发者可以非常灵活地组合和重用中间件。</p>
+<p><strong>3. 异步流程控制</strong></p>
+<p>Koa 使用 <code>async/await</code> 语法来处理异步操作，这使得异步代码的编写更加简洁和可读。相比于传统的回调函数或 Promise 链，<code>async/await</code> 语法可以避免回调地狱，使代码更加易于维护。</p>
+<p><strong>4. 上下文对象</strong></p>
+<p>Koa 提供了一个上下文对象（Context），它封装了 Node.js 的 <code>request</code> 和 <code>response</code> 对象。通过上下文对象，开发者可以更方便地访问请求参数、设置响应头、发送响应体等操作。</p>
+<p><strong>5. 错误处理</strong></p>
+<p>Koa 提供了统一的错误处理机制。开发者可以通过中间件捕获和处理错误，避免错误直接导致应用程序崩溃。Koa 还提供了一个全局的错误事件监听器，可以捕获未处理的异常。</p>
+<p><strong>6. 无捆绑中间件</strong></p>
+<p>Koa 本身不捆绑任何中间件，这意味着开发者可以根据项目的需求自由选择和组合中间件。这种设计使得 Koa 非常灵活，开发者可以根据具体需求定制自己的中间件栈。</p>
+<h2 id="Koa与Express-的区别"><a href="#Koa与Express-的区别" class="headerlink" title="Koa与Express 的区别"></a>Koa与Express 的区别</h2><p>Koa 和 Express 是 Node.js 中两个非常流行的 Web 框架，它们的主要区别如下：</p>
+<ol>
+<li><strong>中间件机制</strong>：<ul>
+<li><strong>Express</strong>：使用传统的回调函数方式处理中间件，支持链式调用。</li>
+<li><strong>Koa</strong>：使用 ES6 的 <code>async/await</code> 语法，中间件通过 <code>await next()</code> 来控制流程。</li>
+</ul>
+</li>
+<li><strong>错误处理</strong>：<ul>
+<li><strong>Express</strong>：错误处理依赖于中间件的顺序，通常需要在最后添加一个错误处理中间件。</li>
+<li><strong>Koa</strong>：通过 <code>try/catch</code> 捕获错误，错误处理更加直观和灵活。</li>
+</ul>
+</li>
+<li><strong>体积和性能</strong>：<ul>
+<li><strong>Express</strong>：功能丰富，体积较大。</li>
+<li><strong>Koa</strong>：更加轻量，核心功能较少，依赖中间件扩展功能。</li>
+</ul>
+</li>
+<li><strong>上下文对象</strong>：<ul>
+<li><strong>Express</strong>：没有内置的上下文对象，需要手动传递 <code>req</code> 和 <code>res</code>。</li>
+<li><strong>Koa</strong>：提供了 <code>ctx</code> 对象，封装了 <code>request</code> 和 <code>response</code>，使用更加方便。</li>
+</ul>
+</li>
+<li><strong>路由</strong>：<ul>
+<li><strong>Express</strong>：内置了路由功能。</li>
+<li><strong>Koa</strong>：没有内置路由，需要借助第三方中间件如 <code>koa-router</code>。</li>
+</ul>
+</li>
+</ol>
+<h1 id="Koa-和-Express-的-next-函数有什么区别？"><a href="#Koa-和-Express-的-next-函数有什么区别？" class="headerlink" title="Koa 和 Express 的 next 函数有什么区别？"></a>Koa 和 Express 的 next 函数有什么区别？</h1><p>Koa 和 Express 的 <code>next</code> 函数在中间件处理机制上有显著的区别：</p>
+<ul>
+<li><strong>Express 的 <code>next</code> 函数</strong>：用于将控制权传递给下一个中间件。如果当前中间件没有结束请求-响应周期，必须调用 <code>next()</code> 来继续执行后续的中间件。如果不调用 <code>next()</code>，请求将会挂起。</li>
+<li><strong>Koa 的 <code>next</code> 函数</strong>：Koa 的 <code>next</code> 函数实际上是一个 <code>async</code> 函数，返回一个 <code>Promise</code>。它允许你在中间件中使用 <code>await next()</code> 来等待后续中间件的执行完成。Koa 的中间件是洋葱模型，<code>next()</code> 会依次执行后续中间件，然后再返回到当前中间件继续执行。</li>
+</ul>
+<h3 id="Express-的-next-函数"><a href="#Express-的-next-函数" class="headerlink" title="Express 的 next 函数"></a>Express 的 <code>next</code> 函数</h3><p>在 Express 中，<code>next</code> 是一个简单的函数调用，用于将控制权传递给下一个中间件。Express 的中间件是线性执行的，每个中间件依次处理请求和响应。如果某个中间件没有调用 <code>next()</code>，请求将会被挂起，后续的中间件不会被执行。</p>
+<p>Koa 的 <code>next</code> 函数是一个 <code>async</code> 函数，返回一个 <code>Promise</code>。Koa 的中间件模型是洋葱模型，中间件的执行顺序是从外到内，然后再从内到外。通过 <code>await next()</code>，你可以等待后续中间件的执行完成，然后再继续执行当前中间件的剩余代码。</p>
+<h3 id="区别总结"><a href="#区别总结" class="headerlink" title="区别总结"></a>区别总结</h3><ul>
+<li><strong>执行模型</strong>：Express 是线性执行模型，Koa 是洋葱模型。</li>
+<li><strong><code>next</code> 函数</strong>：Express 的 <code>next</code> 是同步的，Koa 的 <code>next</code> 是异步的，返回 <code>Promise</code>。</li>
+<li><strong>控制流程</strong>：在 Express 中，如果不调用 <code>next()</code>，请求会挂起；在 Koa 中，<code>await next()</code> 会等待后续中间件执行完成后再继续执行当前中间件的剩余代码。</li>
+</ul>
+<h1 id="Koa-的中间件机制是什么？"><a href="#Koa-的中间件机制是什么？" class="headerlink" title="Koa 的中间件机制是什么？"></a>Koa 的中间件机制是什么？</h1><h2 id="推荐答案"><a href="#推荐答案" class="headerlink" title="推荐答案"></a>推荐答案</h2><p>Koa 的中间件机制是基于洋葱模型（Onion Model）的。中间件是一个函数，它接收两个参数：<code>ctx</code>（上下文对象）和 <code>next</code>（下一个中间件的函数）。当调用 <code>next()</code> 时，控制权会传递给下一个中间件，直到最后一个中间件执行完毕，然后再依次返回，执行每个中间件中 <code>next()</code> 之后的代码。这种机制允许中间件在请求和响应的生命周期中执行前置和后置操作。</p>
+<h2 id="本题详细解读"><a href="#本题详细解读" class="headerlink" title="本题详细解读"></a>本题详细解读</h2><h3 id="1-洋葱模型"><a href="#1-洋葱模型" class="headerlink" title="1. 洋葱模型"></a>1. 洋葱模型</h3><p>Koa 的中间件机制被称为“洋葱模型”，因为请求和响应的处理过程像剥洋葱一样，从外到内，再从内到外。具体来说，当一个请求进入 Koa 应用时，它会依次经过所有的中间件。每个中间件可以执行一些操作，然后调用 <code>next()</code> 将控制权传递给下一个中间件。当最后一个中间件执行完毕后，控制权会依次返回到之前的中间件，执行 <code>next()</code> 之后的代码。</p>
+<h3 id="2-中间件函数"><a href="#2-中间件函数" class="headerlink" title="2. 中间件函数"></a>2. 中间件函数</h3><p>一个典型的 Koa 中间件函数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  // 前置操作</span><br><span class="line">  console.log(&#x27;Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  // 后置操作</span><br><span class="line">  console.log(&#x27;After next&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>console.log(&#39;Before next&#39;)</code> 会在请求进入时执行，而 <code>console.log(&#39;After next&#39;)</code> 会在响应返回时执行。</p>
+<h3 id="3-中间件的执行顺序"><a href="#3-中间件的执行顺序" class="headerlink" title="3. 中间件的执行顺序"></a>3. 中间件的执行顺序</h3><p>假设我们有三个中间件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// www.javascriptcn.com code example</span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 1 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 1 - After next&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 2 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 2 - After next&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 3 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 3 - After next&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>执行顺序将是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Middleware 1 - Before next</span><br><span class="line">Middleware 2 - Before next</span><br><span class="line">Middleware 3 - Before next</span><br><span class="line">Middleware 3 - After next</span><br><span class="line">Middleware 2 - After next</span><br><span class="line">Middleware 1 - After next</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-错误处理"><a href="#4-错误处理" class="headerlink" title="4. 错误处理"></a>4. 错误处理</h3><p>Koa 中间件还支持错误处理。如果某个中间件抛出错误，可以通过 <code>try-catch</code> 捕获并处理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// www.javascriptcn.com code example</span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    await next();</span><br><span class="line">  &#125; catch (err) &#123;</span><br><span class="line">    ctx.status = err.status || 500;</span><br><span class="line">    ctx.body = err.message;</span><br><span class="line">    ctx.app.emit(&#x27;error&#x27;, err, ctx);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-中间件的组合"><a href="#5-中间件的组合" class="headerlink" title="5. 中间件的组合"></a>5. 中间件的组合</h3><p>Koa 允许将多个中间件组合成一个更大的中间件，使用 <code>koa-compose</code> 库可以实现这一点：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// www.javascriptcn.com code example</span></span><br><span class="line"><span class="keyword">const</span> compose = <span class="built_in">require</span>(<span class="string">&#x27;koa-compose&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">middleware1</span> = <span class="keyword">async</span> (<span class="params">ctx, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Middleware 1&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">middleware2</span> = <span class="keyword">async</span> (<span class="params">ctx, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Middleware 2&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> allMiddleware = <span class="title function_">compose</span>([middleware1, middleware2]);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(allMiddleware);</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h3><p>Koa 的中间件机制通过洋葱模型实现了请求和响应的双向处理，使得开发者可以灵活地在请求的不同阶段插入逻辑。这种机制不仅简化了代码结构，还提高了代码的可维护性和可扩展性。</p>
+<h1 id="Koa-中间件的洋葱模型是什么？"><a href="#Koa-中间件的洋葱模型是什么？" class="headerlink" title="Koa 中间件的洋葱模型是什么？"></a>Koa 中间件的洋葱模型是什么？</h1><p>Koa 中间件的洋葱模型是指中间件的执行顺序像洋葱一样层层包裹，请求从外层中间件开始，逐层向内传递，经过所有中间件处理后再逐层向外返回响应。这种模型的核心特点是请求和响应都会经过每一个中间件，且中间件的执行顺序是先进后出（FILO）。</p>
+<h3 id="洋葱模型的概念"><a href="#洋葱模型的概念" class="headerlink" title="洋葱模型的概念"></a>洋葱模型的概念</h3><p>Koa 的洋葱模型是一种中间件执行机制，它允许请求和响应在多个中间件之间传递。每个中间件都可以对请求进行处理，并将控制权传递给下一个中间件。当所有中间件处理完毕后，响应会按照相反的顺序返回。</p>
+<h3 id="洋葱模型的工作流程"><a href="#洋葱模型的工作流程" class="headerlink" title="洋葱模型的工作流程"></a>洋葱模型的工作流程</h3><ol>
+<li><strong>请求进入</strong>：请求从最外层的中间件开始，逐层向内传递。</li>
+<li><strong>中间件处理</strong>：每个中间件都可以对请求进行处理，并决定是否继续传递请求。</li>
+<li><strong>响应返回</strong>：当请求到达最内层的中间件后，响应开始逐层向外返回，经过每个中间件进行最后的处理。</li>
+</ol>
+<h1 id="Koa-中如何定义中间件？"><a href="#Koa-中如何定义中间件？" class="headerlink" title="Koa 中如何定义中间件？"></a>Koa 中如何定义中间件？</h1><p>在 Koa 中，定义中间件非常简单。中间件是一个函数，它接收两个参数：<code>ctx</code>（上下文对象）和 <code>next</code>（下一个中间件函数）。你可以通过 <code>app.use()</code> 方法来注册中间件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// www.javascriptcn.com code example</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Koa</span> = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="title class_">Koa</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个简单的中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;中间件开始&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>(); <span class="comment">// 调用下一个中间件</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;中间件结束&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义另一个中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  ctx.<span class="property">body</span> = <span class="string">&#x27;Hello, Koa!&#x27;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server is running on http://localhost:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，第一个中间件会在请求开始时打印“中间件开始”，在请求结束时打印“中间件结束”。第二个中间件会设置响应体为“Hello, Koa!”。</p>
+<h3 id="中间件的定义"><a href="#中间件的定义" class="headerlink" title="中间件的定义"></a>中间件的定义</h3><p>在 Koa 中，中间件是一个异步函数，它接收两个参数：</p>
+<ul>
+<li><code>ctx</code>：上下文对象，包含了请求和响应的信息。</li>
+<li><code>next</code>：一个函数，用于调用下一个中间件。</li>
+</ul>
+<h3 id="中间件的执行顺序"><a href="#中间件的执行顺序" class="headerlink" title="中间件的执行顺序"></a>中间件的执行顺序</h3><p>Koa 中间件的执行顺序是按照 <code>app.use()</code> 的注册顺序来执行的。当一个中间件调用 <code>await next()</code> 时，控制权会传递给下一个中间件。当所有中间件都执行完毕后，控制权会返回到上一个中间件，继续执行 <code>await next()</code> 之后的代码。</p>
+<h3 id="中间件的用途"><a href="#中间件的用途" class="headerlink" title="中间件的用途"></a>中间件的用途</h3><p>中间件可以用于处理请求、修改响应、记录日志、错误处理等。通过组合不同的中间件，可以构建出复杂的应用程序逻辑。</p>
+<h3 id="示例代码解析"><a href="#示例代码解析" class="headerlink" title="示例代码解析"></a>示例代码解析</h3><ol>
+<li><strong>第一个中间件</strong>：<ul>
+<li>在请求开始时打印“中间件开始”。</li>
+<li>调用 <code>await next()</code>，将控制权传递给下一个中间件。</li>
+<li>在请求结束时打印“中间件结束”。</li>
+</ul>
+</li>
+<li><strong>第二个中间件</strong>：<ul>
+<li>设置响应体为“Hello, Koa!”。</li>
+</ul>
+</li>
+<li><strong>启动服务器</strong>：<ul>
+<li>监听 3000 端口，启动 Koa 服务器。</li>
+</ul>
+</li>
+</ol>
+<p>通过这种方式，Koa 的中间件机制使得请求处理流程非常灵活和可扩展。</p>
+<h3 id="Context-对象的作用"><a href="#Context-对象的作用" class="headerlink" title="Context 对象的作用"></a>Context 对象的作用</h3><p>Koa 的 Context 对象（通常简称为 <code>ctx</code>）是 Koa 框架中处理 HTTP 请求和响应的核心对象。它包含了以下主要功能：</p>
+<ol>
+<li><strong>封装 <code>request</code> 和 <code>response</code> 对象</strong>：<code>ctx.request</code> 和 <code>ctx.response</code> 分别是对 Node.js 原生 <code>http.IncomingMessage</code> 和 <code>http.ServerResponse</code> 的封装，提供了更简洁的 API 来处理请求和响应。</li>
+<li><strong>提供便捷的属性和方法</strong>：<code>ctx</code> 对象提供了许多便捷的属性和方法，例如 <code>ctx.method</code> 获取请求方法，<code>ctx.status</code> 设置响应状态码，<code>ctx.body</code> 设置响应体等。</li>
+<li><strong>中间件共享数据</strong>：<code>ctx</code> 对象可以在中间件之间共享数据，通过 <code>ctx.state</code> 可以在不同的中间件中传递数据。</li>
+</ol>
+<h3 id="Context-对象的常用属性和方法"><a href="#Context-对象的常用属性和方法" class="headerlink" title="Context 对象的常用属性和方法"></a>Context 对象的常用属性和方法</h3><p>以下是一些常用的 <code>ctx</code> 属性和方法：</p>
+<ul>
+<li><strong><code>ctx.request</code></strong>：封装了请求对象，提供了诸如 <code>ctx.request.method</code>、<code>ctx.request.url</code> 等属性。</li>
+<li><strong><code>ctx.response</code></strong>：封装了响应对象，提供了诸如 <code>ctx.response.status</code>、<code>ctx.response.body</code> 等属性。</li>
+<li><strong><code>ctx.state</code></strong>：用于在中间件之间共享数据的命名空间。</li>
+<li><strong><code>ctx.cookies</code></strong>：用于读取和设置 cookies。</li>
+<li><strong><code>ctx.throw([status], [msg], [properties])</code></strong>：用于抛出 HTTP 错误。</li>
+<li><strong><code>ctx.assert(value, [status], [msg], [properties])</code></strong>：用于断言，如果 <code>value</code> 为假，则抛出错误。</li>
+</ul>
+<h1 id="了解浏览器"><a href="#了解浏览器" class="headerlink" title="了解浏览器"></a>了解浏览器</h1><p><strong>主流浏览器</strong> 有五个：IE(Trident内核)、Firefox(火狐：Gecko内核)、Safari(苹果：webkit内核)、Google Chrome(谷歌：Blink内核)、Opera(欧朋：Blink内核)</p>
+<p><strong>四大内核</strong>：Trident(IE内核)、Gecko(Firefox内核)、webkit内核、Blink(Chrome内核)</p>
+<h3 id="二、了解兼容问题"><a href="#二、了解兼容问题" class="headerlink" title="二、了解兼容问题"></a>二、了解兼容问题</h3><p>W3C对标准的推进，Firefox，Chrome，Safari，Opera的出现，结束了IE雄霸天下的日子。</p>
+<p>然而，这对开发者来说，是好事，也是坏事。说它是好事，是因为浏览器厂商为了取得更多的市场份额，会促使各浏览器更符合W3C标准，而得到更好的兼容性，并且，不同浏览器的扩展功能(例如 <code>-moz</code>，<code>-webkit</code> 开头的样式)，对W3C标准也是个推进；说它是坏事，因为，多个浏览器同时存在，这些浏览器在处理一个相同的页面时，表现有时会有差异。这种差异可能很小，甚至不会被注意到；也可能很大，甚至造成在某个浏览器下无法正常浏览。我们把引起这些差异的问题统称为“浏览器兼容性问题”。而正是这些“浏览器兼容性问题”，无形中给我们的开发增加了不少难度。</p>
+<p>1、什么是兼容问题？</p>
+<p>答：<strong>同样的代码，在不同的浏览器上显示的页面效果不一样</strong></p>
+<p>2、不一样的原因是什么？</p>
+<p>答：<strong>浏览器各浏览器使用了不同的内核，并且它们处理同一件事情的时候思路不同。</strong></p>
+<p>3、为什么浏览器会存在兼容问题？</p>
+<ul>
+<li>同一浏览器，版本越老，存在 <code>bug</code> 越多，相对于版本越新的浏览器，对新属性和标签、新特性支持越少。</li>
+<li>不同浏览器，核心技术(内核)不同，标准不同，实现方式也有差异，最终呈现出来在大众面前的效果也是会有差异。</li>
+<li><strong>设计师写出了不规范的代码，不规范的代码会使不兼容现象更加突出</strong>。</li>
+</ul>
+<p>从浏览器内核的角度来看，浏览器兼容性问题可分为以下三类：</p>
+<ul>
+<li>渲染相关：和 <strong>样式</strong> 相关的问题，即体现在布局效果上的问题。</li>
+<li>脚本相关：和 <strong>脚本</strong> 相关的问题，包括JavaScript和DOM、BOM方面的问题。对于某些浏览器的功能方面的特性，也属于这一类。</li>
+<li>其他类别：除以上两类问题外的功能性问题，一般是浏览器自身提供的功能，在内核层之上的。</li>
+</ul>
+<p>不规则的嵌套：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 体验AI代码助手 代码解读复制代码<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>div</code> 中直接嵌套 <code>li</code> 元素是不合标准的，<code>li</code> 应该处于 <code>il</code> 内。此类问题常见的还有 <code>p</code> 中嵌套 <code>div</code>， <code>table</code>等元素。</p>
+<p>不规范的DOM接口和属性设置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">all</span>.<span class="property">a_name</span>.<span class="property">style</span>.<span class="property">top</span> = <span class="number">35</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中 <code>top</code> 的值，其实应该是一个字符串值，需有单位。例如：<code>35px</code>。</p>
+<p>总之，人为的原因也占很大一部分。而人为造成兼容性问题的原因，除了粗心之外，大都源于浏览器bug的存在，和开发者对标准的不了解。</p>
+<p>比如，如果要做一个功能，功能是想让鼠标悬停在 <code>img</code> 元素上方时，可以出现提示信息，经常针对 IE 做开发的人，可能会使用 <code>img</code> 元素的 <code>&quot;alt&quot;</code> 属性，但其他浏览器中就是不给 <code>&quot;alt&quot;</code> 属性面子。因为 W3C 标准中规定要去做这件事的属性是 <code>&quot;title&quot;</code>，大多浏览器符合标准，IE 不符合，这是 IE 浏览器内核的问题；开发者不知道 <code>&quot;title&quot;</code> ，不遵循标准去写代码，是开发者的问题。</p>
+<p>所以，一个问题分两半，浏览器和开发者都有责任。既然都有责任，就都有义务去解决兼容性问题。那么，从浏览器的角度来讲，它的厂商应该修复浏览器的 <code>bug</code> 和不合标准的地方，当某一天 IE 的 <code>&quot;alt&quot;</code> 不能用于提示了，还有人用这个错误的属性去显示提示么？从开发者角度来讲，多了解标准，了解浏览器兼容性问题，就可以在开发的过程中，有效的避开兼容性问题，让你的页面在所有浏览器中畅通无阻。</p>
+<h3 id="三、处理兼容问题的思路"><a href="#三、处理兼容问题的思路" class="headerlink" title="三、处理兼容问题的思路"></a>三、处理兼容问题的思路</h3><p>1、要不要做？</p>
+<p>（1）从产品的角度看：产品的受众、受众的浏览器比例、效果优先还是基本功能优先。</p>
+<p>（2）成本的角度：有无必要做这个兼容。</p>
+<p>2、做到什么程度？</p>
+<p>答：让哪些浏览器支持哪些效果。</p>
+<p>3、如何做？<br>（1）根据兼容需求选择技术框架&#x2F;库(如  <code>jquery 1.x.x</code> )。<br>（2）根据兼容需求选择兼容工具： <code>html5shiv</code> 、 <code>Respond.js</code> 、 <code>CSS Reset</code> 、 <code>normalize.css</code> 、 <code>Modernizr.js</code> 、 <code>postcss</code> 。<br>（3）条件注释、 <code>CSS Hack</code> 、 <code>js</code> 能力检测做一些修补。<br><code>Hack</code> ： <code>CSS</code> 中， <code>Hack</code> 是指一种兼容 <code>CSS</code> 在不同浏览器中正确显示的技巧方法，修补 <code>bug</code> 的方法<br><code>Filter</code> ：表示过滤器的意思，它是一种对特定的浏览器或浏览器组显示或隐藏规则或声明的方法。本质上讲， <code>Filter</code> 是 <code>hack</code> 方法中的一种。</p>
+<p>4、渐进增强和优雅降级<br>（1）<strong>渐进增强</strong>：针对低版本浏览器进行构建页面，保证最基本的功能，然后再针对高级浏览器进行效果、交互等改进和追加功能达到更好的用户体验。<br>（2）<strong>优雅降级</strong>：一开始就构建完整的功能，然后再针对低版本浏览器进行兼容。</p>
+<h3 id="四、JavaScript兼容"><a href="#四、JavaScript兼容" class="headerlink" title="四、JavaScript兼容"></a>四、JavaScript兼容</h3><h4 id="1、addEventListener-与-attachEvent-区别"><a href="#1、addEventListener-与-attachEvent-区别" class="headerlink" title="1、addEventListener 与 attachEvent 区别"></a>1、<code>addEventListener</code> 与 <code>attachEvent</code> 区别</h4><p><code>attachEvent</code> ——兼容：IE7、IE8；不兼容firefox、chrome、IE9、IE10、IE11、safari、opera。<br><code>addEventListener</code>——兼容：firefox、chrome、IE、safari、opera；不兼容IE7、IE8<br>解决方案：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addEvent</span>(<span class="params">elm, evType, fn, useCapture</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (elm.<span class="property">addEventListener</span>) &#123; <span class="comment">// W3C标准</span></span><br><span class="line">    elm.<span class="title function_">addEventListener</span>(evType, fn, useCapture);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (elm.<span class="property">attachEvent</span>) &#123; <span class="comment">// IE</span></span><br><span class="line">    <span class="keyword">var</span> r = elm.<span class="title function_">attachEvent</span>(<span class="string">&#x27;on&#x27;</span> + evType, fn); <span class="comment">// IE5+</span></span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    elm[<span class="string">&#x27;on&#x27;</span> + evType] = fn; <span class="comment">// DOM事件</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、document-formName-item-itemName-问题"><a href="#2、document-formName-item-itemName-问题" class="headerlink" title="2、document.formName.item(&quot;itemName&quot;) 问题"></a>2、<code>document.formName.item(&quot;itemName&quot;)</code> 问题</h4><p>问题说明：IE下，可以使用 <code>document.formName.item(&quot;itemName&quot;)</code> 或 <code>document.formName.elements [&quot;elementName&quot;]</code>；Firefox 下，只能使用 <code>document.formName.elements[&quot;elementName&quot;]</code>。<br>解决方案：统一使用 <code>document.formName.elements[&quot;elementName&quot;]</code>。</p>
+<h4 id="3、集合类对象问题"><a href="#3、集合类对象问题" class="headerlink" title="3、集合类对象问题"></a>3、集合类对象问题</h4><p>问题说明：IE下，可以使用 <code>()</code> 或 <code>[]</code> 获取集合类对象；Firefox下，只能使用 <code>[ ]</code> 获取集合类对象。<br>解决方案：统一使用 <code>[]</code> 获取集合类对象。</p>
+<h4 id="4、自定义属性问题"><a href="#4、自定义属性问题" class="headerlink" title="4、自定义属性问题"></a>4、自定义属性问题</h4><p>问题说明：IE下，可以使用获取常规属性的方法来获取自定义属性，也可以使用 <code>getAttribute()</code> 获取自定义属性；Firefox下，只能使用 <code>getAttribute()</code> 获取自定义属性。<br>解决方案：统一通过 <code>getAttribute()</code> 获取自定义属性。</p>
+<h4 id="5、eval-idName-问题"><a href="#5、eval-idName-问题" class="headerlink" title="5、eval(&quot;idName&quot;) 问题"></a>5、<code>eval(&quot;idName&quot;)</code> 问题</h4><p>问题说明：IE下，可以使用 <code>eval(&quot;idName&quot;)</code> 或 <code>getElementById(&quot;idName&quot;)</code>  来取得 <code>id</code> 为 <code>idName</code> 的HTML对象；Firefox下，只能使用 <code>getElementById(&quot;idName&quot;)</code> 来取得 <code>id</code> 为 <code>idName</code> 的HTML对象。<br>解决方案：统一用 <code>getElementById(&quot;idName&quot;)</code> 来取得 <code>id</code> 为 <code>idName</code> 的HTML对象。</p>
+<h4 id="6、变量名与某HTML对象ID相同的问题"><a href="#6、变量名与某HTML对象ID相同的问题" class="headerlink" title="6、变量名与某HTML对象ID相同的问题"></a>6、变量名与某HTML对象ID相同的问题</h4><p>问题说明：IE下，HTML对象的ID可以作为 <code>document</code> 的下属对象变量名直接使用，Firefox下则不能；Firefox下，可以使用与HTML对象ID相同的变量名，IE下则不能。<br>解决方案：使用 <code>document.getElementById(&quot;idName&quot;)</code> 代替 <code>document.idName</code>。最好不要取HTML对象ID相同的变量名，以减少错误；在声明变量时，一律加上 <code>var</code> 关键字，以避免歧义。</p>
+<h4 id="7、const-问题"><a href="#7、const-问题" class="headerlink" title="7、const 问题"></a>7、<code>const</code> 问题</h4><p>问题说明：Firefox下，可以使用 <code>const</code> 关键字或 <code>var</code> 关键字来定义常量；IE下，只能使用 <code>var</code> 关键字来定义常量。<br>解决方案：统一使用 <code>var</code> 关键字来定义常量。</p>
+<h4 id="8、input-type属性问题"><a href="#8、input-type属性问题" class="headerlink" title="8、input.type属性问题"></a>8、<code>input.type</code>属性问题</h4><p>问题说明：IE下 <code>input.type</code> 属性为只读；但是Firefox下 <code>input.type</code> 属性为读写。<br>解决方案：不修改 <code>input.type</code> 属性。如果必须要修改，可以先隐藏原来的 <code>input</code>，然后在同样的位置再插入一个新的 <code>input</code> 元素。</p>
+<h4 id="9、window-event-问题"><a href="#9、window-event-问题" class="headerlink" title="9、window.event 问题"></a>9、<code>window.event</code> 问题</h4><p>问题说明：<code>window.event</code> 只能在IE下运行，而不能在Firefox下运行，这是因为Firefox的 <code>event</code> 只能在事件发生的现场使用。<br>解决方案：在事件发生的函数上加上 <code>event</code> 参数，在函数体内(假设形参为 <code>evt</code> )使用 <code>var myEvent = evt?evt:(window.event? window.event:null)</code><br>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;doSomething(event)&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;javascript&quot;</span>&gt;</span><span class="language-javascript"> </span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">function</span> <span class="title function_">doSomething</span>(<span class="params">evt</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">		<span class="keyword">var</span> myEvent = evt ? evt :(<span class="variable language_">window</span>.<span class="property">event</span> ? <span class="variable language_">window</span>.<span class="property">event</span> : <span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript">		…</span></span><br><span class="line"><span class="language-javascript">	&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="10、event-x-与-event-y-问题"><a href="#10、event-x-与-event-y-问题" class="headerlink" title="10、event.x 与 event.y 问题"></a>10、<code>event.x</code> 与 <code>event.y</code> 问题</h4><p>问题说明：IE下，<code>event</code> 对象有 <code>x</code>、<code>y</code> 属性，但是没有 <code>pageX</code>、<code>pageY</code>属性；Firefox下，<code>event</code> 对象有<code>pageX</code>、<code>pageY</code>属性，但是没有 <code>x</code>、<code>y</code>属性。<br>解决方案：<code>var myX = event.x ? event.x : event.pageX; var myY = event.y ? event.y:event.pageY;</code><br>如果考虑第8条问题，就改用 <code>myEvent</code> 代替 <code>event</code> 即可。</p>
+<h4 id="11、event-srcElement-问题"><a href="#11、event-srcElement-问题" class="headerlink" title="11、event.srcElement 问题"></a>11、<code>event.srcElement</code> 问题</h4><p>问题说明：IE下，<code>event</code> 对象有 <code>srcElement</code> 属性，但是没有 <code>target</code> 属性；Firefox下，<code>event</code> 对象有<code>target</code> 属性，但是没有 <code>srcElement</code> 属性。<br>解决方案：使用 <code>srcObj = event.srcElement ? event.srcElement : event.target;</code><br>如果考虑第8条问题，就改用 <code>myEvent</code> 代替 <code>event</code> 即可。</p>
+<h4 id="12、window-location-href-问题"><a href="#12、window-location-href-问题" class="headerlink" title="12、window.location.href 问题"></a>12、<code>window.location.href</code> 问题</h4><p>问题说明：IE或者Firefox2.0.x下，可以使用 <code>window.location</code> 或 <code>window.location.href</code>；Firefox1.5.x下，只能使用 <code>window.location</code>。<br>解决方案：使用 <code>window.location</code> 来代替 <code>window.location.href</code> 。当然也可以考虑使用 <code>location.replace()</code>方法。</p>
+<h4 id="13、模态和非模态窗口问题"><a href="#13、模态和非模态窗口问题" class="headerlink" title="13、模态和非模态窗口问题"></a>13、模态和非模态窗口问题</h4><p>问题说明：IE下，可以通过 <code>showModalDialog</code> 和 <code>showModelessDialog</code> 打开模态和非模态窗口；Firefox下则不能。<br>解决方案：直接使用 <code>window.open(pageURL,name,parameters)</code> 方式打开新窗口。<br>如果需要将子窗口中的参数传递回父窗口，可以在子窗口中使用 <code>window.opener</code> 来访问父窗口。如果需要父窗口控制子窗口的话，使用 <code>var subWindow = window.open(pageURL,name,parameters);</code> 来获得新开的窗口对象。</p>
+<h4 id="14、frame-和-iframe-问题"><a href="#14、frame-和-iframe-问题" class="headerlink" title="14、frame 和 iframe 问题"></a>14、<code>frame</code> 和 <code>iframe</code> 问题</h4><p>以下面的 <code>frame</code>为例：<br>(1)访问 <code>frame</code> 对象<br>IE：使用 <code>window.frameId</code> 或者 <code>window.frameName</code> 来访问这个 <code>frame</code> 对象；<br>Firefox：使用 <code>window.frameName</code> 来访问这个 <code>frame</code> 对象；<br>解决方案：统一使用 <code>window.document.getElementById(&quot;frameId&quot;)</code> 来访问这个 <code>frame</code> 对象；<br>(2)切换 <code>frame</code> 内容<br>在IE和Firefox中都可以使用 <code>window.document.getElementById(&quot;frameId&quot;).src = &quot;webjx.com.html&quot;</code>  或<code>window.frameName.location = &quot;webjx.com.html&quot;</code> 来切换 <code>frame</code> 的内容；<br>如果需要将 <code>frame</code> 中的参数传回父窗口，可以在 <code>frame</code> 中使用 <code>parent</code> 关键字来访问父窗口。</p>
+<h4 id="15、事件委托方法"><a href="#15、事件委托方法" class="headerlink" title="15、事件委托方法"></a>15、事件委托方法</h4><p>问题说明：IE下，使用 <code>document.body.onload = inject;</code> ， 其中 <code>function inject()</code> 在这之前已被实现；在Firefox下，使用 <code>document.body.onload = inject();</code><br>解决方案：统一使用 <code>document.body.onload=new Function(&quot;inject()&quot;); </code> 或者 <code>document.body.onload = function()&#123;&#125;</code><br>[注意] <code>Function</code> 和 <code>function</code> 的区别</p>
+<h4 id="16、用-setAttribute-设置事件"><a href="#16、用-setAttribute-设置事件" class="headerlink" title="16、用 setAttribute 设置事件"></a>16、用 <code>setAttribute</code> 设置事件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;objId&quot;</span>);</span><br><span class="line">obj.<span class="title function_">setAttribute</span>(<span class="string">&quot;onclick&quot;</span>, <span class="string">&quot;funcitonname()&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>FireFox 支持，IE不支持。<br>解决方案：IE中必须用点记法来引用所需的事件处理程序,并且要用赋予匿名函数；如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;objId&quot;</span>);</span><br><span class="line">obj.<span class="property">onclic</span> k= <span class="keyword">function</span>(<span class="params"></span>)&#123; <span class="title function_">fucntionname</span>(); &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这种方法所有浏览器都支持</p>
+<h4 id="17、访问的父元素的区别"><a href="#17、访问的父元素的区别" class="headerlink" title="17、访问的父元素的区别"></a>17、访问的父元素的区别</h4><p>问题说明：在IE下，使用 <code>obj.parentElement</code> 或 <code>obj.parentNode</code>  访问 <code>obj</code> 的父结点；在FireFox下，使用<code>obj.parentNode</code> 访问 <code>obj</code> 的父结点。<br>解决方案：因为FireFox与IE都支持DOM，因此统一使用 <code>obj.parentNode</code> 来访问 <code>obj</code> 的父结点。</p>
+<h4 id="18、innerText-的问题"><a href="#18、innerText-的问题" class="headerlink" title="18、innerText 的问题."></a>18、<code>innerText</code> 的问题.</h4><p>问题说明：<code>innerText</code> 在IE中能正常工作，但是 <code>innerText</code> 在FireFox中却不行。<br>解决方案：在非IE浏览器中使用 <code>textContent</code> 代替 <code>innerText</code>。<br>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (navigator.<span class="property">appName</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;Explorer&quot;</span>) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;element&quot;</span>).<span class="property">innerText</span> = <span class="string">&quot;my text&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;element&quot;</span>).<span class="property">textContent</span> = <span class="string">&quot;my text&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>[注] <code>innerHTML</code> 同时被IE、FireFox等浏览器支持，其他的，如 <code>outerHTML</code> 等只被IE支持，最好不用。</p>
+<h4 id="19、Table-操作问题"><a href="#19、Table-操作问题" class="headerlink" title="19、Table 操作问题"></a>19、<code>Table</code> 操作问题</h4><p>问题说明：IE、FireFox以及其它浏览器对于 <code>table</code> 标签的操作都各不相同，在IE中不允许对 <code>table</code> 和 <code>tr</code> 的<code>innerHTML</code> 赋值，使用js 增加一个 <code>tr</code> 时，使用 <code>appendChild</code> 方法也不管用。<code>document.appendChild</code> 在往表里插入行时FireFox支持，IE不支持<br>解决方案：把行插入到 <code>tbody</code>中，不要直接插入到表解决方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 向table追加一个空行：</span></span><br><span class="line"><span class="keyword">var</span> row = otable.<span class="title function_">insertRow</span>(-<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> cell = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;td&quot;</span>); </span><br><span class="line">cell.<span class="property">innerHTML</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">cell.<span class="property">className</span> = <span class="string">&quot;XXXX&quot;</span>; </span><br><span class="line">row.<span class="title function_">appendChild</span>(cell);</span><br></pre></td></tr></table></figure>
+
+<p>[注] 建议使用JS框架集来操作 <code>table</code>，如JQuery。</p>
+<h4 id="20、对象宽高赋值问题"><a href="#20、对象宽高赋值问题" class="headerlink" title="20、对象宽高赋值问题"></a>20、对象宽高赋值问题</h4><p>问题说明：FireFox中类似 <code>obj.style.height = imgObj.height</code> 的语句无效。<br>解决方案：统一使用<code>obj.style.height = imgObj.height + &quot;px&quot;;</code></p>
+<h4 id="21、setAttribute-style-color-red"><a href="#21、setAttribute-style-color-red" class="headerlink" title="21、setAttribute(&quot;style&quot;, &quot;color: red;&quot;)"></a>21、<code>setAttribute(&quot;style&quot;, &quot;color: red;&quot;)</code></h4><p>FireFox支持(除了IE，现在所有浏览器都支持)，IE不支持<br>解决方案：不用 <code>setAttribute(&quot;style&quot;, &quot;color : red;&quot;)</code><br>而用 <code>object.style.cssText = &quot;color: red;&quot;</code>(这写法也有例外)<br>最好的办法是上面种方法都用上，万无一失</p>
+<h4 id="22、类名设置-setAttribute-class-styleClass"><a href="#22、类名设置-setAttribute-class-styleClass" class="headerlink" title="22、类名设置 setAttribute(&quot;class&quot;, &quot;styleClass&quot;)"></a>22、类名设置 <code>setAttribute(&quot;class&quot;, &quot;styleClass&quot;)</code></h4><p>FireFox支持，IE不支持(指定属性名为 <code>class</code>，IE不会设置元素的 <code>class</code> 属性，相反只使用 <code>setAttribute</code> 时IE自动识 <code>classname</code> 属性)<br>解决方案：<br><code>setAttribute(&quot;class&quot;, &quot;styleClass&quot;)</code><br><code>setAttribute(&quot;className&quot;, &quot;styleClass&quot;)</code><br>或者直接 <code>object.className= &quot;styleClass&quot;;</code><br>IE和FF都支持 <code>object.className</code>。</p>
+<h4 id="23、建立单选钮"><a href="#23、建立单选钮" class="headerlink" title="23、建立单选钮"></a>23、建立单选钮</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IE以外的浏览器</span></span><br><span class="line"><span class="keyword">var</span> rdo = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;input&quot;</span>);</span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;type&quot;</span>, <span class="string">&quot;radio&quot;</span>); </span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;radiobtn&quot;</span>); </span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;checked&quot;</span>);</span><br><span class="line"><span class="comment">// IE</span></span><br><span class="line"><span class="keyword">var</span> rdo = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;&lt;input name=&quot;</span>radiobtn<span class="string">&quot; type=&quot;</span>radio<span class="string">&quot; value=&quot;</span>checked<span class="string">&quot; /&gt;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：<br>这一点区别和前面的都不一样。这次完全不同，所以找不到共同的办法来解决，那么只有 <code>IF-ELSE</code>了<br>万幸的是，IE可以识别出 <code>document</code> 的 <code>uniqueID</code> 属性，别的浏览器都不可以识别出这一属性。问题解决。<br>​</p>
+<h3 id="五、CSS兼容"><a href="#五、CSS兼容" class="headerlink" title="五、CSS兼容"></a>五、CSS兼容</h3><h4 id="1、CSS-Hack"><a href="#1、CSS-Hack" class="headerlink" title="1、CSS Hack"></a>1、<code>CSS Hack</code></h4><p>使用 <code>hacker</code> 可以把浏览器分为3类：IE6；IE7和遨游；其他（IE8 Chrome ff Safari opera等）<br>（1）IE6认识的 <code>hacker</code> 是 下划线 <code>_</code> 和星号 <code>*</code><br>（2）IE7和遨游认识的  <code>hacker</code> 是 星号  <code>*</code><br> 如： <code>height:300px;*height:200px;_height:100px;</code><br> （1）IE6浏览器在读到 <code>height:300px</code> 的时候会认为高时 <code>300px</code><br> 继续往下读，他也认识 <code>*heihgt</code> ， 所以当IE6读到 <code>*height:200px</code> 的时候会覆盖掉前一条的相冲突设置，认为高度是 <code>200px</code> 。<br> 继续往下读，IE6还认识 <code>_height</code> ,所以他又会覆盖掉 <code>200px</code> 高的设置，把高度设置为 <code>100px</code> 。<br> （2）IE7和遨游也是一样的从高度 <code>300px</code> 的设置往下读。当它们读到 <code>*height:200px</code> 的时候就停下了，因为它们不认识 <code>_height</code> 。<br> 所以它们会把高度解析为 <code>200px</code> ，剩下的浏览器只认识第一个 <code>height:300px</code> ;<br> 所以他们会把高度解析为 <code>300px</code> 。因为优先级相同且想冲突的属性设置后一个会覆盖掉前一个，所以书写的次序是很重要的。</p>
+<h4 id="2、CSS-样式兼容不同浏览器问题"><a href="#2、CSS-样式兼容不同浏览器问题" class="headerlink" title="2、CSS 样式兼容不同浏览器问题"></a>2、CSS 样式兼容不同浏览器问题</h4><p>所有浏览器通用： <code>height: 100px;</code><br>IE6 专用： <code>_height: 100px;</code> 或者 <code>*height: 100px;</code><br>IE7 专用： <code>*+height: 100px;</code><br>IE7、FF 共用： <code>height: 100px !important;</code><br>以下两种方法几乎能解决现今所有兼容：<br>（1） <code>!important</code><br>随着IE7对 <code>!important</code> 的支持, <code>!important </code> 方法现在只针对IE6的兼容(注意写法，记得该声明位置需要提前)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span> <span class="meta">!important</span>; <span class="comment">/* IE7+FF */</span></span><br><span class="line">  <span class="attribute">width</span>: <span class="number">80px</span>; <span class="comment">/* IE6 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2)IE6&#x2F;IE77对FireFox &lt;from 针对FireFox ie6 ie7的css样式&gt;<br><code>*+html</code> 与 <code>*html</code> 是IE特有的标签，FireFox 暂不支持。而 <code>*+html</code> 又为 IE7特有标签。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">120px</span>; &#125; <span class="comment">/* FireFox */</span></span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">80px</span>;&#125; <span class="comment">/* ie6 fixed */</span></span><br><span class="line">*+<span class="selector-tag">html</span> <span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">60px</span>;&#125; <span class="comment">/* ie7 fixed, 注意顺序 */</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、万能-float-闭合-非常重要-可以用这个解决多个-div-对齐时的间距不对"><a href="#3、万能-float-闭合-非常重要-可以用这个解决多个-div-对齐时的间距不对" class="headerlink" title="3、万能 float 闭合(非常重要) 可以用这个解决多个 div 对齐时的间距不对"></a>3、万能 <code>float</code> 闭合(非常重要) 可以用这个解决多个 <code>div</code> 对齐时的间距不对</h4><p>将以下代码加入 <code>Global CSS</code> 中，给需要闭合的 <code>div</code> 加上 <code>class=&quot;clearfix&quot;</code> 即可，屡试不爽。<br>代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line"><span class="comment">/* Clear Fix */</span></span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;.&quot;</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">clear</span>: both;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Hide from IE Mac \*/</span></span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>:block;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* End hide from IE Mac */</span></span><br><span class="line"><span class="comment">/* end of clearfix */</span></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、其他兼容技巧"><a href="#4、其他兼容技巧" class="headerlink" title="4、其他兼容技巧"></a>4、其他兼容技巧</h4><ol>
+<li>Firefox下给 <code>div</code> 设置 <code>padding</code> 后会导致 <code>width</code> 和 <code>height</code> 增加, 但IE不会(可用 <code>!important</code> 解决)</li>
+<li>居中问题：<ol>
+<li>垂直居中将 <code>line-height</code> 设置为当前 <code>div</code> 相同的高度, 再通过 <code>vetical-align: middle</code> ( 注意内容不要换行）</li>
+<li>水平居中： <code>margin: 0 auto;</code> (当然不是万能)</li>
+</ol>
+</li>
+<li>若需给 <code>a</code> 标签内内容加上 样式，需要设置 <code>display: block;</code> (常见于导航标签)</li>
+<li>Firefox 和 IE 对 BOX 理解的差异导致相差 <code>2px</code> 的还有设为 <code>float</code> 的 <code>div</code> 在 ie下 <code>margin</code> 加倍等问题</li>
+<li><code>ul</code> 标签在 FF 下面默认有 <code>list-style</code> 和 <code>padding</code> 最好事先声明，以避免不必要的麻烦(常见于导航标签和内容列表)</li>
+<li>作为外部 <code>wrapper</code> 的 <code>div</code> 不要定死高度，最好还加上 <code>overflow: hidden</code> 以达到高度自适应</li>
+</ol>
+<h4 id="5、兼容代码：兼容最推荐的模式。"><a href="#5、兼容代码：兼容最推荐的模式。" class="headerlink" title="5、兼容代码：兼容最推荐的模式。"></a>5、兼容代码：兼容最推荐的模式。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* FF */</span></span><br><span class="line"><span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">float</span>: left;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">57px</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">24px</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">12px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* IE6 */</span></span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">21px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* IE7 */</span></span><br><span class="line">*+<span class="selector-tag">html</span> <span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">21px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6、兼容-CSS-方法"><a href="#6、兼容-CSS-方法" class="headerlink" title="6、兼容 CSS 方法"></a>6、兼容 <code>CSS</code> 方法</h4><p>做兼容页面的方法是：每写一小段代码（布局中的一行或者一块）我们都要在不同的浏览器中看是否兼容，当然熟练到一定的程度就没这么麻烦了。<br>建议经常会碰到兼容性问题的新手使用。很多兼容性问题都是因为浏览器对标签的默认属性解析不同造成的，只要我们稍加设置都能轻松地解决这些兼容问题。<br>如果我们熟悉标签的默认属性的话，就能很好的理解为什么会出现兼容问题以及怎么去解决这些兼容问题。</p>
+<h3 id="六、其它CSS兼容"><a href="#六、其它CSS兼容" class="headerlink" title="六、其它CSS兼容"></a>六、其它CSS兼容</h3><h4 id="1、不同浏览器的标签默认margin-和-padding-不同"><a href="#1、不同浏览器的标签默认margin-和-padding-不同" class="headerlink" title="1、不同浏览器的标签默认margin 和 padding 不同"></a>1、不同浏览器的标签默认<code>margin</code> 和 <code>padding</code> 不同</h4><p>问题说明：随便写几个标签，不加样式控制的情况下，各自的 <code>margin</code> 和 <code>padding</code> 差异较大。<br>解决方案： <code>CSS: *&#123;margin: 0;padding:0;&#125;</code> </p>
+<h4 id="2、块属性标签-float-后，又有横行的-margin-情况下，在IE6显示-margin-比设置的大"><a href="#2、块属性标签-float-后，又有横行的-margin-情况下，在IE6显示-margin-比设置的大" class="headerlink" title="2、块属性标签 float 后，又有横行的 margin 情况下，在IE6显示 margin 比设置的大"></a>2、块属性标签 <code>float</code> 后，又有横行的 <code>margin</code> 情况下，在IE6显示 <code>margin</code> 比设置的大</h4><p>问题说明：常见症状是IE6中后面的一块被顶到下一行（ <code>float</code> 布局最常见的浏览器兼容问题）<br>解决方案：在 <code>float</code> 的标签样式控制中加入 <code>display:inline;</code> 将其转化为行内属性<br>备注：我们最常用的就是 <code>div+CSS</code> 布局了，而 <code>div</code>就是一个典型的块属性标签，横向布局的时候我们通常都是用 <code>div float</code> 实现的，横向的间距设置如果用 <code>margin</code> 实现，这就是一个必然会碰到的兼容性问题。</p>
+<h4 id="3、较小高度标签（一般小于-10px-）问题"><a href="#3、较小高度标签（一般小于-10px-）问题" class="headerlink" title="3、较小高度标签（一般小于 10px ）问题"></a>3、较小高度标签（一般小于 <code>10px</code> ）问题</h4><p>问题说明：IE6、7和遨游里这个标签的高度不受控制，超出自己设置的高度<br>解决方案：给超出高度的标签设置 <code>overflow:hidden;</code> 或者设置行高 <code>line-height</code> 小于你设置的高度。<br>备注：这种情况一般出现在我们设置小圆角背景的标签里。出现这个问题的原因是IE8之前的浏览器都会给标签一个最小默认的行高的高度。即使你的标签是空的，这个标签的高度还是会达到默认的行高。</p>
+<h4 id="4、行内属性标签，设置-display-block-后采用-float-布局，又有横行的-margin-的情况，IE6间距-bug"><a href="#4、行内属性标签，设置-display-block-后采用-float-布局，又有横行的-margin-的情况，IE6间距-bug" class="headerlink" title="4、行内属性标签，设置 display:block 后采用 float 布局，又有横行的 margin 的情况，IE6间距 bug"></a>4、行内属性标签，设置 <code>display:block</code> 后采用 <code>float</code> 布局，又有横行的 <code>margin</code> 的情况，IE6间距 <code>bug</code></h4><p>问题说明：IE6里的间距比超过设置的间距<br>解决方案：在 <code>display:block;</code> 后面加入 <code>display:inline;display:table;</code><br>备注：行内属性标签，为了设置宽高，我们需要设置 <code>display:block;</code> (除了 <code>input</code> 标签比较特殊)。<br>在用 <code>float</code> 布局并有横向的 <code>margin</code> 后，在IE6下，他就具有了块属性 <code>float</code> 后的横向 <code>margin</code> 的 <code>bug</code> 。<br>不过因为它本身就是行内属性标签，所以我们再加上 <code>display:inline</code> 的话，它的高宽就不可设了。<br>这时候我们还需要在 <code>display:inline</code> 后面加入 <code>display:talbe</code> 。</p>
+<h4 id="5、图片默认有间距"><a href="#5、图片默认有间距" class="headerlink" title="5、图片默认有间距"></a>5、图片默认有间距</h4><p>问题说明：几个 <code>img</code> 标签放在一起的时候，有些浏览器会有默认的间距，加了问题一中提到的通配符也不起作用。<br>解决方案：使用 <code>float</code> 属性为 <code>img</code> 布局<br>备注：因为 <code>img</code> 标签是行内属性标签，所以只要不超出容器宽度， <code>img</code> 标签都会排在一行里，但是部分浏览器的 <code>img</code> 标签之间会有个间距。去掉这个间距使用 <code>float</code> 是正道。</p>
+<h4 id="6、标签最低高度设置-min-height-不兼容"><a href="#6、标签最低高度设置-min-height-不兼容" class="headerlink" title="6、标签最低高度设置 min-height 不兼容"></a>6、标签最低高度设置 <code>min-height</code> 不兼容</h4><p>问题说明：因为 <code>min-height</code> 本身就是一个不兼容的 <code>CSS</code> 属性，所以设置 <code>min-height</code> 时不能很好的被各个浏览器兼容<br>解决方案：如果我们要设置一个标签的最小高度 <code>200px</code> ，需要进行的设置为：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">200px</span>; </span><br><span class="line">  <span class="attribute">height</span>: auto <span class="meta">!important</span>; </span><br><span class="line">  <span class="attribute">height</span>: <span class="number">200px</span>; </span><br><span class="line">  <span class="attribute">overflow</span>:visible;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>备注：在B&#x2F;S系统前端开时，有很多情况下我们又这种需求。当内容小于一个值（如 <code>300px</code> ）时。容器的高度为 <code>300px</code> ；当内容高度大于这个值时，容器高度被撑高，而不是出现滚动条。这时候我们就会面临这个兼容性问题。</p>
+<h4 id="7、CSS-布局中的居中问题"><a href="#7、CSS-布局中的居中问题" class="headerlink" title="7、CSS 布局中的居中问题"></a>7、CSS 布局中的居中问题</h4><p>问题说明： 首先在父级元素定义 <code>text-align: center;</code> 这个的意思就是在父级元素内的内容居中；对于IE这样设定就已经可以了。但在mozilla中不能居中。<br>解决办法：在子元素定义时候设定时再加上 <code>margin-right: auto; margin-left: auto; </code> </p>
+<h4 id="8、IE浮动产生的双倍距离"><a href="#8、IE浮动产生的双倍距离" class="headerlink" title="8、IE浮动产生的双倍距离"></a>8、IE浮动产生的双倍距离</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">float</span>: left; </span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>; </span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">100px</span>; // 这种情况之下IE会产生<span class="number">200px</span>的距离</span><br><span class="line">  <span class="attribute">display</span>: inline; // 使浮动忽略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里细说一下 <code>block</code>， <code>inline</code> 两个元素<br><code>Block</code> 元素的特点是：总是在新行上开始，高度、宽度、行高、边距都可以控制(块元素)<br><code>Inline</code> 元素的特点是：和其他元素在同一行上，不可控制(内嵌元素)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">display</span>: block; // 可以为内嵌元素模拟为块元素 </span><br><span class="line">  <span class="attribute">display</span>: inline; // 实现同一行排列的的效果 </span><br><span class="line">  diplay: table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9、IE与宽度和高度的问题"><a href="#9、IE与宽度和高度的问题" class="headerlink" title="9、IE与宽度和高度的问题"></a>9、IE与宽度和高度的问题</h4><p>IE不认得 <code>min-</code> 这个定义，但实际上它把正常的 <code>width</code> 和 <code>height</code> 当作有 <code>min</code> 的情况来使。<br>这样问题就大了，如果只用宽度和高度，正常的浏览器里这两个值就不会变，如果只用 <code>min-width</code> 和 <code>min-height</code> 的话，IE下面根本等于没有设置宽度和高度。<br>比如要设置背景图片，这个宽度是比较重 要的。<br>解决方案：要解决这个问题，可以这样：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">width</span>: <span class="number">80px</span>; </span><br><span class="line">  <span class="attribute">height</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">html</span>&gt;<span class="selector-tag">body</span> <span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: auto; </span><br><span class="line">  <span class="attribute">height</span>: auto; </span><br><span class="line">  <span class="attribute">min-width</span>: <span class="number">80px</span>; </span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="10、页面的最小宽度"><a href="#10、页面的最小宽度" class="headerlink" title="10、页面的最小宽度"></a>10、页面的最小宽度</h4><p><code>min-width</code> 是个非常方便的 <code>CSS</code> 命令，它可以指定元素最小也不能小于某个宽度，这样就能保证排版一直正确。<br>但IE不认得这个，而它实际上把 <code>width</code> 当做最小宽度来使。<br>为了让这一命令在IE上也能用，可以把一个 <code>&lt;div&gt;</code> 放到 <code>&lt;body&gt;</code> 标签下，然后为 <code>div</code> 指定一个类，然后 <code>CSS</code> 这样设计：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#container</span>&#123;</span><br><span class="line">    <span class="attribute">min-width</span>: <span class="number">600px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">e-xpression</span>(document.body.clientWidth &lt; <span class="number">600</span>? <span class="string">&quot;600px&quot;</span>: <span class="string">&quot;auto&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个 <code>min-width</code> 是正常的；<br>但第2行的 <code>width</code> 使用了 <code>JavaScript</code> ，这只有IE才认得，这也会让你的 <code>HTML</code> 文档不太正规。它实际上通过 <code>JavaScript</code> 的判断来实现最小宽度。</p>
+<h4 id="11、清除浮动"><a href="#11、清除浮动" class="headerlink" title="11、清除浮动"></a>11、清除浮动</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: table;</span><br><span class="line">  // 将对象作为块元素级的表格显示</span><br><span class="line">&#125;</span><br><span class="line">// 或者</span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者加入  <code>:after</code> （伪对象）,设置在对象后发生的内容，通常和 <code>content</code> 配合使用，IE不支持此伪对象，<br>非IE 浏览器支持，所以并不影响到IE&#x2F;WIN浏览器。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: “.”;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">  <span class="attribute">visibility</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="12、-DIV-浮动IE文本产生-3px-的-bug"><a href="#12、-DIV-浮动IE文本产生-3px-的-bug" class="headerlink" title="12、 DIV 浮动IE文本产生 3px 的 bug"></a>12、 <code>DIV</code> 浮动IE文本产生 <code>3px</code> 的 <code>bug</code></h4><p>左边对象浮动，右边采用外补丁的左边距来定位，右边对象内的文本会离左边有 <code>3px</code> 的间距。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">800px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#left</span> &#123;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#right</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">&#125;</span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-id">#left</span> &#123;</span><br><span class="line">  <span class="attribute">margin-right</span>: -<span class="number">3px</span>; // 这句是关键</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="13、IE捉迷藏的问题"><a href="#13、IE捉迷藏的问题" class="headerlink" title="13、IE捉迷藏的问题"></a>13、IE捉迷藏的问题</h4><p>当 <code>div</code> 应用复杂的时候每个栏中又有一些链接， <code>div</code> 等这个时候容易发生捉迷藏的问题。<br>有些内容显示不出来，当鼠标选择这个区域是发现内容确实在页面。<br>解决方案：对 <code>#layout</code> 使用 <code>line-height</code> 属性或者给 <code>#layout</code> 使用固定高和宽。页面结构尽量简单。</p>
+<h4 id="14、高度不适应"><a href="#14、高度不适应" class="headerlink" title="14、高度不适应"></a>14、高度不适应</h4><p>高度不适应是当内层对象的高度发生变化时外层高度不能自动进行调节，特别是当内层对象使用 <code>margin</code> 或 <code>padding</code> 时。例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">”box”</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>p对象中的内容<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>CSS</code> ：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#eee</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">20px</span>; </span><br><span class="line">  <span class="attribute">text-align</span>: center; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：在 <code>p</code> 对象上下各加 <code>2</code> 个空的 <code>div</code> 对象 <code>CSS</code> 代码： <code>.1&#123; height: 0px; overflow: hidden; &#125;</code> 或者为 <code>DIV</code> 加上 <code>border</code> 属性。</p>
+<h4 id="15、cursor-属性问题"><a href="#15、cursor-属性问题" class="headerlink" title="15、cursor 属性问题"></a>15、<code>cursor</code> 属性问题</h4><p><code>cursor: hand;</code> VS <code>cursor: pointer; </code><br>问题说明：FireFox不支持 <code>hand</code>，但IE支持 <code>pointer</code> 。<br>解决方法：统一使用 <code>pointer</code>。</p>
+<h4 id="16、对盒模型的解析不一致"><a href="#16、对盒模型的解析不一致" class="headerlink" title="16、对盒模型的解析不一致"></a>16、对盒模型的解析不一致</h4><ul>
+<li>对 <code>border</code> 的解析不一致，如：<code>box.style &#123; width: 100px; border: 1px; &#125;</code>；IE理解为 <code>box.width = 100px;</code>；Firefox 理解为 <code>box.width = 100 + 1*2 = 102px;  // 加上边框2px</code></li>
+</ul>
+<p>解决方案：<code>div &#123; margin: 30px !important; margin: 28px; &#125;</code> 注意这两个 <code>margin</code> 的顺序一定不能写反， IE不能识别 <code>!important</code> 这个属性，但别的浏览器可以识别。所以在IE下其实解释成这样：<code>div&#123; maring: 30px; margin: 28px; &#125;</code> 重复定义的话按照最后一个来执行，所以不可以只写 <code>margin: XXpx !important;</code></p>
+<ul>
+<li>IE5 和 IE6 的盒模型解释不一致。IE5下 <code>div&#123; width: 300px; margin: 0 10px 0 10px; &#125;</code> 其中 <code>div</code> 的宽度会被解释为 <code>300px-10px(右填充)-10px(左填充)</code>，最终 <code>div</code> 的宽度为 <code>280px</code> ，而在IE6和其他浏览器上宽度则是以 <code>300px+10px(右填充)+10px(左填充)=320px</code> 来计算的。</li>
+</ul>
+<p>解决方案：做如下修改 <code>div &#123; width: 300px !important; width /**/: 340px; margin: 0 10px 0 10px; &#125;</code><br>17、<code>ul</code> 和 <code>ol</code> 列表缩进问题<br>消除 <code>ul</code>、<code>ol</code> 等列表的缩进时，样式应写成：<code>list-style: none; margin: 0px; padding: 0px;</code><br>经验证，在IE中，设置 <code>margin: 0px;</code> 可以去除列表的上下左右缩进、空白以及列表编号或圆点，设置 <code>padding</code> 对样式没有影响；<br>在 Firefox 中，设置 <code>margin: 0px;</code> 仅仅可以去除上下的空白，设置 <code>padding: 0px;</code> 后仅仅可以去掉左右缩进，还必须设置 <code>list- style: none;</code> 才能去除列表编号或圆点。也就是说，在IE中仅仅设置 <code>margin: 0px;</code> 即可达到最终效果，而在Firefox中必须同时设置 <code>margin: 0px;</code>、 <code>padding: 0px;</code> 以及 <code>list-style: none;</code> 三项才能达到最终效果。</p>
+<h4 id="17、为什么无法定义-1px-左右高度的容器"><a href="#17、为什么无法定义-1px-左右高度的容器" class="headerlink" title="17、为什么无法定义 1px 左右高度的容器"></a>17、为什么无法定义 <code>1px</code> 左右高度的容器</h4><p>IE6下这个问题是因为默认的行高造成的；解决的技巧也有很多：<br>例如：<code>overflow: hidden;</code>  <code>zoom: 0.08</code>  <code>line-height: 1px;</code></p>
+<h4 id="18、链接-a标签-的边框与背景"><a href="#18、链接-a标签-的边框与背景" class="headerlink" title="18、链接(a标签)的边框与背景"></a>18、链接(<code>a</code>标签)的边框与背景</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a` 链接加边框和背景色，需设置 `display: block;` 同时设置 `float: left;`  保证不换行。参照 `menubar`, 给 `a` 和 `menubar` 设置高度是为了避免底边显示错位，若不设 `height`, 可以在 `menubar` 中插入一个空格。</span><br><span class="line">19、超链接访问过后 `hover` 样式就不出现的问题</span><br><span class="line">问题说明：被点击访问过的超链接样式不在具有 `hover` 和 `active`了</span><br><span class="line">解决技巧是改变CSS属性的排列顺序:  L-V-H-A ；</span><br><span class="line">`&lt;style type=&quot;text/css&quot;&gt; &lt;!-- a:link &#123;&#125; a:visited &#123;&#125; a:hover &#123;&#125; a:active &#123;&#125; --&gt; &lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/13/Koa/" data-id="cmd1is15e0000m0ur83sketaj" data-title="Koa" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-React-Native" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/07/12/React-Native/" class="article-date">
@@ -3191,821 +3507,6 @@ root.unmount();
 
 
   
-    <article id="post-前端性能" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/" class="article-date">
-  <time class="dt-published" datetime="2025-06-29T06:44:38.000Z" itemprop="datePublished">2025-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/">前端性能[C</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="性能监控"><a href="#性能监控" class="headerlink" title="性能监控"></a>性能监控</h1><p>前端监控的目的是：</p>
-<p>*<strong>获取用户行为以及跟踪产品在用户端的使用情况，并以监控数据为基础，指明产品优化的方向*</strong>。</p>
-<p>前端监控可以分为三类：数据监控、性能监控和异常监控。下面我们来一一的了解。</p>
-<h4 id="1-数据监控"><a href="#1-数据监控" class="headerlink" title="(1)数据监控"></a>(1)数据监控</h4><p>数据监控，顾名思义就是监听用户的行为。常见的数据监控包括：</p>
-<ul>
-<li>PV&#x2F;UV:PV(page view)，即页面浏览量或点击量。UV:指访问某个站点或点击某条新闻的不同IP地址的人数</li>
-<li>用户在每一个页面的停留时间</li>
-<li>用户通过什么入口来访问该网页</li>
-<li>用户在相应的页面中触发的行为</li>
-</ul>
-<p>统计这些数据是有意义的，比如我们知道了用户来源的渠道，可以促进产品的推广，知道用户在每一个页面停留的时间，可以针对停留较长的页面，增加广告推送等等。</p>
-<h4 id="2-性能监控"><a href="#2-性能监控" class="headerlink" title="(2)性能监控"></a>(2)性能监控</h4><p>性能监控指的是监听前端的性能，主要包括监听网页或者说产品在用户端的体验。常见的性能监控数据包括：</p>
-<ul>
-<li>不同用户，不同机型和不同系统下的首屏加载时间</li>
-<li>白屏时间</li>
-<li>http等请求的响应时间</li>
-<li>静态资源整体下载时间</li>
-<li>页面渲染时间</li>
-<li>页面交互动画完成时间</li>
-</ul>
-<p>这些性能监控的结果，可以展示前端性能的好坏，根据性能监测的结果可以进一步的去优化前端性能，比如兼容低版本浏览器的动画效果，加快首屏加载等等。</p>
-<h4 id="3-异常监控"><a href="#3-异常监控" class="headerlink" title="(3)异常监控"></a>(3)异常监控</h4><p>此外，产品的前端代码在执行过程中也会发生异常，因此需要引入异常监控。及时的上报异常情况，可以避免线上故障的发上。虽然大部分异常可以通过try catch的方式捕获，但是比如内存泄漏以及其他偶现的异常难以捕获。常见的需要监控的异常包括：</p>
-<ul>
-<li>Javascript的异常监控</li>
-<li>样式丢失的异常监控</li>
-</ul>
-<h1 id="前端安全补充"><a href="#前端安全补充" class="headerlink" title="前端安全补充"></a>前端安全补充</h1><h2 id="DoS-Denial-of-Service-Attack-拒绝服务攻击"><a href="#DoS-Denial-of-Service-Attack-拒绝服务攻击" class="headerlink" title="DoS (Denial-of-Service Attack - 拒绝服务攻击)"></a>DoS (Denial-of-Service Attack - 拒绝服务攻击)</h2><ul>
-<li><strong>核心目标：</strong> 使目标系统（服务器、网络、服务、应用程序等）<strong>无法为合法用户提供正常的服务</strong>。通常是通过耗尽目标的关键资源（如带宽、CPU、内存、连接数、磁盘I&#x2F;O等）来实现。</li>
-<li><strong>基本原理：</strong><ul>
-<li><strong>单源攻击：</strong> 攻击流量<strong>主要来源于一个攻击者或一台被攻击者控制的机器</strong>。</li>
-<li><strong>资源耗尽：</strong> 攻击者利用协议漏洞、设计缺陷或单纯发送海量垃圾请求，试图压垮目标的某项或多项资源：<ul>
-<li><strong>带宽耗尽：</strong> 发送巨大的数据流（如UDP洪水、ICMP洪水&#x2F;Ping of Death）堵塞目标的网络管道。</li>
-<li><strong>连接耗尽：</strong> 建立大量半开连接（如SYN洪水攻击），耗尽服务器的TCP连接池，阻止新的合法连接。</li>
-<li><strong>CPU&#x2F;内存耗尽：</strong> 发送需要大量计算资源才能处理的请求（如复杂的数据库查询、加密解密操作、特定格式的畸形数据包），导致服务器忙于处理攻击请求而无法响应正常请求。</li>
-<li><strong>应用层攻击：</strong> 针对特定的应用协议（如HTTP、DNS、SMTP），发送看似合法但精心构造的请求（如Slowloris攻击、HTTP洪水攻击、CC攻击），消耗应用服务器资源（线程、会话）或后端资源（数据库连接）。</li>
-</ul>
-</li>
-<li><strong>协议利用：</strong> 利用某些网络协议本身的设计弱点（如TCP的三次握手在SYN洪水中的脆弱性、UDP的无连接性在反射放大攻击中的作用）。</li>
-</ul>
-</li>
-</ul>
-<h2 id="DDoS-Distributed-Denial-of-Service-Attack-分布式拒绝服务攻击"><a href="#DDoS-Distributed-Denial-of-Service-Attack-分布式拒绝服务攻击" class="headerlink" title="DDoS (Distributed Denial-of-Service Attack - 分布式拒绝服务攻击)"></a>DDoS (Distributed Denial-of-Service Attack - 分布式拒绝服务攻击)</h2><ul>
-<li><strong>核心目标：</strong> 与DoS相同，也是使目标系统瘫痪，无法提供正常服务。</li>
-<li><strong>基本原理：</strong> <strong>DoS攻击的进化版和加强版</strong>。<ul>
-<li><strong>多源攻击：</strong> 攻击流量<strong>来源于大量（成千上万甚至数百万）分布在全球不同地理位置的、被攻击者控制的设备</strong>。这些设备组成了一个 <strong>“僵尸网络”</strong> 。</li>
-<li><strong>僵尸网络：</strong> 攻击者通过恶意软件（病毒、蠕虫、特洛伊木马）感染和控制了大量普通用户的计算机、服务器、IoT设备（摄像头、路由器、智能家居）等。这些被控制的设备称为 <strong>“僵尸”</strong> 或 <strong>“肉鸡”</strong> 。</li>
-<li><strong>集中指挥：</strong> 攻击者通过一个或多个 <strong>“命令与控制服务器”</strong> 向僵尸网络中的设备发送攻击指令。</li>
-<li><strong>放大效应：</strong><ul>
-<li><strong>数量放大：</strong> 成千上万的僵尸同时发起攻击，流量规模远超单源DoS。</li>
-<li><strong>反射放大：</strong> 利用一些协议（如DNS、NTP、SSDP、Memcached）的响应包远大于请求包的特性，<strong>伪造受害者的IP地址</strong> 向这些服务的开放服务器发送大量小请求，导致这些服务器将巨大的响应流量反射回受害者，从而<strong>放大攻击流量</strong>（可能放大几十倍甚至数万倍）。这是DDoS中极具破坏力的一种形式。</li>
-</ul>
-</li>
-<li><strong>隐蔽性与防御难度：</strong><ul>
-<li>流量来源分散且通常是合法的被劫持设备，难以直接定位真正的攻击者。</li>
-<li>海量流量来自不同IP，传统的基于IP黑名单的过滤方法效果有限。</li>
-<li>攻击流量可能模仿正常流量，增加了区分难度。</li>
-<li>攻击规模可以轻易达到数百Gbps甚至数Tbps，远超单个网络的承受能力。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="总结攻击原理的核心差异"><a href="#总结攻击原理的核心差异" class="headerlink" title="总结攻击原理的核心差异"></a>总结攻击原理的核心差异</h3><table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left">DoS (拒绝服务)</th>
-<th align="left">DDoS (分布式拒绝服务)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>攻击源</strong></td>
-<td align="left"><strong>单一</strong> 或 <strong>少量</strong> 源头</td>
-<td align="left"><strong>海量分布式</strong> 源头 (僵尸网络)</td>
-</tr>
-<tr>
-<td align="left"><strong>流量规模</strong></td>
-<td align="left">相对较小，通常能被单点防御阻挡</td>
-<td align="left"><strong>极其巨大</strong> (Gbps&#x2F;Tbps 级别)，难以单点防御</td>
-</tr>
-<tr>
-<td align="left"><strong>复杂性</strong></td>
-<td align="left">较低，技术门槛不高</td>
-<td align="left"><strong>高</strong>，需要构建&#x2F;租用僵尸网络，组织复杂</td>
-</tr>
-<tr>
-<td align="left"><strong>隐蔽性</strong></td>
-<td align="left">较低，源头易被追踪和屏蔽</td>
-<td align="left"><strong>高</strong>，源头分散且多为被劫持设备</td>
-</tr>
-<tr>
-<td align="left"><strong>防御难度</strong></td>
-<td align="left"><strong>较低</strong></td>
-<td align="left"><strong>极高</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>攻击威力</strong></td>
-<td align="left"><strong>有限</strong></td>
-<td align="left"><strong>毁灭性</strong></td>
-</tr>
-</tbody></table>
-<h2 id="D-DOS-防范措施"><a href="#D-DOS-防范措施" class="headerlink" title="D&#x2F;DOS 防范措施"></a>D&#x2F;DOS 防范措施</h2><p>防范D&#x2F;DoS攻击是一个<strong>多层次、持续性的综合工程</strong>，没有银弹。主要策略包括：</p>
-<h3 id="1-基础设施层防护"><a href="#1-基础设施层防护" class="headerlink" title="1. 基础设施层防护"></a>1. 基础设施层防护</h3><ul>
-<li><strong>增加带宽冗余：</strong> 虽然无法完全抵御大型DDoS，但更大的带宽能争取更多响应时间，对小规模攻击有效。这是基础。</li>
-<li><strong>部署内容分发网络：</strong> CDN将网站内容缓存到全球分布的边缘节点。用户访问边缘节点，大大减少直接攻击源站的机会。CDN提供商通常自身具备强大的DDoS缓解能力，能吸收和过滤大量攻击流量。</li>
-<li><strong>使用云防护&#x2F;清洗服务：</strong> <strong>(最有效且主流的方式)</strong><ul>
-<li><strong>流量清洗中心：</strong> 所有流量先经过服务提供商的清洗中心。在这里，利用大数据分析、行为分析、机器学习等技术<strong>实时区分恶意流量和合法流量</strong>，只将清洗后的干净流量转发给目标服务器。阿里云DDoS防护、腾讯云大禹、AWS Shield Advanced、Cloudflare、Akamai Prolexic 等都是这类服务。</li>
-<li><strong>Anycast 网络：</strong> 云防护提供商通常使用Anycast技术，将攻击流量分散到全球多个数据中心入口点进行处理，稀释攻击威力。</li>
-</ul>
-</li>
-<li><strong>分布式架构：</strong> 设计系统时避免单点故障，采用负载均衡将流量分散到多个服务器或数据中心。</li>
-</ul>
-<h3 id="2-网络与系统层加固"><a href="#2-网络与系统层加固" class="headerlink" title="2. 网络与系统层加固"></a>2. 网络与系统层加固</h3><ul>
-<li><strong>防火墙配置：</strong><ul>
-<li>严格配置入站&#x2F;出站规则。</li>
-<li>启用抗DDoS模式（如SYN Cookie&#x2F;Cookie Challenge）。</li>
-<li>限制特定协议（如ICMP、UDP）的速率或直接屏蔽。</li>
-<li>设置连接数限制和新建连接速率限制。</li>
-</ul>
-</li>
-<li><strong>路由器&#x2F;交换机配置：</strong><ul>
-<li>启用访问控制列表限制来源。</li>
-<li>配置流量限速。</li>
-<li>启用源IP验证，防止IP欺骗。</li>
-</ul>
-</li>
-<li><strong>服务器优化：</strong><ul>
-<li><strong>及时打补丁：</strong> 修复操作系统、Web服务器、数据库等软件漏洞，防止攻击者利用漏洞发动DoS。</li>
-<li><strong>资源限制：</strong> 调整内核参数（如<code>net.core.somaxconn</code>, <code>net.ipv4.tcp_max_syn_backlog</code>），优化TCP&#x2F;IP栈性能，增加半连接队列大小。</li>
-<li><strong>关闭不必要的服务：</strong> 减少攻击面。</li>
-<li><strong>启用SYN Cookies：</strong> 有效防御SYN洪水攻击。</li>
-</ul>
-</li>
-<li><strong>入侵检测&#x2F;防御系统：</strong> 部署NIDS&#x2F;NIPS，配置规则检测常见DoS攻击模式（如SYN Flood, UDP Flood）并自动阻断。</li>
-</ul>
-<h3 id="3-应用层防护"><a href="#3-应用层防护" class="headerlink" title="3. 应用层防护"></a>3. 应用层防护</h3><ul>
-<li><strong>Web应用防火墙：</strong> WAF能有效防御应用层DDoS攻击（如HTTP Flood、Slowloris、CC攻击）以及利用应用漏洞的攻击。它可以识别恶意Bot流量、设置请求速率限制、验证挑战等。</li>
-<li><strong>输入验证与过滤：</strong> 严格检查所有用户输入，防止畸形数据包导致服务崩溃或资源耗尽。</li>
-<li><strong>会话管理：</strong> 合理设置会话超时时间，防止僵尸会话占用资源。</li>
-<li><strong>资源使用限制：</strong> 对API调用、文件上传、数据库查询等操作实施严格的频率和资源消耗限制。</li>
-<li><strong>验证码：</strong> 在可疑流量或高频率操作时引入验证码，区分人机。</li>
-<li><strong>限制特定User-Agent或爬虫行为。</strong></li>
-</ul>
-<h3 id="4-监控与响应"><a href="#4-监控与响应" class="headerlink" title="4. 监控与响应"></a>4. 监控与响应</h3><ul>
-<li><strong>实时监控：</strong> 部署全面的网络流量监控系统，密切关注带宽使用率、连接数、CPU&#x2F;内存负载、特定协议流量等关键指标。设置告警阈值。</li>
-<li><strong>流量分析工具：</strong> 使用NetFlow&#x2F;sFlow&#x2F;IPFIX、深度包检测等技术分析流量模式，识别异常。</li>
-<li><strong>制定应急预案：</strong> 明确在遭受攻击时各个团队（网络、安全、运维、应用开发）的职责和操作流程。包括：<ul>
-<li>如何快速确认攻击类型和规模。</li>
-<li>如何启动云清洗服务或联系ISP协助。</li>
-<li>如何调整防火墙&#x2F;WAF规则进行临时封堵（谨慎使用）。</li>
-<li>如何与业务部门沟通。</li>
-<li>攻击缓解后的恢复步骤和根因分析。</li>
-</ul>
-</li>
-<li><strong>定期演练：</strong> 测试应急预案的有效性。</li>
-</ul>
-<h3 id="5-其他重要措施"><a href="#5-其他重要措施" class="headerlink" title="5. 其他重要措施"></a>5. 其他重要措施</h3><ul>
-<li><strong>隐藏真实IP：</strong> 尽可能不要让关键服务的真实服务器IP直接暴露在公网上。使用CDN、云WAF、反向代理或高防IP作为前端。</li>
-<li><strong>ISP合作：</strong> 与你的互联网服务提供商建立联系。大型ISP通常具备在更上游（靠近攻击源）缓解大规模DDoS的能力。在攻击发生时，及时向其报告并寻求协助。</li>
-<li><strong>减少反射放大面：</strong> 确保你管理的服务器（如DNS递归解析器、NTP服务器、Memcached服务器）不会被滥用为反射源。正确配置它们（如限制递归查询来源、禁用不必要功能、更新软件）。</li>
-<li><strong>安全意识：</strong> 防止内部设备成为僵尸网络成员（安装杀毒软件、及时更新、强密码）。</li>
-</ul>
-<h2 id="三、-重要总结"><a href="#三、-重要总结" class="headerlink" title="三、 重要总结"></a>三、 重要总结</h2><ol>
-<li><strong>DDoS是更强大、更主流的威胁：</strong> 如今单纯的DoS攻击已较少见，DDoS利用僵尸网络的规模和反射放大技术成为常态。</li>
-<li><strong>云防护是核心：</strong> 面对大型DDoS攻击，依靠自身网络和设备几乎无法抵御。专业的云DDoS防护&#x2F;清洗服务是<strong>最有效和最主流</strong>的解决方案。</li>
-<li><strong>纵深防御：</strong> 没有单一完美的防御手段。需要结合<strong>基础设施冗余、网络设备加固、服务器优化、应用层防护、持续监控和成熟的应急响应计划</strong>，构建多层次防御体系。</li>
-<li><strong>持续性与成本：</strong> DDoS防御是一个持续投入的过程，包括技术、人力和服务成本。需要根据业务的重要性来评估所需的防护等级。</li>
-<li><strong>Mirai僵尸网络的警示：</strong> Mirai及其变种利用大量安全性薄弱的IoT设备发动了史上最大规模的DDoS攻击之一，凸显了IoT安全问题和反射放大攻击的威力。</li>
-</ol>
-<h1 id="Js错误"><a href="#Js错误" class="headerlink" title="Js错误"></a>Js错误</h1><h2 id="JavaScript-错误类型总览"><a href="#JavaScript-错误类型总览" class="headerlink" title="JavaScript 错误类型总览"></a>JavaScript 错误类型总览</h2><table>
-<thead>
-<tr>
-<th align="left">错误类型</th>
-<th align="left">触发场景</th>
-<th align="left">示例代码</th>
-<th align="left">解决方案</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>SyntaxError</strong></td>
-<td align="left">语法错误</td>
-<td align="left"><code>if (a) &#123;</code></td>
-<td align="left">修复代码语法</td>
-</tr>
-<tr>
-<td align="left"><strong>ReferenceError</strong></td>
-<td align="left">访问未声明变量</td>
-<td align="left"><code>console.log(undeclaredVar);</code></td>
-<td align="left">声明变量或检查变量作用域</td>
-</tr>
-<tr>
-<td align="left"><strong>TypeError</strong></td>
-<td align="left">类型不匹配操作</td>
-<td align="left"><code>null.func();</code></td>
-<td align="left">添加类型检查</td>
-</tr>
-<tr>
-<td align="left"><strong>RangeError</strong></td>
-<td align="left">数值超出有效范围</td>
-<td align="left"><code>new Array(-1);</code></td>
-<td align="left">验证输入值范围</td>
-</tr>
-<tr>
-<td align="left"><strong>URIError</strong></td>
-<td align="left">URI处理函数使用无效参数</td>
-<td align="left"><code>decodeURIComponent(&#39;%&#39;);</code></td>
-<td align="left">验证URI参数</td>
-</tr>
-<tr>
-<td align="left"><strong>EvalError</strong></td>
-<td align="left"><code>eval()</code> 函数使用不当</td>
-<td align="left"><code>new eval();</code></td>
-<td align="left">避免使用eval</td>
-</tr>
-<tr>
-<td align="left"><strong>AggregateError</strong></td>
-<td align="left">多个错误组合</td>
-<td align="left"><code>Promise.any([rejectedPromises]);</code></td>
-<td align="left">处理多个错误</td>
-</tr>
-<tr>
-<td align="left"><strong>自定义错误</strong></td>
-<td align="left">开发者主动抛出</td>
-<td align="left"><code>throw new CustomError(&#39;msg&#39;);</code></td>
-<td align="left">实现特定错误处理逻辑</td>
-</tr>
-</tbody></table>
-<h3 id="1-SyntaxError（语法错误）"><a href="#1-SyntaxError（语法错误）" class="headerlink" title="1. SyntaxError（语法错误）"></a>1. SyntaxError（语法错误）</h3><p><strong>触发时机</strong>：代码解析阶段<br><strong>常见场景</strong>：</p>
-<ul>
-<li>缺少括号、引号或花括号</li>
-<li>错误使用保留字</li>
-<li>无效的表达式</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例1: 缺少括号</span></span><br><span class="line"><span class="keyword">if</span> (a &#123;  <span class="comment">// Uncaught SyntaxError: Unexpected token &#x27;&#123;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例2: 无效赋值</span></span><br><span class="line"><span class="keyword">const</span> 123<span class="keyword">var</span> = <span class="string">&quot;test&quot;</span>;  <span class="comment">// Uncaught SyntaxError: Invalid or unexpected token</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-ReferenceError（引用错误）"><a href="#2-ReferenceError（引用错误）" class="headerlink" title="2. ReferenceError（引用错误）"></a>2. ReferenceError（引用错误）</h3><p><strong>触发时机</strong>：运行时<br><strong>常见场景</strong>：</p>
-<ul>
-<li>访问未声明的变量</li>
-<li>访问块作用域变量（let&#x2F;const）的TDZ（暂时性死区）</li>
-<li>模块导入错误</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例1: 未声明变量</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(undeclaredVar);  <span class="comment">// Uncaught ReferenceError</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例2: TDZ访问</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(x);  <span class="comment">// Uncaught ReferenceError</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-TypeError（类型错误）"><a href="#3-TypeError（类型错误）" class="headerlink" title="3. TypeError（类型错误）"></a>3. TypeError（类型错误）</h3><p><strong>触发时机</strong>：操作不符合变量类型<br><strong>常见场景</strong>：</p>
-<ul>
-<li>调用非函数值</li>
-<li>访问null&#x2F;undefined的属性</li>
-<li>尝试修改常量值</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例1: 调用非函数</span></span><br><span class="line"><span class="keyword">const</span> num = <span class="number">42</span>;</span><br><span class="line"><span class="title function_">num</span>();  <span class="comment">// Uncaught TypeError: num is not a function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例2: 访问null属性</span></span><br><span class="line"><span class="keyword">const</span> obj = <span class="literal">null</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">property</span>);  <span class="comment">// Uncaught TypeError: Cannot read property</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-RangeError（范围错误）"><a href="#4-RangeError（范围错误）" class="headerlink" title="4. RangeError（范围错误）"></a>4. RangeError（范围错误）</h3><p><strong>触发时机</strong>：参数超出有效范围<br><strong>常见场景</strong>：</p>
-<ul>
-<li>无效数组长度</li>
-<li>数字方法参数越界</li>
-<li>递归深度过大</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例1: 无效数组长度</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Array</span>(-<span class="number">1</span>);  <span class="comment">// Uncaught RangeError: Invalid array length</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例2: 数字精度超限</span></span><br><span class="line">(<span class="number">123.456</span>).<span class="title function_">toFixed</span>(<span class="number">101</span>);  <span class="comment">// Uncaught RangeError: toFixed() digits argument must be between 0 and 100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="5-URIError（URI错误）"><a href="#5-URIError（URI错误）" class="headerlink" title="5. URIError（URI错误）"></a>5. URIError（URI错误）</h3><p><strong>触发时机</strong>：URI处理函数参数无效<br><strong>仅影响</strong>：<code>encodeURI()</code>, <code>decodeURI()</code>, <code>encodeURIComponent()</code>, <code>decodeURIComponent()</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例: 无效URI解码</span></span><br><span class="line"><span class="built_in">decodeURIComponent</span>(<span class="string">&#x27;%&#x27;</span>);  <span class="comment">// Uncaught URIError: URI malformed</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="6-EvalError（eval错误）"><a href="#6-EvalError（eval错误）" class="headerlink" title="6. EvalError（eval错误）"></a>6. EvalError（eval错误）</h3><p><strong>触发时机</strong>：<code>eval()</code> 函数使用不当<br><strong>注意</strong>：现代JavaScript中很少见，保留用于兼容性</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 历史用法 (现代JS引擎不再抛出)</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EvalError</span>(<span class="string">&quot;Eval error&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e <span class="keyword">instanceof</span> <span class="title class_">EvalError</span>);  <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-AggregateError（聚合错误）"><a href="#7-AggregateError（聚合错误）" class="headerlink" title="7. AggregateError（聚合错误）"></a>7. AggregateError（聚合错误）</h3><p><strong>触发时机</strong>：多个错误需要同时报告<br><strong>常见于</strong>：<code>Promise.any()</code> 全部拒绝时</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">any</span>([</span><br><span class="line">  <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Error 1&quot;</span>)),</span><br><span class="line">  <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Error 2&quot;</span>))</span><br><span class="line">]).<span class="title function_">catch</span>(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e <span class="keyword">instanceof</span> <span class="title class_">AggregateError</span>);  <span class="comment">// true</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">errors</span>.<span class="property">length</span>);  <span class="comment">// 2</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="WebIDL和ecma-262中的错误类型"><a href="#WebIDL和ecma-262中的错误类型" class="headerlink" title="WebIDL和ecma-262中的错误类型"></a>WebIDL和ecma-262中的错误类型</h4><ul>
-<li><p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=WCsyJ0SbM68nFUfknuxc4g==.suEaakDxsFgunJR89KoRM2icTf23NuhbkJlXUUrVWbBpYg3tSQ3Qcro+8NlH58ZUTRaKRVPug72ITCAseJfwzPkhe/P6CqFiA14nNIjGM7E=">ECMAScript exceptions</a> &lt;&#x3D;&#x3D;&gt; <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=PKwXx59Icv2HdaKCGITj+w==.ZkwDXSwbBVZSMF94vbPpyK+w3iC2bcBf19ml+tcJNstSYLackci+BgNMsdSmvchdLjCH5bbjMMICt01dZB8DuA==">IDL 的简单异常</a></p>
-<p>当脚本代码运行时发生的错误，会创建Error对象，并将其抛出，除了通用的Error构造函数外，以下是另外几个ECMAScript 2015中定义的错误构造函数。</p>
-<ul>
-<li><strong>EvalError</strong> eval错误</li>
-<li><strong>RangeError</strong> 范围错误</li>
-<li><strong>ReferenceError</strong> 引用错误</li>
-<li><strong>TypeError</strong> 类型错误</li>
-<li><strong>URIError</strong> URI错误</li>
-<li><strong>SyntaxError</strong> 语法错误 (这个错误WebIDL中故意省略，保留给ES解析器使用)</li>
-<li><strong>Error</strong> 通用错误 （这个错误WebIDL中故意省略，保留给开发者使用使用）</li>
-</ul>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Qaux4NrI17y7bOplFMyitw==.cL487ezp3TEsLOuy+TKH9OHDliMsEWajxxayEUwyqYIqv9RbXRCkouXogfTnmFZbGfw3Oo476yuXgMBVsvAeEQ==">DOMException</a> 最新的DOM规范定义的错误类型集，兼容旧浏览的DOMError接口, 完善和规范化DOM错误类型。</p>
-<ul>
-<li><strong>IndexSizeError</strong> 索引不在允许的范围内</li>
-<li><strong>HierarchyRequestError</strong> 节点树层次结构是不正确的。</li>
-<li><strong>WrongDocumentError</strong> 对象是错误的</li>
-<li><strong>InvalidCharacterError</strong> 字符串包含无效字符。</li>
-<li><strong>NoModificationAllowedError</strong> 对象不能被修改。</li>
-<li><strong>NotFoundError</strong> 对象不能在这里被找到。</li>
-<li><strong>NotSupportedError</strong> 不支持的操作</li>
-<li><strong>InvalidStateError</strong> 对象是一个无效的状态。</li>
-<li><strong>SyntaxError</strong> 字符串不匹配预期的模式</li>
-<li><strong>InvalidModificationError</strong> 对象不能以这种方式被修改</li>
-<li><strong>NamespaceError</strong> 操作在XML命名空间内是不被允许的</li>
-<li><strong>InvalidAccessError</strong> 对象不支持这种操作或参数。</li>
-<li><strong>TypeMismatchError</strong> 对象的类型不匹配预期的类型。</li>
-<li><strong>SecurityError</strong> 此操作是不安全的。</li>
-<li><strong>NetworkError</strong> 发生网络错误</li>
-<li><strong>AbortError</strong> 操作被中止</li>
-<li><strong>URLMismatchError</strong> 给定的URL不匹配另一个URL。</li>
-<li><strong>QuotaExceededError</strong> 已经超过给定配额。</li>
-<li><strong>TimeoutError</strong> 操作超时。</li>
-<li><strong>InvalidNodeTypeError</strong> 这个操作的 节点或节点祖先 是不正确的</li>
-<li><strong>DataCloneError</strong> 对象不能克隆。</li>
-</ul>
-</li>
-</ul>
-<h3 id="前端错误异常按照捕获方式分类"><a href="#前端错误异常按照捕获方式分类" class="headerlink" title="前端错误异常按照捕获方式分类"></a>前端错误异常按照捕获方式分类</h3><ul>
-<li><input checked="" disabled="" type="checkbox"> 语法错误</li>
-<li><input checked="" disabled="" type="checkbox"> 运行时异常</li>
-<li><input checked="" disabled="" type="checkbox"> 资源加载异常<ul>
-<li>img</li>
-<li>script</li>
-<li>link</li>
-<li>audio</li>
-<li>video</li>
-<li>iframe</li>
-<li>…外链资源的DOM元素</li>
-</ul>
-</li>
-<li><input checked="" disabled="" type="checkbox"> 异步请求异常<ul>
-<li>XMLHttpRequest</li>
-<li>fetch</li>
-</ul>
-</li>
-<li><input checked="" disabled="" type="checkbox"> Promise异常</li>
-<li><input disabled="" type="checkbox"> <del>CSS中资源异常</del><ul>
-<li>@font-face</li>
-<li>background-image</li>
-<li>…暂时无法捕获</li>
-</ul>
-</li>
-</ul>
-<h3 id="前端错误异常的捕获方式"><a href="#前端错误异常的捕获方式" class="headerlink" title="前端错误异常的捕获方式"></a>前端错误异常的捕获方式</h3><ul>
-<li>try-catch (ES提供基本的错误捕获语法)<ul>
-<li>只能捕获同步代码的异常</li>
-<li><del>回调</del></li>
-<li><del>setTimeout</del></li>
-<li><del>promise</del></li>
-</ul>
-</li>
-<li><strong>window.onerror &#x3D; cb (DOM0)</strong><ul>
-<li>img</li>
-<li>script</li>
-<li>link</li>
-</ul>
-</li>
-<li>window.addEventListener(‘error’, cb, true) (DOM2)</li>
-<li>window.addEventListener(“unhandledrejection”, cb) (DOM4)</li>
-<li>Promise.then().catch(cb)</li>
-<li>封装XMLHttpRequest&amp;fetch | 覆写请求接口对象</li>
-</ul>
-<h4 id="try-catch-finally"><a href="#try-catch-finally" class="headerlink" title="try-catch-finally"></a>try-catch-finally</h4><p>将能引发异常的代码块放到try中，并对应一个响应，然后有异常会被捕获</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">// 模拟一段可能有错误的代码</span></span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;会有错误的代码块&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span>(e)&#123;</span><br><span class="line">  <span class="comment">// 捕获到try中代码块的错误得到一个错误对象e，进行处理分析</span></span><br><span class="line">  <span class="title function_">report</span>(e)</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;finally&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="onerror事件"><a href="#onerror事件" class="headerlink" title="onerror事件"></a>onerror事件</h4><h5 id="window-onerror"><a href="#window-onerror" class="headerlink" title="window.onerror"></a>window.onerror</h5><p>当JavaScript运行时错误（包括语法错误）发生时，window会触发一个ErrorEvent接口的事件，并执行window.onerror();</p>
-<p>但这里有个信息要注意，语法错误会导致出现语法错误的那个脚本块执行失败，所以语法错误会导致当前代码块运行终止，从而导致整个程序运行中断，如果语法错误这个发生在我们的错误监控语句块中，那么我们就什么也监控不到了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 运行时错误处理器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; message 错误信息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; source 发生错误的脚本URL</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">number</span>&#125; lineno 发生错误的行号</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">number</span>&#125; colno 发生错误的列号</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">object</span>&#125; error Error对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">err</span>(<span class="params">message,source,lineno,colno,error</span>) &#123;...&#125;</span><br><span class="line"><span class="variable language_">window</span>.<span class="property">onerror</span> = err</span><br></pre></td></tr></table></figure>
-
-<h5 id="element-onerror"><a href="#element-onerror" class="headerlink" title="element.onerror"></a>element.onerror</h5><p>当一项资源（如<code>&lt;img&gt;</code>或<code>&lt;script&gt;</code>）加载失败，加载资源的元素会触发一个Event接口的error事件，并执行该元素上的onerror()处理函数。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element.<span class="property">onerror</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123; ... &#125; <span class="comment">//注意和window.onerror的参数不同</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：这些error事件不会向上冒泡到window，不过能被单一的window.addEventListener捕获。</p>
-<h5 id="window-addEventListener"><a href="#window-addEventListener" class="headerlink" title="window.addEventListener"></a>window.addEventListener</h5><h5 id="addEventListener相关的一些内容"><a href="#addEventListener相关的一些内容" class="headerlink" title="addEventListener相关的一些内容"></a>addEventListener相关的一些内容</h5><p>W3C DOM2 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=t0fRx2nVaR1eu7VXBZ0Oyw==./f7iMYPHVLL1SJ7Tsr8UBsyS07dvVmnWFnPkFkJMUE383Svkr3So82kOIjNpQpQl">Events</a>规范中提供的注册事件监听器的方法, 在这之前均使用<br><code>el.onclick</code>的形式（DOM0 规范的基本内容，几乎所有浏览器都支持）。</p>
-<p>注意： <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jhXgag8h/rd9UmLYcpREUw==.gyww6nUd6BCIKiObOuusn+K7pdiHTFxvnJrdeLqnQ2YuJAup9f50b3dTfzUjfcWVmy/T+2pz16NB64TCAJStAbOv8JVXfXroRUjMA3B3dXo=">接口的几种语法</a></p>
-<h5 id="error事件捕获资源加载错误"><a href="#error事件捕获资源加载错误" class="headerlink" title="error事件捕获资源加载错误"></a>error事件捕获资源加载错误</h5><p>资源加载失败，不会冒泡，但是会被addEventListener捕获，所以我们可以指定在加载失败事件的捕获阶段捕获该错误。</p>
-<p>注意: 接口同时也能捕获运行时错误。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;error&quot;</span>, <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> eventType = [].<span class="property">toString</span>.<span class="title function_">call</span>(e, e);</span><br><span class="line">    <span class="keyword">if</span> (eventType === <span class="string">&quot;[object Event]&quot;</span>) &#123; <span class="comment">// 过滤掉运行时错误</span></span><br><span class="line">      <span class="comment">// 上报加载错误</span></span><br><span class="line">      <span class="title function_">report</span>(e)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="literal">true</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<h5 id="unhandledrejection事件捕获Promise异常"><a href="#unhandledrejection事件捕获Promise异常" class="headerlink" title="unhandledrejection事件捕获Promise异常"></a>unhandledrejection事件捕获Promise异常</h5><p>最新的规范中定义了 unhandledrejection事件用于全局捕获promise对象没有rejection处理器时异常情况。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;unhandledrejection&quot;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">    <span class="comment">// ...your code here to handle the unhandled rejection...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prevent the default handling (error in console)</span></span><br><span class="line">    event.<span class="title function_">preventDefault</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="Promise-then-catch-cb-finally"><a href="#Promise-then-catch-cb-finally" class="headerlink" title="Promise.then().catch(cb).finally()"></a>Promise.then().catch(cb).finally()</h4><p>Promise中的错误会被Promise.prototype.catch捕获，所以我们通过这种方式捕获错误，这包括一些不支持unhandledrejection事件的环境中promisede polyfill实现。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params">resolve, reject</span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="string">&#x27;Uncaught Exception!&#x27;</span>;</span><br><span class="line">&#125;).<span class="title function_">catch</span>(<span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e); <span class="comment">// Uncaught Exception!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="封装XMLHttpRequest-fetch-覆写请求接口对象"><a href="#封装XMLHttpRequest-fetch-覆写请求接口对象" class="headerlink" title="封装XMLHttpRequest&amp;fetch | 覆写请求接口对象"></a>封装XMLHttpRequest&amp;fetch | 覆写请求接口对象</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 覆写XMLHttpRequest API</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="variable language_">window</span>.<span class="property">XMLHttpRequest</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">var</span> xmlhttp = <span class="variable language_">window</span>.<span class="property">XMLHttpRequest</span>;</span><br><span class="line">  <span class="keyword">var</span> _oldSend = xmlhttp.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">send</span>;</span><br><span class="line">  <span class="keyword">var</span> _handleEvent = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (event &amp;&amp; event.<span class="property">currentTarget</span> &amp;&amp; event.<span class="property">currentTarget</span>.<span class="property">status</span> !== <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="title function_">report</span>(event)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  xmlhttp.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">send</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">this</span>[<span class="string">&#x27;addEventListener&#x27;</span>]) &#123;</span><br><span class="line">          <span class="variable language_">this</span>[<span class="string">&#x27;addEventListener&#x27;</span>](<span class="string">&#x27;error&#x27;</span>, _handleEvent);</span><br><span class="line">          <span class="variable language_">this</span>[<span class="string">&#x27;addEventListener&#x27;</span>](<span class="string">&#x27;load&#x27;</span>, _handleEvent);</span><br><span class="line">          <span class="variable language_">this</span>[<span class="string">&#x27;addEventListener&#x27;</span>](<span class="string">&#x27;abort&#x27;</span>, _handleEvent);</span><br><span class="line">          <span class="variable language_">this</span>[<span class="string">&#x27;addEventListener&#x27;</span>](<span class="string">&#x27;close&#x27;</span>, _handleEvent);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">var</span> _oldStateChange = <span class="variable language_">this</span>[<span class="string">&#x27;onreadystatechange&#x27;</span>];</span><br><span class="line">          <span class="variable language_">this</span>[<span class="string">&#x27;onreadystatechange&#x27;</span>] = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">              <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">readyState</span> === <span class="number">4</span>) &#123;</span><br><span class="line">                  <span class="title function_">_handleEvent</span>(event);</span><br><span class="line">              &#125;</span><br><span class="line">              _oldStateChange &amp;&amp; _oldStateChange.<span class="title function_">apply</span>(<span class="variable language_">this</span>, <span class="variable language_">arguments</span>);</span><br><span class="line">          &#125;;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> _oldSend.<span class="title function_">apply</span>(<span class="variable language_">this</span>, <span class="variable language_">arguments</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 覆写fetch API</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="variable language_">window</span>.<span class="property">fetch</span>) <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">var</span> _oldFetch = <span class="variable language_">window</span>.<span class="property">fetch</span>;</span><br><span class="line"><span class="variable language_">window</span>.<span class="property">fetch</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> _oldFetch</span><br><span class="line">    .<span class="title function_">apply</span>(<span class="variable language_">this</span>, <span class="variable language_">arguments</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">res</span>)&#123;</span><br><span class="line">      <span class="keyword">if</span> (!res.<span class="property">ok</span>) &#123;</span><br><span class="line">        <span class="comment">// True if status is HTTP 2xx</span></span><br><span class="line">        <span class="title function_">report</span>(res)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> res;</span><br><span class="line">    &#125;)</span><br><span class="line">    .<span class="title function_">catch</span>(<span class="keyword">function</span>(<span class="params">error</span>)&#123;</span><br><span class="line">      <span class="title function_">report</span>(res)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="日志上报的方式"><a href="#日志上报的方式" class="headerlink" title="日志上报的方式"></a>日志上报的方式</h3><ul>
-<li>异步请求上报, 后端提供接口，或者直接发到日志服务器</li>
-<li>img请求上报, url参数带上错误信息<ul>
-<li><code>eg:(new Image()).src = &#39;http://baidu.com/tesjk?r=tksjk&#39;</code></li>
-</ul>
-</li>
-</ul>
-<h4 id="注意跨源脚本异常"><a href="#注意跨源脚本异常" class="headerlink" title="注意跨源脚本异常"></a>注意跨源脚本异常</h4><p>当加载自不同域的脚本中发生语法错误时，为避免信息泄露，语法错误的细节将不会报告，而代之简单的 “Script error.”</p>
-<p>由于同源策略影响，浏览器限制跨源脚本的错误访问，这样跨源脚本错误报错信息如下图：</p>
-<p><img src="https://segmentfault.com/img/bV7tjY?w=372&h=126" alt="跨源的脚本的异常"></p>
-<p>在H5的规定中，只要满足下面俩个条件，是允许获取跨源脚本的错误信息的。</p>
-<ol>
-<li>客户端在script标签上增加crossorigin属性；</li>
-<li>服务端设置js资源响应头Access-Control-Origin:*（或者是域名）。</li>
-</ol>
-<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><h4 id="业界已经有的监控平台"><a href="#业界已经有的监控平台" class="headerlink" title="业界已经有的监控平台"></a>业界已经有的监控平台</h4><ul>
-<li>Sentry开源</li>
-<li>阿里的ARMS</li>
-<li>fundebug</li>
-<li>FrontJS</li>
-</ul>
-<h4 id="几个异常监控的问题"><a href="#几个异常监控的问题" class="headerlink" title="几个异常监控的问题"></a>几个异常监控的问题</h4><ul>
-<li><p>如何保证大家提交的代码是符合预期的？ 如何了解前端项目的运行是否正常，是否存在错误？</p>
-<p>代码质量体系控制和错误监控以及性能分析</p>
-</li>
-<li><p>如果用户使用网页，发现白屏，现在联系上了你们，你们会向他询问什么信息呢？先想一下为什么会白屏？</p>
-<p>我们以用户访问页面的过程为顺序，大致排查一下</p>
-<ol>
-<li>用户没打开网络</li>
-<li>DNS域名劫持</li>
-<li>http劫持</li>
-<li>cdn或是其他资源文件访问出错</li>
-<li>服务器错误</li>
-<li>前端代码错误</li>
-<li>前端兼容性问题</li>
-<li>用户操作出错</li>
-</ol>
-</li>
-</ul>
-<p>通过以上可能发生错误的环节，我们需要向用户手机一下以下的用户信息</p>
-<ol>
-<li>当前的网络状态</li>
-<li>运营商</li>
-<li>地理位置</li>
-<li>访问时间</li>
-<li>客户端的版本(如果是通过客户端访问)</li>
-<li>系统版本</li>
-<li>浏览器信息</li>
-<li>设备分辨率</li>
-<li>页面的来源</li>
-<li>用户的账号信息</li>
-<li>通过performance API收集用户各个页面访问流程所消耗的时间</li>
-<li>收集用户js代码报错的信息</li>
-</ol>
-<ul>
-<li>如果我们使用了脚本代码压缩，然而我们又不想将sourcemap文件发布到线上，我们怎么捕获到错误的具体信息？</li>
-<li>CSS文件中也存在引用资源，@font-face, background-image …等这些请求错误该如何进行错误捕获？</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>Web规范中相关前端异常<ul>
-<li>DOM处理异常</li>
-<li>ECMAScript处理异常</li>
-</ul>
-</li>
-<li>异常按照捕获方式分类<ul>
-<li>运行时异常</li>
-<li>资源加载异常</li>
-<li>异步请求异常</li>
-<li>Promise异常</li>
-</ul>
-</li>
-<li>异常的捕获方式<ul>
-<li>try-catch (ES提供基本的错误捕获语法)<ul>
-<li>只能捕获同步代码的异常</li>
-<li><del>回调</del></li>
-<li><del>setTimeout</del></li>
-<li><del>promise</del></li>
-</ul>
-</li>
-<li>window.onerror &#x3D; cb (DOM0)<ul>
-<li>img</li>
-<li>script</li>
-<li>link</li>
-</ul>
-</li>
-<li>window.addEventListener(‘error’, cb, true) (DOM2)</li>
-<li>window.addEventListener(“unhandledrejection”, cb) (DOM4)</li>
-<li>Promise.then().catch(cb)</li>
-<li>封装XMLHttpRequest&amp;fetch | 覆写请求接口对象</li>
-</ul>
-</li>
-</ul>
-<p>注意点：跨源脚本异常的捕获</p>
-<ul>
-<li><p>日志上报的方式</p>
-<ul>
-<li>异步请求上报</li>
-<li>new img上报 避免跨域问题</li>
-</ul>
-</li>
-<li><p>扩展阅读</p>
-<ul>
-<li>业界已有的异常监控平台</li>
-<li>几个跟异常监控有关的问题</li>
-</ul>
-</li>
-</ul>
-<p>为了在移动端项目中实现前端错误监控，并考虑极端断网环境，我们需要设计一个健壮且全面的技术方案。移动端环境具有网络不稳定（弱网、断网）、设备多样性、操作系统差异等特点，因此方案需要具备以下能力：</p>
-<ol>
-<li><p>错误捕获：全面捕获JS错误、资源加载错误、接口错误、框架错误（如React&#x2F;Vue）、Promise错误等。</p>
-</li>
-<li><p>数据存储：在断网情况下，能够将错误信息暂存本地，待网络恢复后上报。</p>
-</li>
-<li><p>上报机制：支持重试机制，避免因网络问题导致数据丢失。</p>
-</li>
-<li><p>数据压缩与批处理：减少网络请求，节省流量。</p>
-</li>
-<li><p>区分错误类型：对错误进行分类，便于分析。</p>
-</li>
-</ol>
-<p> 我们将从以下几个方面进行设计：</p>
-<p> 一、错误捕获</p>
-<p> 二、错误信息处理</p>
-<p> 三、本地存储与上报</p>
-<p> 四、网络恢复后的处理</p>
-<p> 五、其他优化措施</p>
-<p> 详细方案如下：</p>
-<p> 一、错误捕获</p>
-<ol>
-<li>JavaScript运行时错误</li>
-</ol>
-<p>​    - 使用 <code>window.onerror</code> 捕获全局同步错误。</p>
-<p>​    - 注意：<code>window.onerror</code> 无法捕获语法错误（一般会在编译阶段发现，不会进入线上环境）和跨域脚本错误（需要为跨域脚本添加 <code>crossorigin</code> 属性）。</p>
-<ol start="2">
-<li>Promise错误</li>
-</ol>
-<p>​    - 使用 <code>unhandledrejection</code> 事件捕获未处理的Promise拒绝。</p>
-<ol start="3">
-<li>资源加载错误</li>
-</ol>
-<p>​    - 使用 <code>window.addEventListener(&#39;error&#39;, callback, true)</code> 捕获资源（如图片、脚本、样式）加载错误。注意第三个参数为 <code>true</code>（捕获阶段）。</p>
-<ol start="4">
-<li>框架错误</li>
-</ol>
-<p>​    - React：使用 <code>ErrorBoundary</code> 组件捕获组件树中的错误。</p>
-<p>​    - Vue：使用 <code>Vue.config.errorHandler</code> 全局错误处理函数。</p>
-<ol start="5">
-<li>控制台错误（可选）</li>
-</ol>
-<p>​    - 重写 <code>console.error</code> 方法，捕获通过 <code>console.error</code> 输出的错误。</p>
-<ol start="6">
-<li>接口错误</li>
-</ol>
-<p>​    - 重写 <code>XMLHttpRequest</code> 和 <code>fetch</code> 方法，拦截请求并监听错误。</p>
-<p> 二、错误信息处理</p>
-<p> 对捕获到的错误信息进行规范化处理，提取关键信息，包括：</p>
-<p>   - 错误类型（如JS错误、资源错误、Promise错误等）</p>
-<p>   - 错误消息</p>
-<p>   - 错误堆栈（尽可能完整）</p>
-<p>   - 发生错误的页面URL</p>
-<p>   - 设备信息（如UA、屏幕分辨率、设备型号等，通过navigator获取）</p>
-<p>   - 用户信息（如果有登录用户）</p>
-<p>   - 发生时间</p>
-<p>   - 其他上下文信息（如当前路由、前端版本号等）</p>
-<p> 三、本地存储与上报</p>
-<ol>
-<li>本地存储</li>
-</ol>
-<p>​    - 使用浏览器提供的持久化存储（如IndexedDB）来存储错误日志。因为IndexedDB存储容量较大（通常50MB以上），且支持异步操作，不会阻塞主线程。</p>
-<p>​    - 在断网情况下，将错误日志存入IndexedDB，并标记为待上报状态。</p>
-<ol start="2">
-<li>上报机制</li>
-</ol>
-<p>​    - 每次发生错误，先尝试立即上报（如果网络正常）。</p>
-<p>​    - 如果上报失败（网络错误或服务器错误），则将错误日志存入IndexedDB。</p>
-<p>​    - 定时检查（例如每5分钟）IndexedDB中是否有待上报的错误日志，如果有且网络可用，则进行上报。</p>
-<p>​    - 在页面可见性变化时（例如用户切换回应用）检查并上报。</p>
-<p>​    - 在页面关闭前（<code>visibilitychange</code> 和 <code>pagehide</code> 事件）尝试上报，但要注意此时不能使用同步的XHR（推荐使用 <code>navigator.sendBeacon</code> 方法）。</p>
-<ol start="3">
-<li>重试机制</li>
-</ol>
-<p>​    - 每条错误日志设置重试次数（如3次），超过重试次数则丢弃（避免存储爆满）。</p>
-<p>​    - 每次重试间隔时间递增（指数退避策略）。</p>
-<p> 四、网络恢复后的处理</p>
-<p>   监听网络状态变化（<code>navigator.onLine</code>），当网络恢复时，触发一次上报。</p>
-<p> 五、其他优化措施</p>
-<ol>
-<li><p>数据压缩：在存储和上报前，对数据进行压缩（如使用gzip，但前端压缩通常用lz-string等库进行简单压缩，或使用JSON字符串减少冗余字段名）。</p>
-</li>
-<li><p>批量上报：将多个错误日志合并为一个请求上报，减少请求次数。</p>
-</li>
-<li><p>采样率：根据错误类型和严重程度设置采样率，避免大量重复错误导致存储和上报压力。</p>
-</li>
-<li><p>存储上限：设置IndexedDB存储上限（如最多存储1000条错误日志），超过时丢弃旧日志。</p>
-</li>
-<li><p>区分环境：开发环境不上报，避免开发过程中产生的大量错误上报。</p>
-</li>
-</ol>
-<h1 id="前端场景"><a href="#前端场景" class="headerlink" title="前端场景"></a>前端场景</h1><p>参考思路：<a href="%5B%E5%89%8D%E7%AB%AF%E5%8D%8F%E5%90%8C%E6%96%87%E6%A1%A3%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF_%E5%89%8D%E7%AB%AF%E6%96%87%E6%A1%A3%E5%8D%8F%E5%90%8C-CSDN%E5%8D%9A%E5%AE%A2%5D" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bruce__taotao&#x2F;article&#x2F;details&#x2F;148200821#:~:text&#x3D;本文介绍了前端协同文档系统的实现技术和方法，主要包括实时同步机制（WebSocket、OT和CRDT算法）、实时文本编辑（Diff算法和协作框架）、后端实现（数据库同步与技术栈）以及前端技术（React%2FVue和WebRTC）。 此外，还讨论了功能扩展如版本控制和权限管理，并提供了基于Vue.js和Node.js的简单实现示例。,协同文档开发需结合多种技术，确保实时性和数据一致性。 _前端协同算法">前端协同文档实现思路</a></p>
-<h2 id="RN容器与浏览器容器的区别"><a href="#RN容器与浏览器容器的区别" class="headerlink" title="RN容器与浏览器容器的区别"></a>RN容器与浏览器容器的区别</h2><ol>
-<li><strong>RN容器 (React Native 容器)</strong><ul>
-<li><strong>目标：</strong> 在**原生移动应用（iOS&#x2F;Android）**中运行。</li>
-<li><strong>核心：</strong> 它是一个<strong>原生应用框架</strong>（虽然使用了JavaScript）。React Native 应用最终会被编译&#x2F;打包成包含原生代码（Objective-C&#x2F;Swift for iOS, Java&#x2F;Kotlin for Android）的安装包（.ipa&#x2F;.apk）。</li>
-<li><strong>渲染：</strong> <strong>不依赖浏览器引擎</strong>。RN 的核心在于其<strong>原生桥接</strong>。你的 JavaScript 代码（描述UI和逻辑）通过这个桥接与<strong>原生UI组件</strong>通信。当你在 RN 中写一个 <code>&lt;View&gt;</code> 或 <code>&lt;Text&gt;</code> 时，最终在屏幕上显示的是平台对应的原生视图（<code>UIView</code> on iOS, <code>android.view.View</code> on Android）。JavaScript 线程计算布局和逻辑，然后通过桥接将指令发送到原生主线程进行实际的渲染。</li>
-<li><strong>能力：</strong> 可以<strong>直接访问绝大部分原生设备功能</strong>（摄像头、地理位置、传感器、文件系统、蓝牙等），通过 JavaScript 桥接调用原生模块实现。性能通常接近纯原生应用，尤其是在复杂UI和动画方面。</li>
-<li><strong>打包：</strong> 最终打包成一个独立的、需要安装的<strong>原生移动应用</strong>。</li>
-<li><strong>开发体验：</strong> 使用 JavaScript (或 TypeScript) 和 React 范式开发，但需要理解原生概念（如桥接、线程、原生模块）以及特定平台的差异。可以使用热重载。</li>
-<li><strong>例子：</strong> Facebook、Instagram、Discord、Shopify 的部分功能。</li>
-</ul>
-</li>
-<li><strong>浏览器容器 (Browser Container &#x2F; WebView)</strong><ul>
-<li><strong>目标：</strong> 在<strong>任何有兼容浏览器（或 WebView 控件）</strong> 的环境（桌面、移动、电视、甚至某些嵌入式设备）中运行。</li>
-<li><strong>核心：</strong> 它是一个<strong>网页渲染引擎</strong>（如 WebKit, Blink, Gecko）。浏览器容器（如 Chrome, Safari, Firefox，或者移动 App 内嵌的 <code>UIWebView</code>&#x2F;<code>WKWebView</code> on iOS, <code>WebView</code> on Android）的工作就是下载、解析 HTML&#x2F;CSS&#x2F;JavaScript 代码，并根据 Web 标准将其渲染成可视化的网页。</li>
-<li><strong>渲染：</strong> <strong>完全依赖浏览器引擎</strong>。它渲染的是 <strong>HTML DOM 元素</strong> 和 <strong>CSS 样式</strong>。JavaScript 运行在浏览器提供的沙盒环境中，操作 DOM 和 CSSOM 来实现交互和动态效果。</li>
-<li><strong>能力：</strong> 通过 Web APIs（如 <code>Geolocation API</code>, <code>Camera API (getUserMedia)</code>, <code>Web Bluetooth</code> 等）访问设备功能，但这些 API 的<strong>支持度、权限模型和性能通常不如原生访问直接和强大</strong>，且依赖于浏览器厂商的实现。性能受限于浏览器渲染引擎和 JavaScript 引擎。</li>
-<li><strong>打包：</strong> 本质上是<strong>网页</strong>，通过 URL 访问（在线或离线包）。在移动端，可以通过 <strong>PWA</strong> 技术或简单的 <strong>WebView 封装</strong> 使其看起来更像一个 App（有图标、启动屏等），但其核心仍是网页。</li>
-<li><strong>开发体验：</strong> 使用标准的 Web 技术（HTML, CSS, JavaScript）。一次编写，理论上可以在所有现代浏览器上运行（虽然存在兼容性问题）。开发工具链成熟（浏览器开发者工具）。热重载是标准功能。</li>
-<li><strong>例子：</strong> 任何网站或 Web App。移动端内嵌 WebView 的混合应用（Hybrid App），或者 PWA（如 Twitter Lite, Starbucks PWA）。</li>
-</ul>
-</li>
-</ol>
-<p><strong>核心区别总结：</strong></p>
-<table>
-<thead>
-<tr>
-<th align="left">特性</th>
-<th align="left">RN 容器 (React Native App)</th>
-<th align="left">浏览器容器 (Web App &#x2F; WebView)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>本质</strong></td>
-<td align="left"><strong>原生应用框架</strong> (JS驱动原生UI)</td>
-<td align="left"><strong>网页渲染引擎</strong> (渲染 HTML&#x2F;CSS&#x2F;JS DOM)</td>
-</tr>
-<tr>
-<td align="left"><strong>目标平台</strong></td>
-<td align="left"><strong>原生移动平台 (iOS&#x2F;Android)</strong></td>
-<td align="left"><strong>任何有兼容浏览器&#x2F;WebView的平台</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>最终产物</strong></td>
-<td align="left">原生安装包 (.ipa&#x2F;.apk)</td>
-<td align="left">网页资源 (HTML&#x2F;CSS&#x2F;JS)，通过 URL 访问</td>
-</tr>
-<tr>
-<td align="left"><strong>渲染方式</strong></td>
-<td align="left"><strong>原生UI组件</strong> (通过JS桥接驱动)</td>
-<td align="left"><strong>HTML DOM &#x2F; CSSOM</strong> (由浏览器引擎渲染)</td>
-</tr>
-<tr>
-<td align="left"><strong>性能</strong></td>
-<td align="left"><strong>接近原生</strong>，复杂UI&#x2F;动画更流畅</td>
-<td align="left">受限于浏览器引擎，复杂场景可能较差</td>
-</tr>
-<tr>
-<td align="left"><strong>设备访问</strong></td>
-<td align="left"><strong>直接、强大</strong> (通过原生桥接模块)</td>
-<td align="left"><strong>通过 Web APIs</strong>，支持度和能力有限</td>
-</tr>
-<tr>
-<td align="left"><strong>开发技术</strong></td>
-<td align="left">JS&#x2F;TS + React + 原生概念</td>
-<td align="left">HTML + CSS + JS&#x2F;TS</td>
-</tr>
-<tr>
-<td align="left"><strong>跨平台</strong></td>
-<td align="left">需为iOS&#x2F;Android分别构建，代码可共享</td>
-<td align="left"><strong>一次编写，随处运行</strong> (理论，需适配)</td>
-</tr>
-<tr>
-<td align="left"><strong>安装</strong></td>
-<td align="left">需要从应用商店下载安装</td>
-<td align="left">通过URL访问，PWA可“安装”到桌面&#x2F;主屏</td>
-</tr>
-<tr>
-<td align="left"><strong>更新</strong></td>
-<td align="left">需通过应用商店审核更新</td>
-<td align="left"><strong>即时更新</strong> (服务器端更新资源即可)</td>
-</tr>
-</tbody></table>
-<p><strong>简单类比：</strong></p>
-<ul>
-<li><strong>RN容器：</strong> 像一个用JavaScript编写的“说明书”，交给当地（iOS&#x2F;Android）的“施工队”（原生桥接和组件）按照说明书，用当地最好的“建材”（原生UI组件）来建造房子（App）。结果是本地化的、高质量的房子。</li>
-<li><strong>浏览器容器：</strong> 像一个预制的“活动板房”（网页）。施工队（浏览器引擎）按照统一的“国际标准”（Web标准），用自带的“标准化板材”（HTML&#x2F;CSS）在任何地方快速搭建。房子可以快速搭建和修改，但可能不如本地定制的那么坚固或贴合当地环境。</li>
-</ul>
-<p><strong>选择哪一个？</strong></p>
-<p>需要<strong>最佳性能、深度设备集成、原生用户体验</strong> -&gt; <strong>React Native</strong>。</p>
-<p>需要<strong>最广泛的跨平台覆盖（包括Web）、最快的开发迭代速度、即时更新</strong> -&gt; <strong>浏览器容器 (Web技术&#x2F;PWA)</strong>。</p>
-<p>混合方案：在原生App中嵌入<strong>WebView</strong>来展示部分内容（如帮助页面、营销活动页），结合两者优势。React Native 本身也提供了 <code>WebView</code> 组件来实现这一点。</p>
-<h2 id="静态资源失效"><a href="#静态资源失效" class="headerlink" title="静态资源失效"></a>静态资源失效</h2><h3 id="方法一：基础而有效的-onerror-事件降级"><a href="#方法一：基础而有效的-onerror-事件降级" class="headerlink" title="方法一：基础而有效的 onerror 事件降级"></a><strong>方法一：基础而有效的 onerror 事件降级</strong></h3><h3 id="先讲个小故事："><a href="#先讲个小故事：" class="headerlink" title="先讲个小故事："></a><strong>先讲个小故事：</strong></h3><p>有次上线前我自信满满，刚发版就邀请产品经理来验收。结果尴尬的是，CDN图片资源同步延迟了，头像全裂开。产品经理抬头问我：“这是个啥？”。我赶紧安抚后，马上想到的应急方案就是 <code>onerror</code>：</p>
-<h3 id="原理说明："><a href="#原理说明：" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p><code>onerror</code> 事件会在资源加载失败时被触发，我们只要捕获到这个错误，就可以立即切换到备用资源。</p>
-<p>比如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 图片加载失败用默认头像补救 --&gt;</span><br><span class="line">&lt;img src=&quot;https://cdn.example.com/avatar.png&quot;</span><br><span class="line">     alt=&quot;用户头像&quot;</span><br><span class="line">     onerror=&quot;this.onerror=null;this.src=&#x27;/static/default-avatar.png&#x27;;&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<p>JS脚本的方案类似：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const script = document.createElement(&#x27;script&#x27;);</span><br><span class="line">script.src = &#x27;https://cdn.example.com/app.js&#x27;;</span><br><span class="line">script.onerror = () =&gt; &#123;</span><br><span class="line">  console.warn(&#x27;CDN挂了，正在加载本地脚本...&#x27;);</span><br><span class="line">  const localScript = document.createElement(&#x27;script&#x27;);</span><br><span class="line">  localScript.src = &#x27;/static/app.js&#x27;;</span><br><span class="line">  document.head.appendChild(localScript);</span><br><span class="line">&#125;;</span><br><span class="line">document.head.appendChild(script);</span><br></pre></td></tr></table></figure>
-
-<p>这样做的好处是：简单、直接，而且对用户几乎无感知。</p>
-<p>不过缺点也明显，每个资源都需要单独处理，管理起来会有点麻烦。</p>
-<h3 id="方法二：Service-Worker-缓存兜底方案"><a href="#方法二：Service-Worker-缓存兜底方案" class="headerlink" title="方法二：Service Worker 缓存兜底方案"></a><strong>方法二：Service Worker 缓存兜底方案</strong></h3><h3 id="再聊个真实场景："><a href="#再聊个真实场景：" class="headerlink" title="再聊个真实场景："></a><strong>再聊个真实场景：</strong></h3><p>去年负责做一个PWA应用，上线后有用户特意反馈：“你们的网站牛啊，进电梯没网还能打开！”我当时特别得意，因为这正是 Service Worker 缓存策略发挥了作用。</p>
-<h3 id="原理说明：-1"><a href="#原理说明：-1" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>Service Worker 会在后台拦截页面的网络请求，实现「缓存优先（Cache First）」，让页面的关键资源都预先存好，离线也能打开。</p>
-<p>核心代码示意：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&#x27;install&#x27;, event =&gt; &#123;</span><br><span class="line">  event.waitUntil(</span><br><span class="line">    caches.open(&#x27;v1&#x27;).then(cache =&gt; cache.addAll([</span><br><span class="line">      &#x27;/index.html&#x27;, &#x27;/styles.css&#x27;, &#x27;/app.js&#x27;</span><br><span class="line">    ]))</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;fetch&#x27;, event =&gt; &#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    caches.match(event.request).then(cachedResponse =&gt; &#123;</span><br><span class="line">      return cachedResponse || fetch(event.request).then(networkResponse =&gt; &#123;</span><br><span class="line">        caches.open(&#x27;v1&#x27;).then(cache =&gt; cache.put(event.request, networkResponse.clone()));</span><br><span class="line">        return networkResponse;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这样一来，首次访问后关键文件都会被缓存，后续访问即便网络不佳，体验依旧稳定。</p>
-<p>不过要注意缓存版本管理，定期更新缓存版本，比如<code>v1</code>变更为<code>v2</code>时要及时清理旧缓存。</p>
-<h3 id="方法三：CSS资源的优雅降级（防止页面变丑）"><a href="#方法三：CSS资源的优雅降级（防止页面变丑）" class="headerlink" title="方法三：CSS资源的优雅降级（防止页面变丑）"></a><strong>方法三：CSS资源的优雅降级（防止页面变丑）</strong></h3><h3 id="说个囧事儿："><a href="#说个囧事儿：" class="headerlink" title="说个囧事儿："></a><strong>说个囧事儿：</strong></h3><p>之前赶上线，有次CSS文件被错误删除了，用户打开网页一瞬间以为电脑坏了，满屏都是乱掉的元素。我赶紧临时补救——塞了一段最小可用的内联样式，勉强挽救了场面。</p>
-<h3 id="原理说明：-2"><a href="#原理说明：-2" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>CSS出问题容易导致“无样式内容闪现”（FOUC），解决方法是利用 preload 提前加载关键 CSS，并配合超时策略内联兜底。</p>
-<p>示例代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;preload&quot; href=&quot;/critical.css&quot; as=&quot;style&quot; onload=&quot;this.rel=&#x27;stylesheet&#x27;&quot;&gt;</span><br><span class="line">&lt;noscript&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;/critical.css&quot;&gt;&lt;/noscript&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">  if (!document.querySelector(&#x27;link[href=&quot;/critical.css&quot;]&#x27;)) &#123;</span><br><span class="line">    const style = document.createElement(&#x27;style&#x27;);</span><br><span class="line">    style.textContent = `</span><br><span class="line">      body &#123; font-family: sans-serif; background-color: #fff; &#125;</span><br><span class="line">      h1, p &#123; margin: 0; padding: 10px; &#125;</span><br><span class="line">    `;</span><br><span class="line">    document.head.appendChild(style);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, 3000);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这个策略让页面至少能保证基础的样式效果。用户甚至不会觉察出原始样式加载失败。</p>
-<h3 id="方法四：React-Vue-组件的错误边界"><a href="#方法四：React-Vue-组件的错误边界" class="headerlink" title="方法四：React&#x2F;Vue 组件的错误边界"></a><strong>方法四：React&#x2F;Vue 组件的错误边界</strong></h3><h3 id="现场再现："><a href="#现场再现：" class="headerlink" title="现场再现："></a><strong>现场再现：</strong></h3><p>有一次后台项目演示，我用了个特别重的图表组件，结果网络不好加载失败。</p>
-<p>如果整个页面跟着白屏，估计当场想死的心都有。不过我提前用了 React 的 Error Boundary 包裹这个组件，它显示了一句友好的“加载失败，请稍后重试”，整个页面还能用。最后老板就只提了一嘴看看啥情况（还好还好）。</p>
-<h3 id="原理说明：-3"><a href="#原理说明：-3" class="headerlink" title="原理说明："></a><strong>原理说明：</strong></h3><p>React 的 Error Boundary 就是捕获组件渲染或加载错误的边界组件，常配合懒加载 (<code>React.lazy</code>) 使用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// ErrorBoundary.jsx</span><br><span class="line">class ErrorBoundary extends React.Component &#123;</span><br><span class="line">  state = &#123; hasError: false &#125;;</span><br><span class="line">static getDerivedStateFromError() &#123; return &#123; hasError: true &#125;; &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    if (this.state.hasError) &#123;</span><br><span class="line">      return&lt;div&gt;加载失败，稍后重试一下~&lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">    returnthis.props.children;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// App.jsx</span><br><span class="line">const Chart = React.lazy(() =&gt;import(&#x27;./Chart&#x27;));</span><br><span class="line">function App() &#123;</span><br><span class="line">return (</span><br><span class="line">    &lt;ErrorBoundary&gt;</span><br><span class="line">      &lt;Suspense fallback=&#123;&lt;div&gt;加载中...&lt;/div&gt;&#125;&gt;</span><br><span class="line">        &lt;Chart /&gt;</span><br><span class="line">      &lt;/Suspense&gt;</span><br><span class="line">    &lt;/ErrorBoundary&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>原理简单而实用：一个组件失败，不会影响整体页面。类似的，Vue中也有 <code>defineAsyncComponent</code> 做类似的降级处理。</p>
-<h3 id="深度总结：降级处理的精髓是什么？"><a href="#深度总结：降级处理的精髓是什么？" class="headerlink" title="深度总结：降级处理的精髓是什么？"></a><strong>深度总结：降级处理的精髓是什么？</strong></h3><p>其实，资源降级真正的核心思路就三个字：</p>
-<ol>
-<li><strong>稳</strong>：确保页面基本功能绝不挂掉；</li>
-<li><strong>快</strong>：用户尽量无感知，备用方案秒级切换；</li>
-<li><strong>省</strong>：兜底策略简单易维护，不制造新麻烦。</li>
-</ol>
-<p>从<code>onerror</code>事件、Service Worker缓存，到CSS优雅降级和组件级错误边界，这些方案是逐步深入的，形成一整套完整的容错机制。此外，还要配合前端监控（如上报加载失败率），形成反馈闭环，确保长期稳定运行。</p>
-<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><h3 id="一、衡量前端性能"><a href="#一、衡量前端性能" class="headerlink" title="一、衡量前端性能"></a><strong>一、衡量前端性能</strong></h3><p>要做前端性能优化，首要工作是<strong>分析和衡量</strong>页面内容，找出网站中需要优化的部分，对症下药。</p>
-<p>衡量性能的方式有以下几种：</p>
-<ol>
-<li>加载时间</li>
-<li>性能指标</li>
-<li>长任务卡顿</li>
-<li>浏览器 Performance 选项卡</li>
-</ol>
-<h4 id="1、加载时间"><a href="#1、加载时间" class="headerlink" title="1、加载时间"></a><strong>1、加载时间</strong></h4><p>浏览器 <code>PerformanceNavigationTiming</code> 对象提供了关于页面加载性能各种计时的详细信息。（<code>对应旧版本的 performance.timing 对象</code>）比如可以分析 <strong>DOM 树构建完成的时间（<code>DOMContentLoaded</code>） 和 页面完整的加载时间（<code>load</code>）</strong>。</p>
-<p>如下示例，在 DOM 树中增加一个  标签来渲染图片，其中：</p>
-<ul>
-<li><code>DOMContentLoaded</code>，是一个 DOM 事件，当浏览器完成 HTML 文档的解析，构建完成 DOM 树后触发，但不包含图片、CSS、JavaScript 等外部资源的加载。</li>
-<li><code>onLoad</code>，是一个 JS 事件，它在页面的所有资源（包括 HTML、CSS、图片、JavaScript 等）完全加载完成后触发。</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/200/300&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;load&quot;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 新版浏览器 API：PerformanceNavigationTiming 提供了关于页面加载性能的详细信息，替代旧的 performance.timing</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (performance.<span class="property">getEntriesByType</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> perfEntries = performance.<span class="title function_">getEntriesByType</span>(<span class="string">&quot;navigation&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (perfEntries.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> navigationEntry = perfEntries[<span class="number">0</span>];</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> &#123; domContentLoadedEventStart, loadEventStart, fetchStart &#125; = navigationEntry;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> <span class="title class_">DOMContentLoadedTime</span> = domContentLoadedEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`DOMContentLoaded 的执行时间：<span class="subst">$&#123;DOMContentLoadedTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> loadTime = loadEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`load 页面完整的加载时间：<span class="subst">$&#123;loadTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 旧版浏览器降级使用 performance.timing</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> &#123; fetchStart, domContentLoadedEventStart, loadEventStart &#125; = performance.<span class="property">timing</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> <span class="title class_">DOMContentLoadedTime</span> = domContentLoadedEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`---DOMContentLoaded 的执行时间：<span class="subst">$&#123;DOMContentLoadedTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> loadTime = loadEventStart - fetchStart;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`load 页面完整的加载时间：<span class="subst">$&#123;loadTime&#125;</span>ms`</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>PS：页面加载性能详细信息参考资料：<strong>PerformanceNavigationTiming</strong>[1]</p>
-<h3 id="2、性能指标"><a href="#2、性能指标" class="headerlink" title="2、性能指标"></a><strong>2、性能指标</strong></h3><p>分析以用户为中心的性能指标，包含 <strong>FP（首次像素绘制）、FCP（首次内容绘制）、FMP（首次有意义内容绘制）、LCP（页面中最大可见 图片或者文本块 加载时间）等</strong>。</p>
-<p>一般在 <strong>客户端渲染单页面应用</strong> 中，为了优化<strong>首屏渲染白屏时间</strong>，会重点关注 <strong>FCP（首次内容绘制）</strong> 性能指标。该绘制时长越短，说明白屏时间越少，用户打开网站的使用体验就越好。</p>
-<blockquote>
-<p>说明：<strong>FCP 首次内容绘制</strong> 是指用户在页面中看到了有效内容。比如在 React 框架中，初始时会有一个空 id&#x3D;root div 元素，此时不会计算 FCP，只有等 id&#x3D;root 经过 ReactDOM render 以后，页面呈现了文本等有效内容，这时会计算出 FCP。</p>
-</blockquote>
-<p>JS 可以通过 <code>PerformanceObserver</code> 观察 <code>event type paint</code> 来获取 FCP 指标。如下示例，初始放置一个空 div，在 1s 以后给 div 中添加有效内容（模拟框架渲染），FCP 指标会在这时生成。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 设置背景图，生成 FP 指标 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-id">#root</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#eee</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 模拟框架渲染，1s 后在页面呈现有效内容</span></span></span><br><span class="line"><span class="language-javascript">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        root.<span class="property">innerHTML</span> = <span class="string">&quot;content&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">      &#125;, <span class="number">1000</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">PerformanceObserver</span>(<span class="keyword">function</span>(<span class="params">entryList</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">const</span> perfEntries = entryList.<span class="title function_">getEntries</span>();</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">for</span> (<span class="keyword">const</span> perfEntry <span class="keyword">of</span> perfEntries) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (perfEntry.<span class="property">name</span> === <span class="string">&quot;first-paint&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> <span class="variable constant_">FP</span> = perfEntry;</span></span><br><span class="line"><span class="language-javascript">              <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;首次像素绘制 时间：&quot;</span>, <span class="variable constant_">FP</span>?.<span class="property">startTime</span>); <span class="comment">// 674ms（div 设有背景图，会在元素渲染时生成 FP 指标）</span></span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="title function_">elseif</span> (perfEntry.<span class="property">name</span> === <span class="string">&quot;first-contentful-paint&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> <span class="variable constant_">FCP</span> = perfEntry;</span></span><br><span class="line"><span class="language-javascript">              <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;首次内容绘制 时间：&quot;</span>, <span class="variable constant_">FCP</span>?.<span class="property">startTime</span>); <span class="comment">// 1174ms</span></span></span><br><span class="line"><span class="language-javascript">              observer.<span class="title function_">disconnect</span>(); <span class="comment">// 断开观察，不再观察了</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 观察 paint 相关性能指标</span></span></span><br><span class="line"><span class="language-javascript">        observer.<span class="title function_">observe</span>(&#123; <span class="attr">entryTypes</span>: [<span class="string">&quot;paint&quot;</span>] &#125;);</span></span><br><span class="line"><span class="language-javascript">      &#125;;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3、页面卡顿"><a href="#3、页面卡顿" class="headerlink" title="3、页面卡顿"></a><strong>3、页面卡顿</strong></h3><p>当一段代码的执行占用主线程时间过长时，用户在页面上的交互就会出现卡顿，我们可以通过监控这类长任务，针对性地进行优化。</p>
-<p>如下示例，点击按钮执行一个 1000ms 长任务，我们可以使用 <code>PerformanceObserver</code> 观察 <code>event type longtask</code> 并设置阈值。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;longTaskBtn&quot;</span>&gt;</span>执行longTask<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 默认长任务</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> longTaskBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;longTaskBtn&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">longTask</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;longTask开始 start&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">while</span> (<span class="title class_">Date</span>.<span class="title function_">now</span>() &lt; <span class="number">1000</span> + start) &#123;&#125;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;longTask结束 end，耗时：&quot;</span>, <span class="title class_">Date</span>.<span class="title function_">now</span>() - start);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">      longTaskBtn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, longTask);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 观察长任务</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">new</span> <span class="title class_">PerformanceObserver</span>(<span class="function">(<span class="params">list</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        list.<span class="title function_">getEntries</span>().<span class="title function_">forEach</span>(<span class="function">(<span class="params">entry</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 设定卡顿阈值：执行时长大于 500 ms</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (entry.<span class="property">duration</span> &gt; <span class="number">500</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;执行的长任务耗时：&quot;</span>, entry.<span class="property">duration</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">      &#125;).<span class="title function_">observe</span>(&#123; <span class="attr">entryTypes</span>: [<span class="string">&quot;longtask&quot;</span>] &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4、浏览器-Performance-选项卡"><a href="#4、浏览器-Performance-选项卡" class="headerlink" title="4、浏览器 Performance 选项卡"></a><strong>4、浏览器 Performance 选项卡</strong></h3><p>除了上述通过代码进行度量性能外，还可以在 <strong>浏览器控制台 - Performance 选项卡</strong> 中查看和分析页面性能。其中包含 <strong>FCP 性能指标、页面内容绘制 的耗时统计</strong> 等。</p>
-<p><img src="C:\Users\Zhangwenye\Desktop\博客\source\img\640.jpg" alt="image.png"></p>
-<h3 id="二、代码逻辑"><a href="#二、代码逻辑" class="headerlink" title="二、代码逻辑"></a><strong>二、代码逻辑</strong></h3><p>在特定需求场景下，我们可以通过一些 <strong>编程技巧</strong> 来提升性能网站的运行时性能。如：<strong>防抖&#x2F;节流、图片懒加载、时间切片</strong>等。</p>
-<h4 id="1、关注复杂度分析"><a href="#1、关注复杂度分析" class="headerlink" title="1、关注复杂度分析"></a><strong>1、关注复杂度分析</strong></h4><p>我们在学习算法的时候入门课就是接触<strong>复杂度分析(大 O 表示法)</strong>，通过它来分析一个算法的 执行效率 和 占用内存 的好坏。</p>
-<p>复杂度分析同样可以应用在日常开发中，它能约束你的代码编写逻辑，也会考察你的 编程思维 和 基础内功。</p>
-<p>现有一个需求：在一组数据中查询目标值。</p>
-<p>如果不注重代码执行效率，可能会写成下面这样，查找 N 个目标值就要执行 N 遍循环，如果不忽略系数，它的时间复杂度为 O(n^2)：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = [</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;bj&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;北京&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sh&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;上海&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;gz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;广州&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;深圳&quot;</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bj = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;bj&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> sh = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;sh&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> gz = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;gz&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> sz = list.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">cityId</span> === <span class="string">&quot;sz&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>而对于注重编程思维的工程师，只需进行一轮遍历并将结果存储在 <code>Map</code> 中实现需求（时间复杂度 O(n) ）：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = [</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;bj&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;北京&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sh&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;上海&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;gz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;广州&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">cityId</span>: <span class="string">&quot;sz&quot;</span>, <span class="attr">cityName</span>: <span class="string">&quot;深圳&quot;</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cityMap = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">list.<span class="title function_">forEach</span>(<span class="function">(<span class="params">city</span>) =&gt;</span> &#123;</span><br><span class="line">  cityMap[city.<span class="property">cityId</span>] = city;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; bj, sh, gz, sz &#125; = cityMap;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2、防抖和节流"><a href="#2、防抖和节流" class="headerlink" title="2、防抖和节流"></a><strong>2、防抖和节流</strong></h4><p>防抖和节流大家都不陌生，在用户频繁操作一个功能时，可以适当使用 <strong>防抖和节流</strong> 优化逻辑执行时机，避免重复执行 JS 逻辑造成页面交互阻塞。</p>
-<ul>
-<li>对于防抖，常见的场景是 <strong>输入框搜索查询</strong>，短时间内重复操作会 <strong>清除并重新计时</strong> 来执行回调任务；</li>
-<li>对于节流，常见的场景是 <strong>调整窗口大小</strong>，以 <strong>固定的短间隔频率</strong> 执行回调任务。</li>
-</ul>
-<h4 id="3、图片懒加载"><a href="#3、图片懒加载" class="headerlink" title="3、图片懒加载"></a><strong>3、图片懒加载</strong></h4><p>图片懒加载也是一种网站优化手段。如果不做控制，图片全部加载发送 HTTP 请求可能会导致网站卡顿崩溃。</p>
-<p>首次进入页面，我们只需要加载出首屏区域的图片，其他区域的图片放置一个小的默认图，后续将图片滑动到可视区域后再加载实际的图片。</p>
-<p>懒加载可以使用 <strong>IntersectionObserver API</strong> 实现。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./loading-url.png&quot;</span> <span class="attr">data-src</span>=<span class="string">&quot;./url.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">const imgList = [...document.querySelectorAll(&#x27;img&#x27;)];</span><br><span class="line">const io = new IntersectionObserver((entries) =&gt;&#123;</span><br><span class="line">  entries.forEach(item =&gt; &#123;</span><br><span class="line">    // isIntersecting 是一个 Boolean 值，判断目标元素当前是否进入 root 视窗（默认 root 是 window 窗口可视区域）</span><br><span class="line">    if (item.isIntersecting) &#123;</span><br><span class="line">      item.target.src = item.target.dataset.src; // 真实的图片地址存放在 data-src 自定义属性上</span><br><span class="line">      // 图片加载后停止监听该元素，释放内存</span><br><span class="line">      io.unobserve(item.target);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">// observe 监听所有 img 节点</span><br><span class="line">imgList.forEach(img =&gt; io.observe(img));</span><br></pre></td></tr></table></figure>
-
-<h4 id="4、时间切片"><a href="#4、时间切片" class="headerlink" title="4、时间切片"></a><strong>4、时间切片</strong></h4><p>我们知道 浏览器的渲染 和 JS 运行在一个单线程上，如果 JS 执行一个 <strong>LongTask 长任务</strong>，势必会阻塞浏览器渲染，导致用户在界面交互出现卡顿。</p>
-<p>因此我们需要避免长任务的执行，或按照一定规则拆分成一个个小任务通过 <strong>时间切片</strong> 来管理和执行。</p>
-<h4 id="5、Web-Worker-子线程"><a href="#5、Web-Worker-子线程" class="headerlink" title="5、Web Worker 子线程"></a><strong>5、Web Worker 子线程</strong></h4><p>如果说一个长任务仅是做一些计算的逻辑，并不一定非要在主线程上运行，那么可以选择使用 Worker 开启子线程并行执行计算任务。</p>
-<p>常见的场景是 <strong>大文件切片上传 - 计算文件 hash</strong>，文件越大计算 hash 耗时就越长，因此这种耗时的工作可以交给 Web Worker。</p>
-<h4 id="6、LRU-算法"><a href="#6、LRU-算法" class="headerlink" title="6、LRU 算法"></a><strong>6、LRU 算法</strong></h4><p>在做业务功能时为了提升用户体验（提升二次访问速度），会涉及 <strong>对已访问数据进行缓存</strong> 的操作，缓存存储可以是在 <strong>内存变量 或 浏览器本地缓存</strong> 中。</p>
-<p>无论是哪种存放位置，都不宜无限制的向缓存中存储数据，存储的越多，就会导致计算机运行越来越慢。</p>
-<p><strong>LRU（最近最少使用）算法用于管理缓存中的数据</strong>，确保缓存集合中数据的条目在一个可控的范围内。</p>
-<p>通过 <strong>队列</strong> 可以实现 LRU 算法。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span> &#123;</span><br><span class="line"><span class="title function_">constructor</span>(<span class="params">max</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">max</span> = max; <span class="comment">// 缓存容量</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">cache</span> = <span class="title function_">newMap</span>(); <span class="comment">// 定义缓存 Map，优化查找速度</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span> = []; <span class="comment">// 队列，记录最近节点的 key</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问数据</span></span><br><span class="line"><span class="title function_">get</span>(<span class="params">key</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">has</span>(key)) &#123;</span><br><span class="line">      <span class="comment">// 更新节点到队列尾部</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">update</span>(key);</span><br><span class="line">      <span class="keyword">const</span> val = <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">get</span>(key);</span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line">    returnundefined;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加/更新数据</span></span><br><span class="line">  <span class="title function_">put</span>(<span class="params">key, val</span>) &#123;</span><br><span class="line">    <span class="comment">// 1、更新数据（和 get 相似都是更新节点到队列尾部，不过多了更新 val 操作）</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">has</span>(key)) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">set</span>(key, val);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">update</span>(key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2、添加数据</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">set</span>(key, val); <span class="comment">// 记录到 Map 中</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">push</span>(key); <span class="comment">// 添加到队列尾部</span></span><br><span class="line">      <span class="comment">// 考虑容量是否超出</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">keys</span>.<span class="property">length</span> &gt; <span class="variable language_">this</span>.<span class="property">max</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> oldKey = <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">shift</span>(); <span class="comment">// 删除队列头部</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">cache</span>.<span class="title function_">delete</span>(oldKey);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移动到队列尾部</span></span><br><span class="line">  <span class="title function_">update</span>(<span class="params">key</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">indexOf</span>(key);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">splice</span>(index, <span class="number">1</span>); <span class="comment">// 删除旧的位置</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">keys</span>.<span class="title function_">push</span>(key); <span class="comment">// 添加到队列尾部</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>测试用例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cache = <span class="keyword">new</span> <span class="title class_">LRUCache</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 添加新数据，此时缓存未满</span></span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>);</span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;b&quot;</span>, <span class="number">2</span>);</span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;c&quot;</span>, <span class="number">3</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [a, b, c]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 访问已有数据</span></span><br><span class="line">cache.<span class="title function_">get</span>(<span class="string">&quot;b&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [a, c, b]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 添加新数据，此时缓存已满</span></span><br><span class="line">cache.<span class="title function_">put</span>(<span class="string">&quot;d&quot;</span>, <span class="number">4</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(cache.<span class="property">keys</span>); <span class="comment">// [c, b, d]</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="7、虚拟滚动列表"><a href="#7、虚拟滚动列表" class="headerlink" title="7、虚拟滚动列表"></a><strong>7、虚拟滚动列表</strong></h4><p><strong>虚拟滚动列表</strong> 是一种用于优化长列表或大量数据展示的前端技术。它的核心思想是只渲染当前可视区域内的数据项，而不是一次性渲染整个列表。</p>
-<p>这种方式可以显著减少DOM操作，降低浏览器的渲染负担，从而提高性能和用户体验。</p>
-<p>假设我们向服务端查询到 1000 条数据，<strong>如果原样将这 1000 个数据渲染在页面上，就会生成 1000 个 DOM 节点</strong>。</p>
-<p>对于用户而言，其实并不关心是否是一次性将数据全部渲染到列表容器中，只要在容器的可视区域内的 DOM 数据能够正常看到就行。</p>
-<p>虚拟滚动的核心优化思路：<strong>结合滚动条 top 位置和容器的可视区域，计算出这个区间的数据项，渲染到滚动容器中</strong>。</p>
-<p>另外还有一个 <strong>虚拟滑动列表</strong> 也称为 无限滑动列表，和虚拟滚动列表的实现相似，适合应用在 H5 移动端，类似抖音的 短视频 推荐列表。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/06/29/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD/" data-id="cmcygiiyz000nvgur64bs96mu" data-title="前端性能[C" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" rel="tag">前端页面、错误监控、</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -4056,6 +3557,10 @@ root.unmount();
       <ul>
         
           <li>
+            <a href="/2025/07/13/Koa/">Koa</a>
+          </li>
+        
+          <li>
             <a href="/2025/07/12/React-Native/">React Native</a>
           </li>
         
@@ -4069,10 +3574,6 @@ root.unmount();
         
           <li>
             <a href="/2025/07/01/AI/">AI</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/">React补充</a>
           </li>
         
       </ul>

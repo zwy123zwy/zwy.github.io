@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Koa | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="KoaKoa 是一个基于 Node.js 平台的下一代 web 开发框架，由 Express 的原班人马打造。它旨在提供一个更小、更富有表现力、更健壮的基础结构，用于构建 web 应用和 API。Koa 通过使用 async 函数，允许你丢弃回调函数，并极大地增强错误处理能力。Koa 的核心设计理念是中间件（middleware），它通过组合不同的中间件来处理 HTTP 请求。 体积更小，基于as">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Koa">
+<meta property="og:url" content="http://example.com/2025/07/13/Koa/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="KoaKoa 是一个基于 Node.js 平台的下一代 web 开发框架，由 Express 的原班人马打造。它旨在提供一个更小、更富有表现力、更健壮的基础结构，用于构建 web 应用和 API。Koa 通过使用 async 函数，允许你丢弃回调函数，并极大地增强错误处理能力。Koa 的核心设计理念是中间件（middleware），它通过组合不同的中间件来处理 HTTP 请求。 体积更小，基于as">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-13T08:18:33.000Z">
+<meta property="article:modified_time" content="2025-07-13T10:16:12.957Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Koa" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/13/Koa/" class="article-date">
+  <time class="dt-published" datetime="2025-07-13T08:18:33.000Z" itemprop="datePublished">2025-07-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Koa
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Koa"><a href="#Koa" class="headerlink" title="Koa"></a>Koa</h1><p>Koa 是一个基于 Node.js 平台的下一代 web 开发框架，由 Express 的原班人马打造。它旨在提供一个更小、更富有表现力、更健壮的基础结构，用于构建 web 应用和 API。Koa 通过使用 async 函数，允许你丢弃回调函数，并极大地增强错误处理能力。Koa 的核心设计理念是中间件（middleware），它通过组合不同的中间件来处理 HTTP 请求。</p>
+<p><strong>体积更小，基于async&#x2F;await、组合不同的中间件来处理 HTTP 请求</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Koa</span> = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="title class_">Koa</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 中间件示例</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">  <span class="keyword">const</span> ms = <span class="title class_">Date</span>.<span class="title function_">now</span>() - start;</span><br><span class="line">  ctx.<span class="title function_">set</span>(<span class="string">&#x27;X-Response-Time&#x27;</span>, <span class="string">`<span class="subst">$&#123;ms&#125;</span>ms`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  ctx.<span class="property">body</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server is running on http://localhost:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>1. 轻量级框架</strong></p>
+<p>Koa 的设计哲学是保持核心代码的简洁性，这使得它成为一个非常轻量级的框架。Koa 的核心代码只有几百行，开发者可以很容易地理解其工作原理，并根据需要进行扩展。</p>
+<p><strong>2. 中间件机制</strong></p>
+<p>Koa 的中间件机制是其最显著的特性之一。Koa 使用洋葱模型来处理中间件，这意味着请求会依次通过所有中间件，然后再依次返回。这种机制使得开发者可以非常灵活地组合和重用中间件。</p>
+<p><strong>3. 异步流程控制</strong></p>
+<p>Koa 使用 <code>async/await</code> 语法来处理异步操作，这使得异步代码的编写更加简洁和可读。相比于传统的回调函数或 Promise 链，<code>async/await</code> 语法可以避免回调地狱，使代码更加易于维护。</p>
+<p><strong>4. 上下文对象</strong></p>
+<p>Koa 提供了一个上下文对象（Context），它封装了 Node.js 的 <code>request</code> 和 <code>response</code> 对象。通过上下文对象，开发者可以更方便地访问请求参数、设置响应头、发送响应体等操作。</p>
+<p><strong>5. 错误处理</strong></p>
+<p>Koa 提供了统一的错误处理机制。开发者可以通过中间件捕获和处理错误，避免错误直接导致应用程序崩溃。Koa 还提供了一个全局的错误事件监听器，可以捕获未处理的异常。</p>
+<p><strong>6. 无捆绑中间件</strong></p>
+<p>Koa 本身不捆绑任何中间件，这意味着开发者可以根据项目的需求自由选择和组合中间件。这种设计使得 Koa 非常灵活，开发者可以根据具体需求定制自己的中间件栈。</p>
+<h2 id="Koa与Express-的区别"><a href="#Koa与Express-的区别" class="headerlink" title="Koa与Express 的区别"></a>Koa与Express 的区别</h2><p>Koa 和 Express 是 Node.js 中两个非常流行的 Web 框架，它们的主要区别如下：</p>
+<ol>
+<li><strong>中间件机制</strong>：<ul>
+<li><strong>Express</strong>：使用传统的回调函数方式处理中间件，支持链式调用。</li>
+<li><strong>Koa</strong>：使用 ES6 的 <code>async/await</code> 语法，中间件通过 <code>await next()</code> 来控制流程。</li>
+</ul>
+</li>
+<li><strong>错误处理</strong>：<ul>
+<li><strong>Express</strong>：错误处理依赖于中间件的顺序，通常需要在最后添加一个错误处理中间件。</li>
+<li><strong>Koa</strong>：通过 <code>try/catch</code> 捕获错误，错误处理更加直观和灵活。</li>
+</ul>
+</li>
+<li><strong>体积和性能</strong>：<ul>
+<li><strong>Express</strong>：功能丰富，体积较大。</li>
+<li><strong>Koa</strong>：更加轻量，核心功能较少，依赖中间件扩展功能。</li>
+</ul>
+</li>
+<li><strong>上下文对象</strong>：<ul>
+<li><strong>Express</strong>：没有内置的上下文对象，需要手动传递 <code>req</code> 和 <code>res</code>。</li>
+<li><strong>Koa</strong>：提供了 <code>ctx</code> 对象，封装了 <code>request</code> 和 <code>response</code>，使用更加方便。</li>
+</ul>
+</li>
+<li><strong>路由</strong>：<ul>
+<li><strong>Express</strong>：内置了路由功能。</li>
+<li><strong>Koa</strong>：没有内置路由，需要借助第三方中间件如 <code>koa-router</code>。</li>
+</ul>
+</li>
+</ol>
+<h1 id="Koa-和-Express-的-next-函数有什么区别？"><a href="#Koa-和-Express-的-next-函数有什么区别？" class="headerlink" title="Koa 和 Express 的 next 函数有什么区别？"></a>Koa 和 Express 的 next 函数有什么区别？</h1><p>Koa 和 Express 的 <code>next</code> 函数在中间件处理机制上有显著的区别：</p>
+<ul>
+<li><strong>Express 的 <code>next</code> 函数</strong>：用于将控制权传递给下一个中间件。如果当前中间件没有结束请求-响应周期，必须调用 <code>next()</code> 来继续执行后续的中间件。如果不调用 <code>next()</code>，请求将会挂起。</li>
+<li><strong>Koa 的 <code>next</code> 函数</strong>：Koa 的 <code>next</code> 函数实际上是一个 <code>async</code> 函数，返回一个 <code>Promise</code>。它允许你在中间件中使用 <code>await next()</code> 来等待后续中间件的执行完成。Koa 的中间件是洋葱模型，<code>next()</code> 会依次执行后续中间件，然后再返回到当前中间件继续执行。</li>
+</ul>
+<h3 id="Express-的-next-函数"><a href="#Express-的-next-函数" class="headerlink" title="Express 的 next 函数"></a>Express 的 <code>next</code> 函数</h3><p>在 Express 中，<code>next</code> 是一个简单的函数调用，用于将控制权传递给下一个中间件。Express 的中间件是线性执行的，每个中间件依次处理请求和响应。如果某个中间件没有调用 <code>next()</code>，请求将会被挂起，后续的中间件不会被执行。</p>
+<p>Koa 的 <code>next</code> 函数是一个 <code>async</code> 函数，返回一个 <code>Promise</code>。Koa 的中间件模型是洋葱模型，中间件的执行顺序是从外到内，然后再从内到外。通过 <code>await next()</code>，你可以等待后续中间件的执行完成，然后再继续执行当前中间件的剩余代码。</p>
+<h3 id="区别总结"><a href="#区别总结" class="headerlink" title="区别总结"></a>区别总结</h3><ul>
+<li><strong>执行模型</strong>：Express 是线性执行模型，Koa 是洋葱模型。</li>
+<li><strong><code>next</code> 函数</strong>：Express 的 <code>next</code> 是同步的，Koa 的 <code>next</code> 是异步的，返回 <code>Promise</code>。</li>
+<li><strong>控制流程</strong>：在 Express 中，如果不调用 <code>next()</code>，请求会挂起；在 Koa 中，<code>await next()</code> 会等待后续中间件执行完成后再继续执行当前中间件的剩余代码。</li>
+</ul>
+<h1 id="Koa-的中间件机制是什么？"><a href="#Koa-的中间件机制是什么？" class="headerlink" title="Koa 的中间件机制是什么？"></a>Koa 的中间件机制是什么？</h1><h2 id="推荐答案"><a href="#推荐答案" class="headerlink" title="推荐答案"></a>推荐答案</h2><p>Koa 的中间件机制是基于洋葱模型（Onion Model）的。中间件是一个函数，它接收两个参数：<code>ctx</code>（上下文对象）和 <code>next</code>（下一个中间件的函数）。当调用 <code>next()</code> 时，控制权会传递给下一个中间件，直到最后一个中间件执行完毕，然后再依次返回，执行每个中间件中 <code>next()</code> 之后的代码。这种机制允许中间件在请求和响应的生命周期中执行前置和后置操作。</p>
+<h2 id="本题详细解读"><a href="#本题详细解读" class="headerlink" title="本题详细解读"></a>本题详细解读</h2><h3 id="1-洋葱模型"><a href="#1-洋葱模型" class="headerlink" title="1. 洋葱模型"></a>1. 洋葱模型</h3><p>Koa 的中间件机制被称为“洋葱模型”，因为请求和响应的处理过程像剥洋葱一样，从外到内，再从内到外。具体来说，当一个请求进入 Koa 应用时，它会依次经过所有的中间件。每个中间件可以执行一些操作，然后调用 <code>next()</code> 将控制权传递给下一个中间件。当最后一个中间件执行完毕后，控制权会依次返回到之前的中间件，执行 <code>next()</code> 之后的代码。</p>
+<h3 id="2-中间件函数"><a href="#2-中间件函数" class="headerlink" title="2. 中间件函数"></a>2. 中间件函数</h3><p>一个典型的 Koa 中间件函数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  // 前置操作</span><br><span class="line">  console.log(&#x27;Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  // 后置操作</span><br><span class="line">  console.log(&#x27;After next&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>console.log(&#39;Before next&#39;)</code> 会在请求进入时执行，而 <code>console.log(&#39;After next&#39;)</code> 会在响应返回时执行。</p>
+<h3 id="3-中间件的执行顺序"><a href="#3-中间件的执行顺序" class="headerlink" title="3. 中间件的执行顺序"></a>3. 中间件的执行顺序</h3><p>假设我们有三个中间件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// www.javascriptcn.com code example</span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 1 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 1 - After next&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 2 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 2 - After next&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Middleware 3 - Before next&#x27;);</span><br><span class="line">  await next();</span><br><span class="line">  console.log(&#x27;Middleware 3 - After next&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>执行顺序将是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Middleware 1 - Before next</span><br><span class="line">Middleware 2 - Before next</span><br><span class="line">Middleware 3 - Before next</span><br><span class="line">Middleware 3 - After next</span><br><span class="line">Middleware 2 - After next</span><br><span class="line">Middleware 1 - After next</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-错误处理"><a href="#4-错误处理" class="headerlink" title="4. 错误处理"></a>4. 错误处理</h3><p>Koa 中间件还支持错误处理。如果某个中间件抛出错误，可以通过 <code>try-catch</code> 捕获并处理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// www.javascriptcn.com code example</span><br><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    await next();</span><br><span class="line">  &#125; catch (err) &#123;</span><br><span class="line">    ctx.status = err.status || 500;</span><br><span class="line">    ctx.body = err.message;</span><br><span class="line">    ctx.app.emit(&#x27;error&#x27;, err, ctx);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-中间件的组合"><a href="#5-中间件的组合" class="headerlink" title="5. 中间件的组合"></a>5. 中间件的组合</h3><p>Koa 允许将多个中间件组合成一个更大的中间件，使用 <code>koa-compose</code> 库可以实现这一点：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// www.javascriptcn.com code example</span></span><br><span class="line"><span class="keyword">const</span> compose = <span class="built_in">require</span>(<span class="string">&#x27;koa-compose&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">middleware1</span> = <span class="keyword">async</span> (<span class="params">ctx, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Middleware 1&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">middleware2</span> = <span class="keyword">async</span> (<span class="params">ctx, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Middleware 2&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> allMiddleware = <span class="title function_">compose</span>([middleware1, middleware2]);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(allMiddleware);</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h3><p>Koa 的中间件机制通过洋葱模型实现了请求和响应的双向处理，使得开发者可以灵活地在请求的不同阶段插入逻辑。这种机制不仅简化了代码结构，还提高了代码的可维护性和可扩展性。</p>
+<h1 id="Koa-中间件的洋葱模型是什么？"><a href="#Koa-中间件的洋葱模型是什么？" class="headerlink" title="Koa 中间件的洋葱模型是什么？"></a>Koa 中间件的洋葱模型是什么？</h1><p>Koa 中间件的洋葱模型是指中间件的执行顺序像洋葱一样层层包裹，请求从外层中间件开始，逐层向内传递，经过所有中间件处理后再逐层向外返回响应。这种模型的核心特点是请求和响应都会经过每一个中间件，且中间件的执行顺序是先进后出（FILO）。</p>
+<h3 id="洋葱模型的概念"><a href="#洋葱模型的概念" class="headerlink" title="洋葱模型的概念"></a>洋葱模型的概念</h3><p>Koa 的洋葱模型是一种中间件执行机制，它允许请求和响应在多个中间件之间传递。每个中间件都可以对请求进行处理，并将控制权传递给下一个中间件。当所有中间件处理完毕后，响应会按照相反的顺序返回。</p>
+<h3 id="洋葱模型的工作流程"><a href="#洋葱模型的工作流程" class="headerlink" title="洋葱模型的工作流程"></a>洋葱模型的工作流程</h3><ol>
+<li><strong>请求进入</strong>：请求从最外层的中间件开始，逐层向内传递。</li>
+<li><strong>中间件处理</strong>：每个中间件都可以对请求进行处理，并决定是否继续传递请求。</li>
+<li><strong>响应返回</strong>：当请求到达最内层的中间件后，响应开始逐层向外返回，经过每个中间件进行最后的处理。</li>
+</ol>
+<h1 id="Koa-中如何定义中间件？"><a href="#Koa-中如何定义中间件？" class="headerlink" title="Koa 中如何定义中间件？"></a>Koa 中如何定义中间件？</h1><p>在 Koa 中，定义中间件非常简单。中间件是一个函数，它接收两个参数：<code>ctx</code>（上下文对象）和 <code>next</code>（下一个中间件函数）。你可以通过 <code>app.use()</code> 方法来注册中间件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// www.javascriptcn.com code example</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Koa</span> = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="title class_">Koa</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个简单的中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;中间件开始&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>(); <span class="comment">// 调用下一个中间件</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;中间件结束&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义另一个中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  ctx.<span class="property">body</span> = <span class="string">&#x27;Hello, Koa!&#x27;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server is running on http://localhost:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，第一个中间件会在请求开始时打印“中间件开始”，在请求结束时打印“中间件结束”。第二个中间件会设置响应体为“Hello, Koa!”。</p>
+<h3 id="中间件的定义"><a href="#中间件的定义" class="headerlink" title="中间件的定义"></a>中间件的定义</h3><p>在 Koa 中，中间件是一个异步函数，它接收两个参数：</p>
+<ul>
+<li><code>ctx</code>：上下文对象，包含了请求和响应的信息。</li>
+<li><code>next</code>：一个函数，用于调用下一个中间件。</li>
+</ul>
+<h3 id="中间件的执行顺序"><a href="#中间件的执行顺序" class="headerlink" title="中间件的执行顺序"></a>中间件的执行顺序</h3><p>Koa 中间件的执行顺序是按照 <code>app.use()</code> 的注册顺序来执行的。当一个中间件调用 <code>await next()</code> 时，控制权会传递给下一个中间件。当所有中间件都执行完毕后，控制权会返回到上一个中间件，继续执行 <code>await next()</code> 之后的代码。</p>
+<h3 id="中间件的用途"><a href="#中间件的用途" class="headerlink" title="中间件的用途"></a>中间件的用途</h3><p>中间件可以用于处理请求、修改响应、记录日志、错误处理等。通过组合不同的中间件，可以构建出复杂的应用程序逻辑。</p>
+<h3 id="示例代码解析"><a href="#示例代码解析" class="headerlink" title="示例代码解析"></a>示例代码解析</h3><ol>
+<li><strong>第一个中间件</strong>：<ul>
+<li>在请求开始时打印“中间件开始”。</li>
+<li>调用 <code>await next()</code>，将控制权传递给下一个中间件。</li>
+<li>在请求结束时打印“中间件结束”。</li>
+</ul>
+</li>
+<li><strong>第二个中间件</strong>：<ul>
+<li>设置响应体为“Hello, Koa!”。</li>
+</ul>
+</li>
+<li><strong>启动服务器</strong>：<ul>
+<li>监听 3000 端口，启动 Koa 服务器。</li>
+</ul>
+</li>
+</ol>
+<p>通过这种方式，Koa 的中间件机制使得请求处理流程非常灵活和可扩展。</p>
+<h3 id="Context-对象的作用"><a href="#Context-对象的作用" class="headerlink" title="Context 对象的作用"></a>Context 对象的作用</h3><p>Koa 的 Context 对象（通常简称为 <code>ctx</code>）是 Koa 框架中处理 HTTP 请求和响应的核心对象。它包含了以下主要功能：</p>
+<ol>
+<li><strong>封装 <code>request</code> 和 <code>response</code> 对象</strong>：<code>ctx.request</code> 和 <code>ctx.response</code> 分别是对 Node.js 原生 <code>http.IncomingMessage</code> 和 <code>http.ServerResponse</code> 的封装，提供了更简洁的 API 来处理请求和响应。</li>
+<li><strong>提供便捷的属性和方法</strong>：<code>ctx</code> 对象提供了许多便捷的属性和方法，例如 <code>ctx.method</code> 获取请求方法，<code>ctx.status</code> 设置响应状态码，<code>ctx.body</code> 设置响应体等。</li>
+<li><strong>中间件共享数据</strong>：<code>ctx</code> 对象可以在中间件之间共享数据，通过 <code>ctx.state</code> 可以在不同的中间件中传递数据。</li>
+</ol>
+<h3 id="Context-对象的常用属性和方法"><a href="#Context-对象的常用属性和方法" class="headerlink" title="Context 对象的常用属性和方法"></a>Context 对象的常用属性和方法</h3><p>以下是一些常用的 <code>ctx</code> 属性和方法：</p>
+<ul>
+<li><strong><code>ctx.request</code></strong>：封装了请求对象，提供了诸如 <code>ctx.request.method</code>、<code>ctx.request.url</code> 等属性。</li>
+<li><strong><code>ctx.response</code></strong>：封装了响应对象，提供了诸如 <code>ctx.response.status</code>、<code>ctx.response.body</code> 等属性。</li>
+<li><strong><code>ctx.state</code></strong>：用于在中间件之间共享数据的命名空间。</li>
+<li><strong><code>ctx.cookies</code></strong>：用于读取和设置 cookies。</li>
+<li><strong><code>ctx.throw([status], [msg], [properties])</code></strong>：用于抛出 HTTP 错误。</li>
+<li><strong><code>ctx.assert(value, [status], [msg], [properties])</code></strong>：用于断言，如果 <code>value</code> 为假，则抛出错误。</li>
+</ul>
+<h1 id="了解浏览器"><a href="#了解浏览器" class="headerlink" title="了解浏览器"></a>了解浏览器</h1><p><strong>主流浏览器</strong> 有五个：IE(Trident内核)、Firefox(火狐：Gecko内核)、Safari(苹果：webkit内核)、Google Chrome(谷歌：Blink内核)、Opera(欧朋：Blink内核)</p>
+<p><strong>四大内核</strong>：Trident(IE内核)、Gecko(Firefox内核)、webkit内核、Blink(Chrome内核)</p>
+<h3 id="二、了解兼容问题"><a href="#二、了解兼容问题" class="headerlink" title="二、了解兼容问题"></a>二、了解兼容问题</h3><p>W3C对标准的推进，Firefox，Chrome，Safari，Opera的出现，结束了IE雄霸天下的日子。</p>
+<p>然而，这对开发者来说，是好事，也是坏事。说它是好事，是因为浏览器厂商为了取得更多的市场份额，会促使各浏览器更符合W3C标准，而得到更好的兼容性，并且，不同浏览器的扩展功能(例如 <code>-moz</code>，<code>-webkit</code> 开头的样式)，对W3C标准也是个推进；说它是坏事，因为，多个浏览器同时存在，这些浏览器在处理一个相同的页面时，表现有时会有差异。这种差异可能很小，甚至不会被注意到；也可能很大，甚至造成在某个浏览器下无法正常浏览。我们把引起这些差异的问题统称为“浏览器兼容性问题”。而正是这些“浏览器兼容性问题”，无形中给我们的开发增加了不少难度。</p>
+<p>1、什么是兼容问题？</p>
+<p>答：<strong>同样的代码，在不同的浏览器上显示的页面效果不一样</strong></p>
+<p>2、不一样的原因是什么？</p>
+<p>答：<strong>浏览器各浏览器使用了不同的内核，并且它们处理同一件事情的时候思路不同。</strong></p>
+<p>3、为什么浏览器会存在兼容问题？</p>
+<ul>
+<li>同一浏览器，版本越老，存在 <code>bug</code> 越多，相对于版本越新的浏览器，对新属性和标签、新特性支持越少。</li>
+<li>不同浏览器，核心技术(内核)不同，标准不同，实现方式也有差异，最终呈现出来在大众面前的效果也是会有差异。</li>
+<li><strong>设计师写出了不规范的代码，不规范的代码会使不兼容现象更加突出</strong>。</li>
+</ul>
+<p>从浏览器内核的角度来看，浏览器兼容性问题可分为以下三类：</p>
+<ul>
+<li>渲染相关：和 <strong>样式</strong> 相关的问题，即体现在布局效果上的问题。</li>
+<li>脚本相关：和 <strong>脚本</strong> 相关的问题，包括JavaScript和DOM、BOM方面的问题。对于某些浏览器的功能方面的特性，也属于这一类。</li>
+<li>其他类别：除以上两类问题外的功能性问题，一般是浏览器自身提供的功能，在内核层之上的。</li>
+</ul>
+<p>不规则的嵌套：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 体验AI代码助手 代码解读复制代码<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">li</span>&gt;</span>新闻标题一<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>div</code> 中直接嵌套 <code>li</code> 元素是不合标准的，<code>li</code> 应该处于 <code>il</code> 内。此类问题常见的还有 <code>p</code> 中嵌套 <code>div</code>， <code>table</code>等元素。</p>
+<p>不规范的DOM接口和属性设置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">all</span>.<span class="property">a_name</span>.<span class="property">style</span>.<span class="property">top</span> = <span class="number">35</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中 <code>top</code> 的值，其实应该是一个字符串值，需有单位。例如：<code>35px</code>。</p>
+<p>总之，人为的原因也占很大一部分。而人为造成兼容性问题的原因，除了粗心之外，大都源于浏览器bug的存在，和开发者对标准的不了解。</p>
+<p>比如，如果要做一个功能，功能是想让鼠标悬停在 <code>img</code> 元素上方时，可以出现提示信息，经常针对 IE 做开发的人，可能会使用 <code>img</code> 元素的 <code>&quot;alt&quot;</code> 属性，但其他浏览器中就是不给 <code>&quot;alt&quot;</code> 属性面子。因为 W3C 标准中规定要去做这件事的属性是 <code>&quot;title&quot;</code>，大多浏览器符合标准，IE 不符合，这是 IE 浏览器内核的问题；开发者不知道 <code>&quot;title&quot;</code> ，不遵循标准去写代码，是开发者的问题。</p>
+<p>所以，一个问题分两半，浏览器和开发者都有责任。既然都有责任，就都有义务去解决兼容性问题。那么，从浏览器的角度来讲，它的厂商应该修复浏览器的 <code>bug</code> 和不合标准的地方，当某一天 IE 的 <code>&quot;alt&quot;</code> 不能用于提示了，还有人用这个错误的属性去显示提示么？从开发者角度来讲，多了解标准，了解浏览器兼容性问题，就可以在开发的过程中，有效的避开兼容性问题，让你的页面在所有浏览器中畅通无阻。</p>
+<h3 id="三、处理兼容问题的思路"><a href="#三、处理兼容问题的思路" class="headerlink" title="三、处理兼容问题的思路"></a>三、处理兼容问题的思路</h3><p>1、要不要做？</p>
+<p>（1）从产品的角度看：产品的受众、受众的浏览器比例、效果优先还是基本功能优先。</p>
+<p>（2）成本的角度：有无必要做这个兼容。</p>
+<p>2、做到什么程度？</p>
+<p>答：让哪些浏览器支持哪些效果。</p>
+<p>3、如何做？<br>（1）根据兼容需求选择技术框架&#x2F;库(如  <code>jquery 1.x.x</code> )。<br>（2）根据兼容需求选择兼容工具： <code>html5shiv</code> 、 <code>Respond.js</code> 、 <code>CSS Reset</code> 、 <code>normalize.css</code> 、 <code>Modernizr.js</code> 、 <code>postcss</code> 。<br>（3）条件注释、 <code>CSS Hack</code> 、 <code>js</code> 能力检测做一些修补。<br><code>Hack</code> ： <code>CSS</code> 中， <code>Hack</code> 是指一种兼容 <code>CSS</code> 在不同浏览器中正确显示的技巧方法，修补 <code>bug</code> 的方法<br><code>Filter</code> ：表示过滤器的意思，它是一种对特定的浏览器或浏览器组显示或隐藏规则或声明的方法。本质上讲， <code>Filter</code> 是 <code>hack</code> 方法中的一种。</p>
+<p>4、渐进增强和优雅降级<br>（1）<strong>渐进增强</strong>：针对低版本浏览器进行构建页面，保证最基本的功能，然后再针对高级浏览器进行效果、交互等改进和追加功能达到更好的用户体验。<br>（2）<strong>优雅降级</strong>：一开始就构建完整的功能，然后再针对低版本浏览器进行兼容。</p>
+<h3 id="四、JavaScript兼容"><a href="#四、JavaScript兼容" class="headerlink" title="四、JavaScript兼容"></a>四、JavaScript兼容</h3><h4 id="1、addEventListener-与-attachEvent-区别"><a href="#1、addEventListener-与-attachEvent-区别" class="headerlink" title="1、addEventListener 与 attachEvent 区别"></a>1、<code>addEventListener</code> 与 <code>attachEvent</code> 区别</h4><p><code>attachEvent</code> ——兼容：IE7、IE8；不兼容firefox、chrome、IE9、IE10、IE11、safari、opera。<br><code>addEventListener</code>——兼容：firefox、chrome、IE、safari、opera；不兼容IE7、IE8<br>解决方案：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addEvent</span>(<span class="params">elm, evType, fn, useCapture</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (elm.<span class="property">addEventListener</span>) &#123; <span class="comment">// W3C标准</span></span><br><span class="line">    elm.<span class="title function_">addEventListener</span>(evType, fn, useCapture);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (elm.<span class="property">attachEvent</span>) &#123; <span class="comment">// IE</span></span><br><span class="line">    <span class="keyword">var</span> r = elm.<span class="title function_">attachEvent</span>(<span class="string">&#x27;on&#x27;</span> + evType, fn); <span class="comment">// IE5+</span></span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    elm[<span class="string">&#x27;on&#x27;</span> + evType] = fn; <span class="comment">// DOM事件</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、document-formName-item-itemName-问题"><a href="#2、document-formName-item-itemName-问题" class="headerlink" title="2、document.formName.item(&quot;itemName&quot;) 问题"></a>2、<code>document.formName.item(&quot;itemName&quot;)</code> 问题</h4><p>问题说明：IE下，可以使用 <code>document.formName.item(&quot;itemName&quot;)</code> 或 <code>document.formName.elements [&quot;elementName&quot;]</code>；Firefox 下，只能使用 <code>document.formName.elements[&quot;elementName&quot;]</code>。<br>解决方案：统一使用 <code>document.formName.elements[&quot;elementName&quot;]</code>。</p>
+<h4 id="3、集合类对象问题"><a href="#3、集合类对象问题" class="headerlink" title="3、集合类对象问题"></a>3、集合类对象问题</h4><p>问题说明：IE下，可以使用 <code>()</code> 或 <code>[]</code> 获取集合类对象；Firefox下，只能使用 <code>[ ]</code> 获取集合类对象。<br>解决方案：统一使用 <code>[]</code> 获取集合类对象。</p>
+<h4 id="4、自定义属性问题"><a href="#4、自定义属性问题" class="headerlink" title="4、自定义属性问题"></a>4、自定义属性问题</h4><p>问题说明：IE下，可以使用获取常规属性的方法来获取自定义属性，也可以使用 <code>getAttribute()</code> 获取自定义属性；Firefox下，只能使用 <code>getAttribute()</code> 获取自定义属性。<br>解决方案：统一通过 <code>getAttribute()</code> 获取自定义属性。</p>
+<h4 id="5、eval-idName-问题"><a href="#5、eval-idName-问题" class="headerlink" title="5、eval(&quot;idName&quot;) 问题"></a>5、<code>eval(&quot;idName&quot;)</code> 问题</h4><p>问题说明：IE下，可以使用 <code>eval(&quot;idName&quot;)</code> 或 <code>getElementById(&quot;idName&quot;)</code>  来取得 <code>id</code> 为 <code>idName</code> 的HTML对象；Firefox下，只能使用 <code>getElementById(&quot;idName&quot;)</code> 来取得 <code>id</code> 为 <code>idName</code> 的HTML对象。<br>解决方案：统一用 <code>getElementById(&quot;idName&quot;)</code> 来取得 <code>id</code> 为 <code>idName</code> 的HTML对象。</p>
+<h4 id="6、变量名与某HTML对象ID相同的问题"><a href="#6、变量名与某HTML对象ID相同的问题" class="headerlink" title="6、变量名与某HTML对象ID相同的问题"></a>6、变量名与某HTML对象ID相同的问题</h4><p>问题说明：IE下，HTML对象的ID可以作为 <code>document</code> 的下属对象变量名直接使用，Firefox下则不能；Firefox下，可以使用与HTML对象ID相同的变量名，IE下则不能。<br>解决方案：使用 <code>document.getElementById(&quot;idName&quot;)</code> 代替 <code>document.idName</code>。最好不要取HTML对象ID相同的变量名，以减少错误；在声明变量时，一律加上 <code>var</code> 关键字，以避免歧义。</p>
+<h4 id="7、const-问题"><a href="#7、const-问题" class="headerlink" title="7、const 问题"></a>7、<code>const</code> 问题</h4><p>问题说明：Firefox下，可以使用 <code>const</code> 关键字或 <code>var</code> 关键字来定义常量；IE下，只能使用 <code>var</code> 关键字来定义常量。<br>解决方案：统一使用 <code>var</code> 关键字来定义常量。</p>
+<h4 id="8、input-type属性问题"><a href="#8、input-type属性问题" class="headerlink" title="8、input.type属性问题"></a>8、<code>input.type</code>属性问题</h4><p>问题说明：IE下 <code>input.type</code> 属性为只读；但是Firefox下 <code>input.type</code> 属性为读写。<br>解决方案：不修改 <code>input.type</code> 属性。如果必须要修改，可以先隐藏原来的 <code>input</code>，然后在同样的位置再插入一个新的 <code>input</code> 元素。</p>
+<h4 id="9、window-event-问题"><a href="#9、window-event-问题" class="headerlink" title="9、window.event 问题"></a>9、<code>window.event</code> 问题</h4><p>问题说明：<code>window.event</code> 只能在IE下运行，而不能在Firefox下运行，这是因为Firefox的 <code>event</code> 只能在事件发生的现场使用。<br>解决方案：在事件发生的函数上加上 <code>event</code> 参数，在函数体内(假设形参为 <code>evt</code> )使用 <code>var myEvent = evt?evt:(window.event? window.event:null)</code><br>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;doSomething(event)&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;javascript&quot;</span>&gt;</span><span class="language-javascript"> </span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">function</span> <span class="title function_">doSomething</span>(<span class="params">evt</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">		<span class="keyword">var</span> myEvent = evt ? evt :(<span class="variable language_">window</span>.<span class="property">event</span> ? <span class="variable language_">window</span>.<span class="property">event</span> : <span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript">		…</span></span><br><span class="line"><span class="language-javascript">	&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="10、event-x-与-event-y-问题"><a href="#10、event-x-与-event-y-问题" class="headerlink" title="10、event.x 与 event.y 问题"></a>10、<code>event.x</code> 与 <code>event.y</code> 问题</h4><p>问题说明：IE下，<code>event</code> 对象有 <code>x</code>、<code>y</code> 属性，但是没有 <code>pageX</code>、<code>pageY</code>属性；Firefox下，<code>event</code> 对象有<code>pageX</code>、<code>pageY</code>属性，但是没有 <code>x</code>、<code>y</code>属性。<br>解决方案：<code>var myX = event.x ? event.x : event.pageX; var myY = event.y ? event.y:event.pageY;</code><br>如果考虑第8条问题，就改用 <code>myEvent</code> 代替 <code>event</code> 即可。</p>
+<h4 id="11、event-srcElement-问题"><a href="#11、event-srcElement-问题" class="headerlink" title="11、event.srcElement 问题"></a>11、<code>event.srcElement</code> 问题</h4><p>问题说明：IE下，<code>event</code> 对象有 <code>srcElement</code> 属性，但是没有 <code>target</code> 属性；Firefox下，<code>event</code> 对象有<code>target</code> 属性，但是没有 <code>srcElement</code> 属性。<br>解决方案：使用 <code>srcObj = event.srcElement ? event.srcElement : event.target;</code><br>如果考虑第8条问题，就改用 <code>myEvent</code> 代替 <code>event</code> 即可。</p>
+<h4 id="12、window-location-href-问题"><a href="#12、window-location-href-问题" class="headerlink" title="12、window.location.href 问题"></a>12、<code>window.location.href</code> 问题</h4><p>问题说明：IE或者Firefox2.0.x下，可以使用 <code>window.location</code> 或 <code>window.location.href</code>；Firefox1.5.x下，只能使用 <code>window.location</code>。<br>解决方案：使用 <code>window.location</code> 来代替 <code>window.location.href</code> 。当然也可以考虑使用 <code>location.replace()</code>方法。</p>
+<h4 id="13、模态和非模态窗口问题"><a href="#13、模态和非模态窗口问题" class="headerlink" title="13、模态和非模态窗口问题"></a>13、模态和非模态窗口问题</h4><p>问题说明：IE下，可以通过 <code>showModalDialog</code> 和 <code>showModelessDialog</code> 打开模态和非模态窗口；Firefox下则不能。<br>解决方案：直接使用 <code>window.open(pageURL,name,parameters)</code> 方式打开新窗口。<br>如果需要将子窗口中的参数传递回父窗口，可以在子窗口中使用 <code>window.opener</code> 来访问父窗口。如果需要父窗口控制子窗口的话，使用 <code>var subWindow = window.open(pageURL,name,parameters);</code> 来获得新开的窗口对象。</p>
+<h4 id="14、frame-和-iframe-问题"><a href="#14、frame-和-iframe-问题" class="headerlink" title="14、frame 和 iframe 问题"></a>14、<code>frame</code> 和 <code>iframe</code> 问题</h4><p>以下面的 <code>frame</code>为例：<br>(1)访问 <code>frame</code> 对象<br>IE：使用 <code>window.frameId</code> 或者 <code>window.frameName</code> 来访问这个 <code>frame</code> 对象；<br>Firefox：使用 <code>window.frameName</code> 来访问这个 <code>frame</code> 对象；<br>解决方案：统一使用 <code>window.document.getElementById(&quot;frameId&quot;)</code> 来访问这个 <code>frame</code> 对象；<br>(2)切换 <code>frame</code> 内容<br>在IE和Firefox中都可以使用 <code>window.document.getElementById(&quot;frameId&quot;).src = &quot;webjx.com.html&quot;</code>  或<code>window.frameName.location = &quot;webjx.com.html&quot;</code> 来切换 <code>frame</code> 的内容；<br>如果需要将 <code>frame</code> 中的参数传回父窗口，可以在 <code>frame</code> 中使用 <code>parent</code> 关键字来访问父窗口。</p>
+<h4 id="15、事件委托方法"><a href="#15、事件委托方法" class="headerlink" title="15、事件委托方法"></a>15、事件委托方法</h4><p>问题说明：IE下，使用 <code>document.body.onload = inject;</code> ， 其中 <code>function inject()</code> 在这之前已被实现；在Firefox下，使用 <code>document.body.onload = inject();</code><br>解决方案：统一使用 <code>document.body.onload=new Function(&quot;inject()&quot;); </code> 或者 <code>document.body.onload = function()&#123;&#125;</code><br>[注意] <code>Function</code> 和 <code>function</code> 的区别</p>
+<h4 id="16、用-setAttribute-设置事件"><a href="#16、用-setAttribute-设置事件" class="headerlink" title="16、用 setAttribute 设置事件"></a>16、用 <code>setAttribute</code> 设置事件</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;objId&quot;</span>);</span><br><span class="line">obj.<span class="title function_">setAttribute</span>(<span class="string">&quot;onclick&quot;</span>, <span class="string">&quot;funcitonname()&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>FireFox 支持，IE不支持。<br>解决方案：IE中必须用点记法来引用所需的事件处理程序,并且要用赋予匿名函数；如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;objId&quot;</span>);</span><br><span class="line">obj.<span class="property">onclic</span> k= <span class="keyword">function</span>(<span class="params"></span>)&#123; <span class="title function_">fucntionname</span>(); &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这种方法所有浏览器都支持</p>
+<h4 id="17、访问的父元素的区别"><a href="#17、访问的父元素的区别" class="headerlink" title="17、访问的父元素的区别"></a>17、访问的父元素的区别</h4><p>问题说明：在IE下，使用 <code>obj.parentElement</code> 或 <code>obj.parentNode</code>  访问 <code>obj</code> 的父结点；在FireFox下，使用<code>obj.parentNode</code> 访问 <code>obj</code> 的父结点。<br>解决方案：因为FireFox与IE都支持DOM，因此统一使用 <code>obj.parentNode</code> 来访问 <code>obj</code> 的父结点。</p>
+<h4 id="18、innerText-的问题"><a href="#18、innerText-的问题" class="headerlink" title="18、innerText 的问题."></a>18、<code>innerText</code> 的问题.</h4><p>问题说明：<code>innerText</code> 在IE中能正常工作，但是 <code>innerText</code> 在FireFox中却不行。<br>解决方案：在非IE浏览器中使用 <code>textContent</code> 代替 <code>innerText</code>。<br>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (navigator.<span class="property">appName</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;Explorer&quot;</span>) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;element&quot;</span>).<span class="property">innerText</span> = <span class="string">&quot;my text&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;element&quot;</span>).<span class="property">textContent</span> = <span class="string">&quot;my text&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>[注] <code>innerHTML</code> 同时被IE、FireFox等浏览器支持，其他的，如 <code>outerHTML</code> 等只被IE支持，最好不用。</p>
+<h4 id="19、Table-操作问题"><a href="#19、Table-操作问题" class="headerlink" title="19、Table 操作问题"></a>19、<code>Table</code> 操作问题</h4><p>问题说明：IE、FireFox以及其它浏览器对于 <code>table</code> 标签的操作都各不相同，在IE中不允许对 <code>table</code> 和 <code>tr</code> 的<code>innerHTML</code> 赋值，使用js 增加一个 <code>tr</code> 时，使用 <code>appendChild</code> 方法也不管用。<code>document.appendChild</code> 在往表里插入行时FireFox支持，IE不支持<br>解决方案：把行插入到 <code>tbody</code>中，不要直接插入到表解决方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 向table追加一个空行：</span></span><br><span class="line"><span class="keyword">var</span> row = otable.<span class="title function_">insertRow</span>(-<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> cell = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;td&quot;</span>); </span><br><span class="line">cell.<span class="property">innerHTML</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">cell.<span class="property">className</span> = <span class="string">&quot;XXXX&quot;</span>; </span><br><span class="line">row.<span class="title function_">appendChild</span>(cell);</span><br></pre></td></tr></table></figure>
+
+<p>[注] 建议使用JS框架集来操作 <code>table</code>，如JQuery。</p>
+<h4 id="20、对象宽高赋值问题"><a href="#20、对象宽高赋值问题" class="headerlink" title="20、对象宽高赋值问题"></a>20、对象宽高赋值问题</h4><p>问题说明：FireFox中类似 <code>obj.style.height = imgObj.height</code> 的语句无效。<br>解决方案：统一使用<code>obj.style.height = imgObj.height + &quot;px&quot;;</code></p>
+<h4 id="21、setAttribute-style-color-red"><a href="#21、setAttribute-style-color-red" class="headerlink" title="21、setAttribute(&quot;style&quot;, &quot;color: red;&quot;)"></a>21、<code>setAttribute(&quot;style&quot;, &quot;color: red;&quot;)</code></h4><p>FireFox支持(除了IE，现在所有浏览器都支持)，IE不支持<br>解决方案：不用 <code>setAttribute(&quot;style&quot;, &quot;color : red;&quot;)</code><br>而用 <code>object.style.cssText = &quot;color: red;&quot;</code>(这写法也有例外)<br>最好的办法是上面种方法都用上，万无一失</p>
+<h4 id="22、类名设置-setAttribute-class-styleClass"><a href="#22、类名设置-setAttribute-class-styleClass" class="headerlink" title="22、类名设置 setAttribute(&quot;class&quot;, &quot;styleClass&quot;)"></a>22、类名设置 <code>setAttribute(&quot;class&quot;, &quot;styleClass&quot;)</code></h4><p>FireFox支持，IE不支持(指定属性名为 <code>class</code>，IE不会设置元素的 <code>class</code> 属性，相反只使用 <code>setAttribute</code> 时IE自动识 <code>classname</code> 属性)<br>解决方案：<br><code>setAttribute(&quot;class&quot;, &quot;styleClass&quot;)</code><br><code>setAttribute(&quot;className&quot;, &quot;styleClass&quot;)</code><br>或者直接 <code>object.className= &quot;styleClass&quot;;</code><br>IE和FF都支持 <code>object.className</code>。</p>
+<h4 id="23、建立单选钮"><a href="#23、建立单选钮" class="headerlink" title="23、建立单选钮"></a>23、建立单选钮</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IE以外的浏览器</span></span><br><span class="line"><span class="keyword">var</span> rdo = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;input&quot;</span>);</span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;type&quot;</span>, <span class="string">&quot;radio&quot;</span>); </span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;radiobtn&quot;</span>); </span><br><span class="line">rdo.<span class="title function_">setAttribute</span>(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;checked&quot;</span>);</span><br><span class="line"><span class="comment">// IE</span></span><br><span class="line"><span class="keyword">var</span> rdo = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;&lt;input name=&quot;</span>radiobtn<span class="string">&quot; type=&quot;</span>radio<span class="string">&quot; value=&quot;</span>checked<span class="string">&quot; /&gt;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：<br>这一点区别和前面的都不一样。这次完全不同，所以找不到共同的办法来解决，那么只有 <code>IF-ELSE</code>了<br>万幸的是，IE可以识别出 <code>document</code> 的 <code>uniqueID</code> 属性，别的浏览器都不可以识别出这一属性。问题解决。<br>​</p>
+<h3 id="五、CSS兼容"><a href="#五、CSS兼容" class="headerlink" title="五、CSS兼容"></a>五、CSS兼容</h3><h4 id="1、CSS-Hack"><a href="#1、CSS-Hack" class="headerlink" title="1、CSS Hack"></a>1、<code>CSS Hack</code></h4><p>使用 <code>hacker</code> 可以把浏览器分为3类：IE6；IE7和遨游；其他（IE8 Chrome ff Safari opera等）<br>（1）IE6认识的 <code>hacker</code> 是 下划线 <code>_</code> 和星号 <code>*</code><br>（2）IE7和遨游认识的  <code>hacker</code> 是 星号  <code>*</code><br> 如： <code>height:300px;*height:200px;_height:100px;</code><br> （1）IE6浏览器在读到 <code>height:300px</code> 的时候会认为高时 <code>300px</code><br> 继续往下读，他也认识 <code>*heihgt</code> ， 所以当IE6读到 <code>*height:200px</code> 的时候会覆盖掉前一条的相冲突设置，认为高度是 <code>200px</code> 。<br> 继续往下读，IE6还认识 <code>_height</code> ,所以他又会覆盖掉 <code>200px</code> 高的设置，把高度设置为 <code>100px</code> 。<br> （2）IE7和遨游也是一样的从高度 <code>300px</code> 的设置往下读。当它们读到 <code>*height:200px</code> 的时候就停下了，因为它们不认识 <code>_height</code> 。<br> 所以它们会把高度解析为 <code>200px</code> ，剩下的浏览器只认识第一个 <code>height:300px</code> ;<br> 所以他们会把高度解析为 <code>300px</code> 。因为优先级相同且想冲突的属性设置后一个会覆盖掉前一个，所以书写的次序是很重要的。</p>
+<h4 id="2、CSS-样式兼容不同浏览器问题"><a href="#2、CSS-样式兼容不同浏览器问题" class="headerlink" title="2、CSS 样式兼容不同浏览器问题"></a>2、CSS 样式兼容不同浏览器问题</h4><p>所有浏览器通用： <code>height: 100px;</code><br>IE6 专用： <code>_height: 100px;</code> 或者 <code>*height: 100px;</code><br>IE7 专用： <code>*+height: 100px;</code><br>IE7、FF 共用： <code>height: 100px !important;</code><br>以下两种方法几乎能解决现今所有兼容：<br>（1） <code>!important</code><br>随着IE7对 <code>!important</code> 的支持, <code>!important </code> 方法现在只针对IE6的兼容(注意写法，记得该声明位置需要提前)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span> <span class="meta">!important</span>; <span class="comment">/* IE7+FF */</span></span><br><span class="line">  <span class="attribute">width</span>: <span class="number">80px</span>; <span class="comment">/* IE6 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2)IE6&#x2F;IE77对FireFox &lt;from 针对FireFox ie6 ie7的css样式&gt;<br><code>*+html</code> 与 <code>*html</code> 是IE特有的标签，FireFox 暂不支持。而 <code>*+html</code> 又为 IE7特有标签。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">120px</span>; &#125; <span class="comment">/* FireFox */</span></span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">80px</span>;&#125; <span class="comment">/* ie6 fixed */</span></span><br><span class="line">*+<span class="selector-tag">html</span> <span class="selector-class">.box</span> &#123; <span class="attribute">width</span>: <span class="number">60px</span>;&#125; <span class="comment">/* ie7 fixed, 注意顺序 */</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、万能-float-闭合-非常重要-可以用这个解决多个-div-对齐时的间距不对"><a href="#3、万能-float-闭合-非常重要-可以用这个解决多个-div-对齐时的间距不对" class="headerlink" title="3、万能 float 闭合(非常重要) 可以用这个解决多个 div 对齐时的间距不对"></a>3、万能 <code>float</code> 闭合(非常重要) 可以用这个解决多个 <code>div</code> 对齐时的间距不对</h4><p>将以下代码加入 <code>Global CSS</code> 中，给需要闭合的 <code>div</code> 加上 <code>class=&quot;clearfix&quot;</code> 即可，屡试不爽。<br>代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line"><span class="comment">/* Clear Fix */</span></span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;.&quot;</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">clear</span>: both;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Hide from IE Mac \*/</span></span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>:block;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* End hide from IE Mac */</span></span><br><span class="line"><span class="comment">/* end of clearfix */</span></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、其他兼容技巧"><a href="#4、其他兼容技巧" class="headerlink" title="4、其他兼容技巧"></a>4、其他兼容技巧</h4><ol>
+<li>Firefox下给 <code>div</code> 设置 <code>padding</code> 后会导致 <code>width</code> 和 <code>height</code> 增加, 但IE不会(可用 <code>!important</code> 解决)</li>
+<li>居中问题：<ol>
+<li>垂直居中将 <code>line-height</code> 设置为当前 <code>div</code> 相同的高度, 再通过 <code>vetical-align: middle</code> ( 注意内容不要换行）</li>
+<li>水平居中： <code>margin: 0 auto;</code> (当然不是万能)</li>
+</ol>
+</li>
+<li>若需给 <code>a</code> 标签内内容加上 样式，需要设置 <code>display: block;</code> (常见于导航标签)</li>
+<li>Firefox 和 IE 对 BOX 理解的差异导致相差 <code>2px</code> 的还有设为 <code>float</code> 的 <code>div</code> 在 ie下 <code>margin</code> 加倍等问题</li>
+<li><code>ul</code> 标签在 FF 下面默认有 <code>list-style</code> 和 <code>padding</code> 最好事先声明，以避免不必要的麻烦(常见于导航标签和内容列表)</li>
+<li>作为外部 <code>wrapper</code> 的 <code>div</code> 不要定死高度，最好还加上 <code>overflow: hidden</code> 以达到高度自适应</li>
+</ol>
+<h4 id="5、兼容代码：兼容最推荐的模式。"><a href="#5、兼容代码：兼容最推荐的模式。" class="headerlink" title="5、兼容代码：兼容最推荐的模式。"></a>5、兼容代码：兼容最推荐的模式。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* FF */</span></span><br><span class="line"><span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">float</span>: left;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">57px</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">24px</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">12px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* IE6 */</span></span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">21px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* IE7 */</span></span><br><span class="line">*+<span class="selector-tag">html</span> <span class="selector-class">.submitbutton</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">21px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6、兼容-CSS-方法"><a href="#6、兼容-CSS-方法" class="headerlink" title="6、兼容 CSS 方法"></a>6、兼容 <code>CSS</code> 方法</h4><p>做兼容页面的方法是：每写一小段代码（布局中的一行或者一块）我们都要在不同的浏览器中看是否兼容，当然熟练到一定的程度就没这么麻烦了。<br>建议经常会碰到兼容性问题的新手使用。很多兼容性问题都是因为浏览器对标签的默认属性解析不同造成的，只要我们稍加设置都能轻松地解决这些兼容问题。<br>如果我们熟悉标签的默认属性的话，就能很好的理解为什么会出现兼容问题以及怎么去解决这些兼容问题。</p>
+<h3 id="六、其它CSS兼容"><a href="#六、其它CSS兼容" class="headerlink" title="六、其它CSS兼容"></a>六、其它CSS兼容</h3><h4 id="1、不同浏览器的标签默认margin-和-padding-不同"><a href="#1、不同浏览器的标签默认margin-和-padding-不同" class="headerlink" title="1、不同浏览器的标签默认margin 和 padding 不同"></a>1、不同浏览器的标签默认<code>margin</code> 和 <code>padding</code> 不同</h4><p>问题说明：随便写几个标签，不加样式控制的情况下，各自的 <code>margin</code> 和 <code>padding</code> 差异较大。<br>解决方案： <code>CSS: *&#123;margin: 0;padding:0;&#125;</code> </p>
+<h4 id="2、块属性标签-float-后，又有横行的-margin-情况下，在IE6显示-margin-比设置的大"><a href="#2、块属性标签-float-后，又有横行的-margin-情况下，在IE6显示-margin-比设置的大" class="headerlink" title="2、块属性标签 float 后，又有横行的 margin 情况下，在IE6显示 margin 比设置的大"></a>2、块属性标签 <code>float</code> 后，又有横行的 <code>margin</code> 情况下，在IE6显示 <code>margin</code> 比设置的大</h4><p>问题说明：常见症状是IE6中后面的一块被顶到下一行（ <code>float</code> 布局最常见的浏览器兼容问题）<br>解决方案：在 <code>float</code> 的标签样式控制中加入 <code>display:inline;</code> 将其转化为行内属性<br>备注：我们最常用的就是 <code>div+CSS</code> 布局了，而 <code>div</code>就是一个典型的块属性标签，横向布局的时候我们通常都是用 <code>div float</code> 实现的，横向的间距设置如果用 <code>margin</code> 实现，这就是一个必然会碰到的兼容性问题。</p>
+<h4 id="3、较小高度标签（一般小于-10px-）问题"><a href="#3、较小高度标签（一般小于-10px-）问题" class="headerlink" title="3、较小高度标签（一般小于 10px ）问题"></a>3、较小高度标签（一般小于 <code>10px</code> ）问题</h4><p>问题说明：IE6、7和遨游里这个标签的高度不受控制，超出自己设置的高度<br>解决方案：给超出高度的标签设置 <code>overflow:hidden;</code> 或者设置行高 <code>line-height</code> 小于你设置的高度。<br>备注：这种情况一般出现在我们设置小圆角背景的标签里。出现这个问题的原因是IE8之前的浏览器都会给标签一个最小默认的行高的高度。即使你的标签是空的，这个标签的高度还是会达到默认的行高。</p>
+<h4 id="4、行内属性标签，设置-display-block-后采用-float-布局，又有横行的-margin-的情况，IE6间距-bug"><a href="#4、行内属性标签，设置-display-block-后采用-float-布局，又有横行的-margin-的情况，IE6间距-bug" class="headerlink" title="4、行内属性标签，设置 display:block 后采用 float 布局，又有横行的 margin 的情况，IE6间距 bug"></a>4、行内属性标签，设置 <code>display:block</code> 后采用 <code>float</code> 布局，又有横行的 <code>margin</code> 的情况，IE6间距 <code>bug</code></h4><p>问题说明：IE6里的间距比超过设置的间距<br>解决方案：在 <code>display:block;</code> 后面加入 <code>display:inline;display:table;</code><br>备注：行内属性标签，为了设置宽高，我们需要设置 <code>display:block;</code> (除了 <code>input</code> 标签比较特殊)。<br>在用 <code>float</code> 布局并有横向的 <code>margin</code> 后，在IE6下，他就具有了块属性 <code>float</code> 后的横向 <code>margin</code> 的 <code>bug</code> 。<br>不过因为它本身就是行内属性标签，所以我们再加上 <code>display:inline</code> 的话，它的高宽就不可设了。<br>这时候我们还需要在 <code>display:inline</code> 后面加入 <code>display:talbe</code> 。</p>
+<h4 id="5、图片默认有间距"><a href="#5、图片默认有间距" class="headerlink" title="5、图片默认有间距"></a>5、图片默认有间距</h4><p>问题说明：几个 <code>img</code> 标签放在一起的时候，有些浏览器会有默认的间距，加了问题一中提到的通配符也不起作用。<br>解决方案：使用 <code>float</code> 属性为 <code>img</code> 布局<br>备注：因为 <code>img</code> 标签是行内属性标签，所以只要不超出容器宽度， <code>img</code> 标签都会排在一行里，但是部分浏览器的 <code>img</code> 标签之间会有个间距。去掉这个间距使用 <code>float</code> 是正道。</p>
+<h4 id="6、标签最低高度设置-min-height-不兼容"><a href="#6、标签最低高度设置-min-height-不兼容" class="headerlink" title="6、标签最低高度设置 min-height 不兼容"></a>6、标签最低高度设置 <code>min-height</code> 不兼容</h4><p>问题说明：因为 <code>min-height</code> 本身就是一个不兼容的 <code>CSS</code> 属性，所以设置 <code>min-height</code> 时不能很好的被各个浏览器兼容<br>解决方案：如果我们要设置一个标签的最小高度 <code>200px</code> ，需要进行的设置为：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">200px</span>; </span><br><span class="line">  <span class="attribute">height</span>: auto <span class="meta">!important</span>; </span><br><span class="line">  <span class="attribute">height</span>: <span class="number">200px</span>; </span><br><span class="line">  <span class="attribute">overflow</span>:visible;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>备注：在B&#x2F;S系统前端开时，有很多情况下我们又这种需求。当内容小于一个值（如 <code>300px</code> ）时。容器的高度为 <code>300px</code> ；当内容高度大于这个值时，容器高度被撑高，而不是出现滚动条。这时候我们就会面临这个兼容性问题。</p>
+<h4 id="7、CSS-布局中的居中问题"><a href="#7、CSS-布局中的居中问题" class="headerlink" title="7、CSS 布局中的居中问题"></a>7、CSS 布局中的居中问题</h4><p>问题说明： 首先在父级元素定义 <code>text-align: center;</code> 这个的意思就是在父级元素内的内容居中；对于IE这样设定就已经可以了。但在mozilla中不能居中。<br>解决办法：在子元素定义时候设定时再加上 <code>margin-right: auto; margin-left: auto; </code> </p>
+<h4 id="8、IE浮动产生的双倍距离"><a href="#8、IE浮动产生的双倍距离" class="headerlink" title="8、IE浮动产生的双倍距离"></a>8、IE浮动产生的双倍距离</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">float</span>: left; </span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>; </span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">100px</span>; // 这种情况之下IE会产生<span class="number">200px</span>的距离</span><br><span class="line">  <span class="attribute">display</span>: inline; // 使浮动忽略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里细说一下 <code>block</code>， <code>inline</code> 两个元素<br><code>Block</code> 元素的特点是：总是在新行上开始，高度、宽度、行高、边距都可以控制(块元素)<br><code>Inline</code> 元素的特点是：和其他元素在同一行上，不可控制(内嵌元素)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">display</span>: block; // 可以为内嵌元素模拟为块元素 </span><br><span class="line">  <span class="attribute">display</span>: inline; // 实现同一行排列的的效果 </span><br><span class="line">  diplay: table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9、IE与宽度和高度的问题"><a href="#9、IE与宽度和高度的问题" class="headerlink" title="9、IE与宽度和高度的问题"></a>9、IE与宽度和高度的问题</h4><p>IE不认得 <code>min-</code> 这个定义，但实际上它把正常的 <code>width</code> 和 <code>height</code> 当作有 <code>min</code> 的情况来使。<br>这样问题就大了，如果只用宽度和高度，正常的浏览器里这两个值就不会变，如果只用 <code>min-width</code> 和 <code>min-height</code> 的话，IE下面根本等于没有设置宽度和高度。<br>比如要设置背景图片，这个宽度是比较重 要的。<br>解决方案：要解决这个问题，可以这样：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123; </span><br><span class="line">  <span class="attribute">width</span>: <span class="number">80px</span>; </span><br><span class="line">  <span class="attribute">height</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">html</span>&gt;<span class="selector-tag">body</span> <span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: auto; </span><br><span class="line">  <span class="attribute">height</span>: auto; </span><br><span class="line">  <span class="attribute">min-width</span>: <span class="number">80px</span>; </span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="10、页面的最小宽度"><a href="#10、页面的最小宽度" class="headerlink" title="10、页面的最小宽度"></a>10、页面的最小宽度</h4><p><code>min-width</code> 是个非常方便的 <code>CSS</code> 命令，它可以指定元素最小也不能小于某个宽度，这样就能保证排版一直正确。<br>但IE不认得这个，而它实际上把 <code>width</code> 当做最小宽度来使。<br>为了让这一命令在IE上也能用，可以把一个 <code>&lt;div&gt;</code> 放到 <code>&lt;body&gt;</code> 标签下，然后为 <code>div</code> 指定一个类，然后 <code>CSS</code> 这样设计：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#container</span>&#123;</span><br><span class="line">    <span class="attribute">min-width</span>: <span class="number">600px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">e-xpression</span>(document.body.clientWidth &lt; <span class="number">600</span>? <span class="string">&quot;600px&quot;</span>: <span class="string">&quot;auto&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个 <code>min-width</code> 是正常的；<br>但第2行的 <code>width</code> 使用了 <code>JavaScript</code> ，这只有IE才认得，这也会让你的 <code>HTML</code> 文档不太正规。它实际上通过 <code>JavaScript</code> 的判断来实现最小宽度。</p>
+<h4 id="11、清除浮动"><a href="#11、清除浮动" class="headerlink" title="11、清除浮动"></a>11、清除浮动</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: table;</span><br><span class="line">  // 将对象作为块元素级的表格显示</span><br><span class="line">&#125;</span><br><span class="line">// 或者</span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者加入  <code>:after</code> （伪对象）,设置在对象后发生的内容，通常和 <code>content</code> 配合使用，IE不支持此伪对象，<br>非IE 浏览器支持，所以并不影响到IE&#x2F;WIN浏览器。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: “.”;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">  <span class="attribute">visibility</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="12、-DIV-浮动IE文本产生-3px-的-bug"><a href="#12、-DIV-浮动IE文本产生-3px-的-bug" class="headerlink" title="12、 DIV 浮动IE文本产生 3px 的 bug"></a>12、 <code>DIV</code> 浮动IE文本产生 <code>3px</code> 的 <code>bug</code></h4><p>左边对象浮动，右边采用外补丁的左边距来定位，右边对象内的文本会离左边有 <code>3px</code> 的间距。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">800px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#left</span> &#123;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#right</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">&#125;</span><br><span class="line">*<span class="selector-tag">html</span> <span class="selector-id">#left</span> &#123;</span><br><span class="line">  <span class="attribute">margin-right</span>: -<span class="number">3px</span>; // 这句是关键</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="13、IE捉迷藏的问题"><a href="#13、IE捉迷藏的问题" class="headerlink" title="13、IE捉迷藏的问题"></a>13、IE捉迷藏的问题</h4><p>当 <code>div</code> 应用复杂的时候每个栏中又有一些链接， <code>div</code> 等这个时候容易发生捉迷藏的问题。<br>有些内容显示不出来，当鼠标选择这个区域是发现内容确实在页面。<br>解决方案：对 <code>#layout</code> 使用 <code>line-height</code> 属性或者给 <code>#layout</code> 使用固定高和宽。页面结构尽量简单。</p>
+<h4 id="14、高度不适应"><a href="#14、高度不适应" class="headerlink" title="14、高度不适应"></a>14、高度不适应</h4><p>高度不适应是当内层对象的高度发生变化时外层高度不能自动进行调节，特别是当内层对象使用 <code>margin</code> 或 <code>padding</code> 时。例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">”box”</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>p对象中的内容<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>CSS</code> ：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#eee</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">20px</span>; </span><br><span class="line">  <span class="attribute">text-align</span>: center; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：在 <code>p</code> 对象上下各加 <code>2</code> 个空的 <code>div</code> 对象 <code>CSS</code> 代码： <code>.1&#123; height: 0px; overflow: hidden; &#125;</code> 或者为 <code>DIV</code> 加上 <code>border</code> 属性。</p>
+<h4 id="15、cursor-属性问题"><a href="#15、cursor-属性问题" class="headerlink" title="15、cursor 属性问题"></a>15、<code>cursor</code> 属性问题</h4><p><code>cursor: hand;</code> VS <code>cursor: pointer; </code><br>问题说明：FireFox不支持 <code>hand</code>，但IE支持 <code>pointer</code> 。<br>解决方法：统一使用 <code>pointer</code>。</p>
+<h4 id="16、对盒模型的解析不一致"><a href="#16、对盒模型的解析不一致" class="headerlink" title="16、对盒模型的解析不一致"></a>16、对盒模型的解析不一致</h4><ul>
+<li>对 <code>border</code> 的解析不一致，如：<code>box.style &#123; width: 100px; border: 1px; &#125;</code>；IE理解为 <code>box.width = 100px;</code>；Firefox 理解为 <code>box.width = 100 + 1*2 = 102px;  // 加上边框2px</code></li>
+</ul>
+<p>解决方案：<code>div &#123; margin: 30px !important; margin: 28px; &#125;</code> 注意这两个 <code>margin</code> 的顺序一定不能写反， IE不能识别 <code>!important</code> 这个属性，但别的浏览器可以识别。所以在IE下其实解释成这样：<code>div&#123; maring: 30px; margin: 28px; &#125;</code> 重复定义的话按照最后一个来执行，所以不可以只写 <code>margin: XXpx !important;</code></p>
+<ul>
+<li>IE5 和 IE6 的盒模型解释不一致。IE5下 <code>div&#123; width: 300px; margin: 0 10px 0 10px; &#125;</code> 其中 <code>div</code> 的宽度会被解释为 <code>300px-10px(右填充)-10px(左填充)</code>，最终 <code>div</code> 的宽度为 <code>280px</code> ，而在IE6和其他浏览器上宽度则是以 <code>300px+10px(右填充)+10px(左填充)=320px</code> 来计算的。</li>
+</ul>
+<p>解决方案：做如下修改 <code>div &#123; width: 300px !important; width /**/: 340px; margin: 0 10px 0 10px; &#125;</code><br>17、<code>ul</code> 和 <code>ol</code> 列表缩进问题<br>消除 <code>ul</code>、<code>ol</code> 等列表的缩进时，样式应写成：<code>list-style: none; margin: 0px; padding: 0px;</code><br>经验证，在IE中，设置 <code>margin: 0px;</code> 可以去除列表的上下左右缩进、空白以及列表编号或圆点，设置 <code>padding</code> 对样式没有影响；<br>在 Firefox 中，设置 <code>margin: 0px;</code> 仅仅可以去除上下的空白，设置 <code>padding: 0px;</code> 后仅仅可以去掉左右缩进，还必须设置 <code>list- style: none;</code> 才能去除列表编号或圆点。也就是说，在IE中仅仅设置 <code>margin: 0px;</code> 即可达到最终效果，而在Firefox中必须同时设置 <code>margin: 0px;</code>、 <code>padding: 0px;</code> 以及 <code>list-style: none;</code> 三项才能达到最终效果。</p>
+<h4 id="17、为什么无法定义-1px-左右高度的容器"><a href="#17、为什么无法定义-1px-左右高度的容器" class="headerlink" title="17、为什么无法定义 1px 左右高度的容器"></a>17、为什么无法定义 <code>1px</code> 左右高度的容器</h4><p>IE6下这个问题是因为默认的行高造成的；解决的技巧也有很多：<br>例如：<code>overflow: hidden;</code>  <code>zoom: 0.08</code>  <code>line-height: 1px;</code></p>
+<h4 id="18、链接-a标签-的边框与背景"><a href="#18、链接-a标签-的边框与背景" class="headerlink" title="18、链接(a标签)的边框与背景"></a>18、链接(<code>a</code>标签)的边框与背景</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a` 链接加边框和背景色，需设置 `display: block;` 同时设置 `float: left;`  保证不换行。参照 `menubar`, 给 `a` 和 `menubar` 设置高度是为了避免底边显示错位，若不设 `height`, 可以在 `menubar` 中插入一个空格。</span><br><span class="line">19、超链接访问过后 `hover` 样式就不出现的问题</span><br><span class="line">问题说明：被点击访问过的超链接样式不在具有 `hover` 和 `active`了</span><br><span class="line">解决技巧是改变CSS属性的排列顺序:  L-V-H-A ；</span><br><span class="line">`&lt;style type=&quot;text/css&quot;&gt; &lt;!-- a:link &#123;&#125; a:visited &#123;&#125; a:hover &#123;&#125; a:active &#123;&#125; --&gt; &lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/13/Koa/" data-id="cmd1is15e0000m0ur83sketaj" data-title="Koa" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/07/12/React-Native/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React Native</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html-css-javascript/" rel="tag">html css javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" rel="tag">前端工程、包管理器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" rel="tag">前端页面、错误监控、</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%9F%E7%90%86/" rel="tag">原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1/" rel="tag">场景设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" rel="tag">计算机网络，浏览器原理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/html-css-javascript/" style="font-size: 10px;">html css javascript</a> <a href="/tags/typescript/" style="font-size: 10px;">typescript</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E3%80%81%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" style="font-size: 10px;">前端工程、包管理器</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E3%80%81%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E3%80%81/" style="font-size: 10px;">前端页面、错误监控、</a> <a href="/tags/%E5%8E%9F%E7%90%86/" style="font-size: 10px;">原理</a> <a href="/tags/%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">场景设计</a> <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" style="font-size: 10px;">大模型</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/" style="font-size: 10px;">计算机网络，浏览器原理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/07/13/Koa/">Koa</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/12/React-Native/">React Native</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/04/%E4%B8%9A%E5%8A%A1/">业务</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/03/Vue/">Vue</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/01/AI/">AI</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
