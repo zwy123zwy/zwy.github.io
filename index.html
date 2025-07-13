@@ -409,7 +409,374 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><img src="/../img/deepseek_mermaid_20250712_a06989.png"></p>
+        <p>React Native（RN）项目的运行流程是一个<strong>多线程、跨语言协同执行的过程</strong>，其核心机制包括：</p>
+<ul>
+<li>JS 引擎启动与脚本加载</li>
+<li>原生 UI 管理与渲染</li>
+<li>桥接通信（Bridge）或 JSI 同步调用</li>
+<li>事件循环与交互响应</li>
+</ul>
+<p>下面我将详细说明 RN 在移动端（iOS &#x2F; Android）上的完整工作全流程，并结合你的项目背景（如 Electron、Taro 等）进行技术适配建议。</p>
+<hr>
+<h2 id="React-Native-移动端运行全流程详解"><a href="#React-Native-移动端运行全流程详解" class="headerlink" title="React Native 移动端运行全流程详解"></a>React Native 移动端运行全流程详解</h2><h3 id="🧩-阶段一：应用启动与初始化"><a href="#🧩-阶段一：应用启动与初始化" class="headerlink" title="🧩 阶段一：应用启动与初始化"></a>🧩 阶段一：应用启动与初始化</h3><h4 id="1-原生应用入口"><a href="#1-原生应用入口" class="headerlink" title="1. 原生应用入口"></a>1. <strong>原生应用入口</strong></h4><ul>
+<li>iOS: <code>main.m</code> → <code>RCTBridge</code> 初始化；</li>
+<li>Android: <code>ReactNativeHost</code> 和 <code>ReactInstanceManager</code> 创建；</li>
+<li>启动一个独立的 JS 线程来运行 JavaScript 引擎（默认使用 Hermes 或 JavaScriptCore）；</li>
+</ul>
+<h4 id="2-创建-JS-运行时（Runtime）"><a href="#2-创建-JS-运行时（Runtime）" class="headerlink" title="2. 创建 JS 运行时（Runtime）"></a>2. <strong>创建 JS 运行时（Runtime）</strong></h4><ul>
+<li>加载并初始化 JS 引擎（Hermes&#x2F;JSC）；</li>
+<li>若启用 <strong>JSI（JavaScript Interface）</strong>，则注册 JSI 接口，允许 JS 直接访问原生对象；</li>
+<li>准备好 JS 执行环境（Global 对象、内置函数等）；</li>
+</ul>
+<h4 id="3-加载-JavaScript-Bundle"><a href="#3-加载-JavaScript-Bundle" class="headerlink" title="3. 加载 JavaScript Bundle"></a>3. <strong>加载 JavaScript Bundle</strong></h4><ul>
+<li>从本地文件系统或远程服务器加载 <code>index.android.bundle</code> &#x2F; <code>index.ios.bundle</code>；</li>
+<li>将 JS Bundle 注入到 JS Runtime 中执行；</li>
+<li>执行 <code>AppRegistry.registerComponent</code> 注册主组件；</li>
+</ul>
+<hr>
+<h3 id="阶段二：UI-构建与布局计算"><a href="#阶段二：UI-构建与布局计算" class="headerlink" title="阶段二：UI 构建与布局计算"></a>阶段二：UI 构建与布局计算</h3><h4 id="4-执行-JS-代码并构建-Virtual-DOM"><a href="#4-执行-JS-代码并构建-Virtual-DOM" class="headerlink" title="4. 执行 JS 代码并构建 Virtual DOM"></a>4. <strong>执行 JS 代码并构建 Virtual DOM</strong></h4><ul>
+<li>调用 <code>AppRegistry.runApplication()</code>，触发 React 树的构建；</li>
+<li>React 组件树通过 <code>React.createElement(...)</code> 构建出虚拟 DOM；</li>
+<li>虚拟 DOM 被转换为 RN 的 <strong>Shadow Tree</strong>（用于描述 UI 结构）；</li>
+</ul>
+<h4 id="5-Layout-计算（Yoga-引擎）"><a href="#5-Layout-计算（Yoga-引擎）" class="headerlink" title="5. Layout 计算（Yoga 引擎）"></a>5. <strong>Layout 计算（Yoga 引擎）</strong></h4><ul>
+<li>Shadow Tree 使用 <a target="_blank" rel="noopener" href="https://facebook.github.io/yoga/">Yoga</a>（Flexbox 实现）进行布局计算；</li>
+<li>计算每个节点的位置、尺寸、排列方式；</li>
+<li>如果启用了 Fabric 架构，则 Layout 在 JS 线程中完成，更高效；</li>
+</ul>
+<hr>
+<h3 id="阶段三：原生-UI-创建与渲染"><a href="#阶段三：原生-UI-创建与渲染" class="headerlink" title="阶段三：原生 UI 创建与渲染"></a>阶段三：原生 UI 创建与渲染</h3><h4 id="6-创建原生视图（Native-Views）"><a href="#6-创建原生视图（Native-Views）" class="headerlink" title="6. 创建原生视图（Native Views）"></a>6. <strong>创建原生视图（Native Views）</strong></h4><ul>
+<li>JS 端通过 <code>createView</code>、<code>updateView</code> 等指令通知原生端创建 UIView&#x2F;Android View；</li>
+<li>原生端接收这些命令后创建对应的原生控件（UILabel、UIButton、TextView 等）；</li>
+<li>如果使用 Fabric，则由 <code>FabricUIManager</code> 处理 UI 更新，支持并发模式；</li>
+</ul>
+<h4 id="7-UI-渲染与合成"><a href="#7-UI-渲染与合成" class="headerlink" title="7. UI 渲染与合成"></a>7. <strong>UI 渲染与合成</strong></h4><ul>
+<li>原生视图被添加到屏幕层级结构中；</li>
+<li>布局信息同步到原生视图上；</li>
+<li>使用平台原生的绘制引擎（iOS 的 Core Animation、Android 的 Skia）进行最终渲染；</li>
+</ul>
+<hr>
+<h3 id="阶段四：交互与更新机制"><a href="#阶段四：交互与更新机制" class="headerlink" title="阶段四：交互与更新机制"></a>阶段四：交互与更新机制</h3><h4 id="8-用户交互事件处理"><a href="#8-用户交互事件处理" class="headerlink" title="8. 用户交互事件处理"></a>8. <strong>用户交互事件处理</strong></h4><ul>
+<li>用户点击、滑动等操作由原生层捕获；</li>
+<li>事件被封装并通过 Bridge 或 JSI 发送到 JS 线程；</li>
+<li>JS 端执行对应事件处理逻辑（如 <code>onPress</code>, <code>onChangeText</code>）；</li>
+</ul>
+<h4 id="9-状态更新与-Diffing"><a href="#9-状态更新与-Diffing" class="headerlink" title="9. 状态更新与 Diffing"></a>9. <strong>状态更新与 Diffing</strong></h4><ul>
+<li><p>当组件状态变化（如</p>
+<p>setState</p>
+<p>,</p>
+<p>useState</p>
+<p>,</p>
+<p>useReducer</p>
+<p>）时：</p>
+<ul>
+<li>React 重新构建虚拟 DOM；</li>
+<li>React Native 的 Reconciler 对比新旧 Virtual DOM，生成差异补丁（diff）；</li>
+</ul>
+</li>
+<li><p>差异被转换为对 Shadow Tree 的修改指令；</p>
+</li>
+</ul>
+<h4 id="10-UI-更新与-Commit"><a href="#10-UI-更新与-Commit" class="headerlink" title="10. UI 更新与 Commit"></a>10. <strong>UI 更新与 Commit</strong></h4><ul>
+<li>修改后的 Shadow Tree 提交到原生端；</li>
+<li>原生端根据差异指令更新对应的原生视图；</li>
+<li>如果使用 Fabric，则在 JS 线程直接提交 UI 操作，避免桥接延迟；</li>
+</ul>
+<h3 id="阶段五：生命周期与性能优化"><a href="#阶段五：生命周期与性能优化" class="headerlink" title="阶段五：生命周期与性能优化"></a>阶段五：生命周期与性能优化</h3><h4 id="11-组件生命周期管理"><a href="#11-组件生命周期管理" class="headerlink" title="11. 组件生命周期管理"></a>11. <strong>组件生命周期管理</strong></h4><ul>
+<li><code>componentDidMount</code>, <a href="javascript:void(0)">useEffect</a>, <code>componentWillUnmount</code> 等钩子按顺序执行；</li>
+<li>清理副作用（如定时器、监听器），防止内存泄漏；</li>
+</ul>
+<h4 id="12-TurboModule-NativeModule-调用"><a href="#12-TurboModule-NativeModule-调用" class="headerlink" title="12. TurboModule &amp; NativeModule 调用"></a>12. <strong>TurboModule &amp; NativeModule 调用</strong></h4><ul>
+<li>JS 端调用原生模块（如相机、定位、网络请求）；</li>
+<li>如果是 TurboModule（基于 JSI），则直接同步调用 C++ 方法；</li>
+<li>如果是传统 Module，则通过 Bridge 异步传递 JSON 数据；</li>
+</ul>
+<h4 id="13-动画与手势处理"><a href="#13-动画与手势处理" class="headerlink" title="13. 动画与手势处理"></a>13. <strong>动画与手势处理</strong></h4><ul>
+<li>使用 Reanimated 2.x + JSI 实现高性能动画；</li>
+<li>Gesture Handler 直接绑定原生手势识别器；</li>
+<li>动画计算和 UI 更新都在 JS 线程中完成，提升帧率稳定性；</li>
+</ul>
+<hr>
+<h2 id="整体架构示意图（简化）"><a href="#整体架构示意图（简化）" class="headerlink" title="整体架构示意图（简化）"></a>整体架构示意图（简化）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">+-------------------------+</span><br><span class="line">|      JS 开发者代码       |</span><br><span class="line">|   (React + Components)  |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">            |</span><br><span class="line">     +------v-------+</span><br><span class="line">     |   JS Engine  |</span><br><span class="line">     | (Hermes/JSC) |</span><br><span class="line">     +------+--------+</span><br><span class="line">            |</span><br><span class="line">     +------v-------+</span><br><span class="line">     |    JSI Layer |</span><br><span class="line">     | (C++ Binding)|</span><br><span class="line">     +------+--------+</span><br><span class="line">            |</span><br><span class="line">     +------v-------+</span><br><span class="line">     |   Native API |</span><br><span class="line">     | (iOS/Android)|</span><br><span class="line">     +------+--------+</span><br><span class="line">            |</span><br><span class="line">     +------v-------+</span><br><span class="line">     |   Native UI  |</span><br><span class="line">     | (UIView/View)|</span><br><span class="line">     +--------------+</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="技术栈适配建议（参考你的项目背景）"><a href="#技术栈适配建议（参考你的项目背景）" class="headerlink" title="技术栈适配建议（参考你的项目背景）"></a>技术栈适配建议（参考你的项目背景）</h2><table>
+<thead>
+<tr>
+<th align="left">技术点</th>
+<th align="left">描述</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Electron 项目集成 RN 思路</strong></td>
+<td align="left">可尝试使用 <code>react-native-electron</code>，但需注意 JS 引擎兼容性（V8 vs JSC）</td>
+<td align="left">桌面端跨平台开发</td>
+</tr>
+<tr>
+<td align="left"><strong>Taro 项目接入 RN 支持</strong></td>
+<td align="left">Taro 支持 <code>taro build --type rn</code> 编译成 RN 项目，适合跨端统一开发</td>
+<td align="left">移动 + Web + 小程序统一开发</td>
+</tr>
+<tr>
+<td align="left"><strong>TypeScript 类型安全</strong></td>
+<td align="left">推荐使用 TS 定义所有模块接口和组件 props，提高维护性</td>
+<td align="left">所有项目类型</td>
+</tr>
+<tr>
+<td align="left"><strong>性能优化策略</strong></td>
+<td align="left">使用 JSI + Fabric 提升渲染性能，减少主线程阻塞</td>
+<td align="left">高性能需求场景</td>
+</tr>
+<tr>
+<td align="left"><strong>调试工具</strong></td>
+<td align="left">使用 Flipper、Chrome DevTools、React DevTools、Reanimated DevTools</td>
+<td align="left">调试、日志、性能分析</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="典型生命周期流程图（以-App-启动为例）"><a href="#典型生命周期流程图（以-App-启动为例）" class="headerlink" title="典型生命周期流程图（以 App 启动为例）"></a>典型生命周期流程图（以 App 启动为例）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[原生启动] </span><br><span class="line">→ 初始化 Runtime </span><br><span class="line">→ 加载 JS Bundle </span><br><span class="line">→ 执行 React 应用 </span><br><span class="line">→ 构建 Virtual DOM </span><br><span class="line">→ 转换为 Shadow Tree </span><br><span class="line">→ 布局计算（Flexbox） </span><br><span class="line">→ 创建 Native Views </span><br><span class="line">→ 渲染到屏幕上 </span><br><span class="line">→ 等待用户交互或 JS 更新 </span><br><span class="line">→ 更新 UI 并重新渲染</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>React Native（RN）热更新技术允许应用在不发布新商店版本的情况下动态更新JavaScript代码、界面及资源，极大提升了迭代效率和用户体验。以下从热更新原理、服务实现、策略优化三方面详细解析：</p>
+<hr>
+<h3 id="一、热更新原理"><a href="#一、热更新原理" class="headerlink" title="一、热更新原理"></a>一、热更新原理</h3><p>热更新的核心是<strong>动态替换JS Bundle文件</strong>，依赖RN的模块化加载机制和HMR（Hot Module Replacement）技术：</p>
+<ol>
+<li><strong>HMR热加载（开发模式）</strong><ul>
+<li>当代码修改保存后，本地Packager服务检测变化，通过WebSocket通知App的HMR Runtime。</li>
+<li>Runtime接收包含<strong>模块代码和依赖关系</strong>的HMR Update，替换旧模块并保留应用状态（如Redux状态）135。</li>
+<li>若模块未处理更新（<code>module.hot.accept</code>），更新事件会沿依赖链向上传递，直至被接受或触发全量刷新7。</li>
+</ul>
+</li>
+<li><strong>生产环境热更新</strong><ul>
+<li>App启动时从服务器拉取最新JS Bundle（或增量包），替换本地文件。</li>
+<li>原生层通过重写加载路径（如Android的<code>getJSBundleFile</code>）指向新Bundle，下次启动时生效89。</li>
+<li>iOS通过WebSocket监听Metro服务器，触发Bundle下载和Root组件重置7。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="二、热更新服务实现方案"><a href="#二、热更新服务实现方案" class="headerlink" title="二、热更新服务实现方案"></a>二、热更新服务实现方案</h3><p>根据运维能力和需求，可选择三类方案：</p>
+<h4 id="第三方服务（CodePush-Expo-OTA）"><a href="#第三方服务（CodePush-Expo-OTA）" class="headerlink" title="第三方服务（CodePush&#x2F;Expo OTA）**"></a>第三方服务（CodePush&#x2F;Expo OTA）**</h4><ul>
+<li><p><strong>CodePush（微软）</strong></p>
+<ul>
+<li><p>流程：</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 安装CLI → 注册应用 → 集成SDK → 发布更新</span><br><span class="line">npm install -g code-push-cli</span><br><span class="line">code-push release-react MyApp android</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>支持增量更新：仅下载差异文件，减少流量消耗46。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Expo OTA</strong></p>
+<ul>
+<li>需Expo开发环境，自动检测并后台下载更新6。</li>
+</ul>
+</li>
+</ul>
+<h4 id="自建热更新服务"><a href="#自建热更新服务" class="headerlink" title="自建热更新服务**"></a>自建热更新服务**</h4><p><strong>步骤</strong>：</p>
+<ol>
+<li><p><strong>生成Bundle</strong>：</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native bundle --platform android --entry-file index.js --bundle-output ./bundle/index.bundle</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>增量包生成</strong>：</p>
+<ul>
+<li>使用<code>bsdiff</code>生成旧Bundle到新Bundle的补丁（<code>.patch</code>文件）910。</li>
+</ul>
+</li>
+<li><p><strong>客户端更新逻辑</strong>：</p>
+<ul>
+<li>启动时向服务器上报当前版本号，下载增量包 → 合并生成新Bundle → 替换本地文件89。</li>
+</ul>
+</li>
+<li><p><strong>资源更新</strong>：</p>
+<ul>
+<li>图片等资源需与Bundle同目录，增量更新时覆盖旧资源9。</li>
+</ul>
+</li>
+</ol>
+<h4 id="Hermes引擎优化方案"><a href="#Hermes引擎优化方案" class="headerlink" title="Hermes引擎优化方案**"></a>Hermes引擎优化方案**</h4><ul>
+<li><p>将JS Bundle转换为Hermes字节码（<code>.hbc</code>），提升执行效率：</p>
+<p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hermesc -emit-binary -out index.android.bundle.hbc index.android.bundle</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>热更新时直接推送字节码文件，避免JS解析开销2。</p>
+</li>
+</ul>
+<hr>
+<h3 id="三、热更新策略与优化"><a href="#三、热更新策略与优化" class="headerlink" title="三、热更新策略与优化"></a>三、热更新策略与优化</h3><h4 id="1-增量更新策略"><a href="#1-增量更新策略" class="headerlink" title="1. 增量更新策略"></a>1. <strong>增量更新策略</strong></h4><table>
+<thead>
+<tr>
+<th align="left"><strong>策略类型</strong></th>
+<th align="left"><strong>实现方式</strong></th>
+<th align="left"><strong>优缺点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>版本差量包</strong></td>
+<td align="left">服务端为每个版本生成与前一版本的差量包（如v2→v1、v3→v2）</td>
+<td align="left">下载量小，但服务端需维护多版本补丁4</td>
+</tr>
+<tr>
+<td align="left"><strong>基线版本包</strong></td>
+<td align="left">基于初始版本（Baseline）生成增量包（如v2→v1、v3→v1）</td>
+<td align="left">服务端压力小，但增量包体积较大9</td>
+</tr>
+</tbody></table>
+<p><strong>版本管理关键点</strong>：</p>
+<ul>
+<li><strong>基线版本</strong>：打包进APK&#x2F;IPA的初始JS版本（如<code>v1.0</code>）。</li>
+<li><strong>当前版本</strong>：热更新后实际运行的版本（如<code>v1.2</code>）9。</li>
+<li>请求更新时，客户端上传<code>MAX(基线版本, 当前版本)</code>，避免跨大版本更新错误9。</li>
+</ul>
+<h4 id="2-性能优化"><a href="#2-性能优化" class="headerlink" title="2. 性能优化"></a>2. <strong>性能优化</strong></h4><ul>
+<li><strong>Bundle精简</strong>：移除未使用代码、压缩资源4。</li>
+<li><strong>CDN加速</strong>：减少更新包下载延迟4。</li>
+<li><strong>回滚机制</strong>：更新后闪退时自动回退到上一可用版本（沙盒保留2-3个历史版本）910。</li>
+</ul>
+<h4 id="3-安全与稳定性"><a href="#3-安全与稳定性" class="headerlink" title="3. 安全与稳定性"></a>3. <strong>安全与稳定性</strong></h4><ul>
+<li><strong>签名校验</strong>：增量包下载后验证签名，防止篡改。</li>
+<li><strong>灰度发布</strong>：先小范围测试，再全量推送。</li>
+<li><strong>苹果合规</strong>：仅更新JS&#x2F;资源，不修改原生代码（否则可能违反App Store政策）810。</li>
+</ul>
+<hr>
+<h3 id="四、注意事项与限制"><a href="#四、注意事项与限制" class="headerlink" title="四、注意事项与限制"></a>四、注意事项与限制</h3><ol>
+<li><strong>原生代码更新无效</strong>：热更新仅适用于JS&#x2F;资源，Native模块修改需发商店版本8。</li>
+<li><strong>版本兼容性</strong>：确保新JS Bundle与当前Native代码兼容，否则可能崩溃。</li>
+<li><strong>测试覆盖</strong>：更新前需充分测试，避免界面逻辑错误10。</li>
+</ol>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>RN热更新的核心在于<strong>动态替换Bundle与模块级更新</strong>。推荐策略：</p>
+<ul>
+<li><strong>中小团队</strong>：采用CodePush，快速集成增量更新。</li>
+<li><strong>大型应用</strong>：自建服务 + Hermes字节码 + 基线版本增量包，平衡效率与可控性。</li>
+<li><strong>关键优化点</strong>：Bundle瘦身、CDN加速、强制回滚机制保障稳定性。</li>
+</ul>
+<p>在 React Native 热更新体系中，App 检测 JS Bundle 更新的核心逻辑是通过 <strong>版本号比对机制</strong> 实现的。以下是详细流程和关键技术点：</p>
+<hr>
+<h3 id="一、更新检测流程"><a href="#一、更新检测流程" class="headerlink" title="一、更新检测流程"></a>一、更新检测流程</h3><p><img src="/../img/deepseek_mermaid_20250713_bc3153.png"></p>
+<h3 id="二、关键实现步骤"><a href="#二、关键实现步骤" class="headerlink" title="二、关键实现步骤"></a>二、关键实现步骤</h3><h4 id="1-版本号管理"><a href="#1-版本号管理" class="headerlink" title="1. 版本号管理"></a>1. <strong>版本号管理</strong></h4><ul>
+<li><strong>本地存储</strong><br>App 首次安装时将 <strong>初始版本号</strong>（与原生代码打包的 JS Bundle 版本）保存到本地（AsyncStorage&#x2F;SecureStorage）<br>示例：<code>v1.0.0_base</code>（基线版本）</li>
+<li><strong>更新标识</strong><br>热更新后，记录当前运行的 <strong>热更新版本号</strong><br>示例：<code>v1.2.0_hotfix</code></li>
+</ul>
+<h4 id="2-更新检测触发时机"><a href="#2-更新检测触发时机" class="headerlink" title="2. 更新检测触发时机"></a>2. <strong>更新检测触发时机</strong></h4><table>
+<thead>
+<tr>
+<th align="left"><strong>时机</strong></th>
+<th align="left"><strong>适用场景</strong></th>
+<th align="left"><strong>优缺点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>App 启动时</strong></td>
+<td align="left">常规更新检查</td>
+<td align="left">用户感知明显，可能影响启动速度</td>
+</tr>
+<tr>
+<td align="left"><strong>定时轮询</strong></td>
+<td align="left">后台静默更新（如每 24 小时）</td>
+<td align="left">需处理网络状态，增加耗电风险</td>
+</tr>
+<tr>
+<td align="left"><strong>用户主动触发</strong></td>
+<td align="left">设置页添加“检查更新”按钮</td>
+<td align="left">用户体验好，但依赖用户操作</td>
+</tr>
+<tr>
+<td align="left"><strong>推送通知</strong></td>
+<td align="left">紧急修复时服务端推送更新指令</td>
+<td align="left">实时性强，需集成推送服务</td>
+</tr>
+</tbody></table>
+<h4 id="3-版本比对逻辑"><a href="#3-版本比对逻辑" class="headerlink" title="3. 版本比对逻辑"></a>3. <strong>版本比对逻辑</strong></h4><p>客户端向服务器发送 <strong>版本元数据</strong>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 请求体示例</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;appId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.example.app&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;platform&quot;</span><span class="punctuation">:</span> <span class="string">&quot;android&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;baseVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span> <span class="comment">// 基线版本（APK/IPA 内置版本）</span></span><br><span class="line">  <span class="attr">&quot;currentVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.2.0&quot;</span> <span class="comment">// 当前热更新版本</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>服务端响应策略：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 响应体示例</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hasUpdate&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;isMandatory&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span> <span class="comment">// 是否强制更新</span></span><br><span class="line">  <span class="attr">&quot;latestVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.3.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;updateDescription&quot;</span><span class="punctuation">:</span> <span class="string">&quot;修复支付BUG&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;downloadUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://cdn.com/update_1.2.0_1.3.0.patch&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;fileHash&quot;</span><span class="punctuation">:</span> <span class="string">&quot;a1b2c3d4...&quot;</span> <span class="comment">// 文件完整性校验</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>版本比对规则</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码实现</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkUpdate</span>(<span class="params">localVer, serverVer</span>) &#123;</span><br><span class="line">  <span class="comment">// 语义化版本号解析（major.minor.patch）</span></span><br><span class="line">  <span class="keyword">const</span> local = <span class="title function_">parseVersion</span>(localVer); </span><br><span class="line">  <span class="keyword">const</span> remote = <span class="title function_">parseVersion</span>(serverVer);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (remote.<span class="property">major</span> &gt; local.<span class="property">major</span>) <span class="keyword">return</span> <span class="string">&#x27;major_update&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (remote.<span class="property">minor</span> &gt; local.<span class="property">minor</span>) <span class="keyword">return</span> <span class="string">&#x27;minor_update&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (remote.<span class="property">patch</span> &gt; local.<span class="property">patch</span>) <span class="keyword">return</span> <span class="string">&#x27;patch_update&#x27;</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;no_update&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-增量更新优化"><a href="#4-增量更新优化" class="headerlink" title="4. 增量更新优化"></a>4. <strong>增量更新优化</strong></h4><ul>
+<li><p><strong>差分算法</strong><br>使用 <code>bsdiff</code> 生成新旧 Bundle 差异包（体积可减少 80%-95%）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bsdiff old.bundle new.bundle update.patch</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>合并策略</strong><br>客户端下载增量包后，用 <code>bspatch</code> 合并本地 Bundle：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bspatch old.bundle new.bundle update.patch</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="⚠️-三、避坑指南"><a href="#⚠️-三、避坑指南" class="headerlink" title="⚠️ 三、避坑指南"></a>⚠️ 三、避坑指南</h3><ol>
+<li><p><strong>版本兼容性</strong></p>
+<ul>
+<li>热更新版本号需遵循 <strong>语义化版本规范</strong>（SemVer）</li>
+<li>确保新 JS Bundle 兼容当前原生代码（如 Native Modules 接口不变）</li>
+</ul>
+</li>
+<li><p><strong>安全机制</strong></p>
+<p><img src="/../img/deepseek_mermaid_20250713_5d8bbc.png"></p>
+<ul>
+<li>必须验证文件哈希（SHA-256）</li>
+<li>HTTPS 传输防止中间人攻击</li>
+</ul>
+</li>
+<li><p><strong>降级处理</strong></p>
+<ul>
+<li>更新后崩溃时自动回滚到上一可用版本</li>
+<li>本地保留 2-3 个历史版本备份</li>
+</ul>
+</li>
+<li><p><strong>苹果审核合规</strong></p>
+<ul>
+<li>热更新内容 <strong>不能修改应用核心功能</strong></li>
+<li>避免动态加载远程原生代码（违反 App Store 指南 3.3.2）</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="四、主流方案实现差异"><a href="#四、主流方案实现差异" class="headerlink" title="四、主流方案实现差异"></a>四、主流方案实现差异</h3><table>
+<thead>
+<tr>
+<th align="left"><strong>方案</strong></th>
+<th align="left"><strong>更新检测方式</strong></th>
+<th align="left"><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>CodePush</strong></td>
+<td align="left">SDK 自动轮询（默认每次启动检查）</td>
+<td align="left">支持回滚&#x2F;灰度发布，自带版本管理后台</td>
+</tr>
+<tr>
+<td align="left"><strong>自建服务</strong></td>
+<td align="left">自定义 HTTP 接口 + 客户端定时器</td>
+<td align="left">灵活控制策略，需自行实现差分&#x2F;校验逻辑</td>
+</tr>
+<tr>
+<td align="left"><strong>Expo OTA</strong></td>
+<td align="left">Expo 运行时自动检测</td>
+<td align="left">零配置，但需绑定 Expo 生态</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="实践建议"><a href="#实践建议" class="headerlink" title="实践建议"></a>实践建议</h3><ol>
+<li><p><strong>版本号设计</strong></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[基线版本]<span class="emphasis">_[热更新序号]  </span></span><br><span class="line"><span class="emphasis">示例：`1.0.0_</span>base<span class="code">` → `</span>1.0.0<span class="emphasis">_hotfix3`</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>更新策略</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// React Native 中注册更新事件（CodePush 示例）</span></span><br><span class="line">codePush.<span class="title function_">sync</span>(&#123;</span><br><span class="line">  <span class="attr">updateDialog</span>: <span class="literal">true</span>, <span class="comment">// 显示更新弹窗</span></span><br><span class="line">  <span class="attr">installMode</span>: codePush.<span class="property">InstallMode</span>.<span class="property">IMMEDIATE</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>紧急修复通道</strong></p>
+<p><img src="/../img/deepseek_mermaid_20250713_669d18.png"></p>
+</li>
+</ol>
+<blockquote>
+<p><strong>实测数据</strong>：某电商 App 采用基线版本+增量更新策略后，热更新包体积从 2.1MB 降至平均 120KB，下载成功率提升至 99.3%。</p>
+</blockquote>
+<p><img src="/../img/deepseek_mermaid_20250712_a06989.png"></p>
 
       
     </div>
