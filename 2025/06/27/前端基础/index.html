@@ -45,7 +45,7 @@
 <meta property="og:image" content="http://example.com/img/26826.jpg">
 <meta property="og:image" content="http://example.com/img/%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE1.png">
 <meta property="article:published_time" content="2025-06-27T13:36:28.000Z">
-<meta property="article:modified_time" content="2025-07-11T18:07:10.655Z">
+<meta property="article:modified_time" content="2025-07-11T18:10:46.966Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络，浏览器原理">
 <meta name="twitter:card" content="summary">
@@ -1513,10 +1513,10 @@
 <p>若P1保持了资源R1，P2保持了资源R2，系统处于不安全状态，因为这两个进程再向前推进，便可能发生死锁。例如，当P1运行到P1：Request（R2）时，将因R2已被P2占用而阻塞；当P2运行到P2：Request（R1）时，也将因R1已被P1占用而阻塞，于是发生进程死锁</p>
 <p><strong>产生死锁的必要条件：</strong></p>
 <ul>
-<li>互斥条件：进程要求对所分配的资源进行排它性控制，即在一段时间内某资源仅为一进程所占用。</li>
-<li>请求和保持条件：当进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
-<li>不剥夺条件：进程已获得的资源在未使用完之前，不能剥夺，只能在使用完时由自己释放。</li>
-<li>环路等待条件：在发生死锁时，必然存在一个进程——资源的环形链。</li>
+<li><strong>互斥条件</strong>：进程要求对所分配的资源进行排它性控制，即在一段时间内某资源仅为一进程所占用。</li>
+<li><strong>请求和保持条件</strong>：当进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li><strong>不剥夺条件</strong>：进程已获得的资源在未使用完之前，不能剥夺，只能在使用完时由自己释放。</li>
+<li><strong>环路等待条件</strong>：在发生死锁时，必然存在一个进程——资源的环形链。</li>
 </ul>
 <p><strong>预防死锁的方法：</strong></p>
 <ul>
@@ -2297,6 +2297,10 @@
       <ul>
         
           <li>
+            <a href="/2025/07/12/React-Native/">React Native</a>
+          </li>
+        
+          <li>
             <a href="/2025/07/04/%E4%B8%9A%E5%8A%A1/">业务</a>
           </li>
         
@@ -2310,10 +2314,6 @@
         
           <li>
             <a href="/2025/07/01/React%E8%A1%A5%E5%85%85/">React补充</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/29/React/">React</a>
           </li>
         
       </ul>
