@@ -3754,6 +3754,78 @@ root.unmount();
 <li><strong>输出完成：</strong> 在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。</li>
 </ul>
 <p><img src="https://ucc.alicdn.com/pic/developer-ecology/c7qqzppjlk64c_846b80577af74866b212694e710cb593.png" alt="image"></p>
+<h2 id="HMR"><a href="#HMR" class="headerlink" title="HMR"></a>HMR</h2><p>Webpack 的热模块替换（Hot Module Replacement，HMR）是一种在开发过程中无需刷新整个页面即可实时更新模块的机制，其底层实现结合了文件监听、增量编译、WebSocket 通信和运行时模块替换等技术。以下是其核心原理的逐步解析：</p>
+<h3 id="一、核心架构组件"><a href="#一、核心架构组件" class="headerlink" title="一、核心架构组件"></a>一、核心架构组件</h3><p><strong>Webpack Compiler</strong></p>
+<ul>
+<li>负责将源代码编译为 bundle.js（含注入的 HMR Runtime 代码）。</li>
+</ul>
+<p><strong>Bundle Server</strong></p>
+<ul>
+<li>基于 Express 的静态资源服务器，提供 bundle.js 的访问服务。</li>
+</ul>
+<p><strong>HMR Server</strong></p>
+<ul>
+<li>管理热更新逻辑：监听文件变动、生成补丁文件（manifest 和 chunk.js）。</li>
+</ul>
+<p><strong>HMR Runtime</strong></p>
+<ul>
+<li>注入到 bundle.js 中的客户端脚本，负责与 HMR Server 通信并执行模块替换。</li>
+</ul>
+<p><strong>WebSocket 连接</strong></p>
+<ul>
+<li>​	用于服务端主动向客户端推送更新通知（如文件变化的 hash 值）。</li>
+</ul>
+<h2 id="二、工作流程（分阶段）"><a href="#二、工作流程（分阶段）" class="headerlink" title="二、工作流程（分阶段）"></a><strong>二、工作流程（分阶段）</strong></h2><p><strong>启动阶段</strong></p>
+<ol>
+<li>Webpack Compiler 将源码与 HMR Runtime 打包成 bundle.js，由 Bundle Server 提供服务。</li>
+<li>客户端加载 bundle.js 后，HMR Runtime 与 HMR Server 建立 WebSocket 长连接。</li>
+</ol>
+<p><strong>更新阶段（文件修改后）</strong></p>
+<p>① 监听与编译</p>
+<ul>
+<li><p>Webpack 检测到文件变动，触发增量编译，生成唯一 hash 标识本次更新。</p>
+<p>② 生成补丁文件</p>
+</li>
+</ul>
+<p>编译后产出两个文件：</p>
+<p>manifest（.json）：包含变化的模块 ID 和 hash。</p>
+<p>chunk.js：更新的模块代码。<br>③ 服务端推送通知</p>
+<p>HMR Server 通过 WebSocket 向客户端发送新 hash 值。<br>④ 客户端拉取更新</p>
+<p>HMR Runtime 收到新 hash 后，通过 <strong>AJAX&#x2F;JSONP</strong> 请求 manifest 和 chunk.js。<br>⑤ 模块热替换</p>
+<p>HMR Runtime 执行 hotApply 方法：</p>
+<p>卸载旧模块 → 加载新模块 → 执行模块的 accept 回调。</p>
+<p>若未定义 module.hot.accept，则降级为整页刷新。</p>
+<h3 id="三、关键技术优化"><a href="#三、关键技术优化" class="headerlink" title="三、关键技术优化"></a>三、关键技术优化</h3><p><strong>增量构建与按需更新</strong></p>
+<p>仅编译变化的文件，生成最小补丁（manifest + chunk），减少传输量。</p>
+<p><strong>内存文件系统</strong></p>
+<p>webpack-dev-middleware 将编译结果存储在内存，避免磁盘 I&#x2F;O 瓶颈。</p>
+<p><strong>模块替换策略</strong></p>
+<p>CSS 通过 <style> 标签替换实现无刷新更新；JS 需依赖 module.hot.accept 定义更新逻辑。</p>
+<h3 id="四、实践注意事项"><a href="#四、实践注意事项" class="headerlink" title="四、实践注意事项"></a>四、实践注意事项</h3><table>
+<thead>
+<tr>
+<th>模块类型</th>
+<th>热更新支持</th>
+<th>限制说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSS&#x2F;样式</td>
+<td>开箱即用</td>
+<td>通过替换 <style> 标签实现</td>
+</tr>
+<tr>
+<td>JavaScript</td>
+<td>需配置 module.hot.accept</td>
+<td>未声明依赖的模块需手动处理更新逻辑</td>
+</tr>
+<tr>
+<td>状态管理</td>
+<td>需额外处理</td>
+<td>Redux&#x2F;Vuex 需插件保留状态</td>
+</tr>
+</tbody></table>
+<p><strong>总结</strong><br>Webpack HMR 的本质是将更新粒度从“页面级”细化到“模块级”，通过 WebSocket + 增量补丁 + 运行时替换 实现无刷新更新。其设计哲学是最大化开发效率，但对模块化代码结构和状态管理有较高要求。理解其分层架构（编译层、通信层、运行时层）有助于优化开发体验和调试效率。</p>
 <h2 id="vite的构建流程"><a href="#vite的构建流程" class="headerlink" title="vite的构建流程"></a>vite的构建流程</h2><p>Vite 的构建流程与传统的打包工具（如Webpack）有所不同，主要体现在开发阶段和生产环境阶段。以下是 Vite 的构建流程：</p>
 <p><strong>开发阶段：</strong></p>
 <ul>
